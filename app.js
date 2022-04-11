@@ -4,13 +4,13 @@ import * as path from "path";
 import { default as logger } from "morgan";
 import { default as cookieParser } from "cookie-parser";
 import * as http from "http";
-import { approotdir } from "./approotdir";
+import { approotdir } from "./approotdir.js";
 const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
-} from "./appsupport"
+} from "./appsupport.js"
 
-import { router as indexRouter } from "./routes/index";
+import { router as indexRouter } from "./routes/index.js";
 
 export const app = express();
 

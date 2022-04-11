@@ -1,5 +1,5 @@
-import { port } from "app";
-import { server } from "app";
+import { port } from "./app.js";
+import { server } from "./app.js";
 
 export function normalizePort(val) {
     const port = parseInt(val, 10);
@@ -39,10 +39,11 @@ export function onError(error) {
 }
 
 export function onListening() {
-    const addr = server.address();
-    const bind = typeof addr === "string"
-        ? "pipe " + addr
-        : "port " + addr;
+    //const addr = server.address().address;
+    const port = server.address().port;
+    const bind = typeof port === "string"
+        ? "pipe " + port
+        : "port " + port;
     console.log(`Listening on ${bind}`);
 }
 
