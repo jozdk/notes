@@ -9,6 +9,8 @@ const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from "./appsupport.js"
+import { InMemoryNotesStore } from "./models/notes-memory.js";
+export const NotesStore = new InMemoryNotesStore();
 
 import { router as indexRouter } from "./routes/index.js";
 
