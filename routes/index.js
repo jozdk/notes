@@ -1,5 +1,6 @@
 import { default as express } from "express";
 import { NotesStore as notes } from "../app.js";
+// import { default as util } from "util";
 export const router = express.Router();
 
 router.get("/", async (req, res, next) => {
@@ -9,9 +10,17 @@ router.get("/", async (req, res, next) => {
             return notes.read(key);
         });
         const noteList = await Promise.all(keyPromises);
+        const noteListLean = noteList.map((note) => {
+            return {
+                key: note.key,
+                title: note.title,
+                body: note.body
+            }
+        })
+        // console.log(util.inspect(noteList));
         res.render("index", {
             title: "Notes",
-            notelist: noteList
+            notelist: noteListLean
         });
     } catch (err) {
         next(err);
