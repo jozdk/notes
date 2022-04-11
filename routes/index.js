@@ -11,7 +11,7 @@ router.get("/", async (req, res, next) => {
         const noteList = await Promise.all(keyPromises);
         res.render("index", {
             title: "Notes",
-            noteList: noteList
+            notelist: noteList
         });
     } catch (err) {
         next(err);

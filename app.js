@@ -13,6 +13,7 @@ import { InMemoryNotesStore } from "./models/notes-memory.js";
 export const NotesStore = new InMemoryNotesStore();
 
 import { router as indexRouter } from "./routes/index.js";
+import { router as notesRouter } from "./routes/notes.js";
 
 export const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Router functions
 app.use("/", indexRouter);
+app.use("/notes", notesRouter);
 
 // Error handlers
 app.use(handle404);
