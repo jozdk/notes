@@ -5,14 +5,14 @@
         {{#if docreate}}
         <input type="text" name="notekey" value="">
         {{else}}
-        {{#if note}}{{notekey}}{{/if}}
-        <input type="hidden" name="notekey" value="{{#if note}}{{notekey}}{{/if}}">
+        {{#if notekey}}{{notekey}}{{/if}}
+        <input type="hidden" name="notekey" value="{{#if notekey}}{{notekey}}{{/if}}">
         {{/if}}
     </p>
     <p>
         Title:
-        <input type="text" name="title" value="{{#if note}}{{note.title}}{{/if}}">
+        <input type="text" name="title" value="{{#if notetitle}}{{notetitle}}{{/if}}">
     </p>
-    <textarea name="body" id="" cols="40" rows="5">{{#if note}}{{note.body}}{{/if}}</textarea>
+    <textarea name="body" id="" cols="40" rows="5">{{#if notebody}}{{notebody}}{{/if}}</textarea>
     <input type="submit" value="Submit">
 </form>

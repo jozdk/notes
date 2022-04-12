@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "cross-env DEBUG=notes:* node app"
+    "start": "cross-env DEBUG=notes:* node app",
+    "dev": "cross-env DEBUG=notes:* nodemon app"
   },
   "type": "module",
   "keywords": [],
@@ -16,5 +17,8 @@
     "express": "^4.17.3",
     "express-handlebars": "^6.0.4",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
