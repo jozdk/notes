@@ -2,6 +2,7 @@ import { default as express } from "express";
 import { engine } from "express-handlebars";
 import * as path from "path";
 import { default as logger } from "morgan";
+import { default as rfs } from "rotating-file-stream";
 import { default as cookieParser } from "cookie-parser";
 import * as http from "http";
 import { approotdir } from "./approotdir.js";
@@ -22,7 +23,18 @@ app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "views"));
 
 // Middleware
-app.use(logger("dev"));
+app.use(logger(process.env.REQUEST_LOG_FORMAT || "dev", {
+    stream: process.env.REQUEST_LOG_FILE ?
+        rfs.createStream(process.env.REQUEST_LOG_FILE, {
+            size: "10M",
+            interval: "1d",
+            compress: "gzip"
+        })
+        : process.stdout
+}));
+if (process.env.REQUEST_LOG_FILE) {
+    app.use(logger(process.env.REQUEST_LOG_FORMAT || "dev"));
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

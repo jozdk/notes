@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "cross-env DEBUG=notes:* node app",
-    "dev": "cross-env DEBUG=notes:* nodemon app",
+    "start": "cross-env REQUEST_LOG_FILE=log.txt REQUEST_LOG_FORMAT=common DEBUG=notes:* node app",
+    "dev": "cross-env REQUEST_LOG_FILE=log.txt REQUEST_LOG_FORMAT=common DEBUG=notes:* nodemon app",
     "build:css": "postcss ./main.css -o ./public/stylesheets/styles.css --watch --verbose",
     "prod:css": "NODE_ENV=production postcss ./main.css -o ./public/stylesheets/styles.css"
   },
@@ -20,7 +20,8 @@
     "cross-env": "^7.0.3",
     "express": "^4.17.3",
     "express-handlebars": "^6.0.4",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "rotating-file-stream": "^3.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",
