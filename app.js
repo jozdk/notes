@@ -3,6 +3,9 @@ import { engine } from "express-handlebars";
 import * as path from "path";
 import { default as logger } from "morgan";
 import { default as rfs } from "rotating-file-stream";
+import { default as DBG } from "debug";
+const debug = DBG("notes:debug");
+const dbgerror = DBG("notes:error");
 import { default as cookieParser } from "cookie-parser";
 import * as http from "http";
 import { approotdir } from "./approotdir.js";
@@ -58,3 +61,6 @@ export const server = http.createServer(app);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
+server.on("request", (req, res) => {
+    debug(`${new Date().toISOString()} request ${req.method} ${req.url}`);
+});

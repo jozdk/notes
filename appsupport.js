@@ -1,5 +1,9 @@
 import { port } from "./app.js";
 import { server } from "./app.js";
+import * as util from "util";
+import { default as DBG } from "debug";
+const debug = DBG("notes:debug");
+const dbgerror = DBG("notes:error");
 
 export function normalizePort(val) {
     const port = parseInt(val, 10);
@@ -16,6 +20,8 @@ export function normalizePort(val) {
 }
 
 export function onError(error) {
+    dbgerror(error);
+
     if (error.syscall !== "listen") {
         throw error;
     }
@@ -40,11 +46,11 @@ export function onError(error) {
 
 export function onListening() {
     //const addr = server.address().address;
-    const port = server.address().port;
-    const bind = typeof port === "string"
-        ? "pipe " + port
-        : "port " + port;
-    console.log(`Listening on ${bind}`);
+    const addr = server.address();
+    const bind = typeof addr === "string"
+        ? "pipe " + addr
+        : "port " + addr.port;
+    debug(`Listening on ${bind}`);
 }
 
 export function handle404(req, res, next) {
@@ -64,3 +70,12 @@ export function basicErrorHandler(err, req, res, next) {
     res.status(err.status || 500);
     res.render("error");
 }
+
+// ???
+process.on("uncaughtException", (err) => {
+    console.error(`The App crashed - ${(err.stack || err)}`);
+});
+
+process.on("unhandledRejection", (reason, pr) => {
+    console.error(`Unhandled rejection at: ${util.inspect(pr)} reason: ${reason}`);
+});
