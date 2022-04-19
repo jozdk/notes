@@ -5,11 +5,6 @@ const notes = [];
 export class InMemoryNotesStore extends AbstractNotesStore {
     async close() {}
 
-    async update(key, title, body) {
-        notes[key] = new Note(key, title, body);
-        return notes[key];
-    }
-
     async create(key, title, body) {
         notes[key] = new Note(key, title, body);
         return notes[key];
@@ -21,6 +16,11 @@ export class InMemoryNotesStore extends AbstractNotesStore {
         } else {
             throw new Error(`Note ${key} does not exist`);
         }
+    }
+
+    async update(key, title, body) {
+        notes[key] = new Note(key, title, body);
+        return notes[key];
     }
 
     async destroy(key) {

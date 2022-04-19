@@ -24,15 +24,41 @@ export class Note {
     set body(newBody) {
         this[_note_body] = newBody;
     }
+
+    toJSON() {
+        return JSON.stringify({
+            key: this.key,
+            title: this.title,
+            body: this.body
+        });
+    }
+
+    static fromJSON(json) {
+        const data = JSON.parse(json);
+
+        if (typeof data !== "object"
+            || !data.hasOwnProperty("key")
+            || typeof data.key !== "string"
+            || !data.hasOwnProperty("title")
+            || typeof data.title !== "string"
+            || !data.hasOwnProperty("body")
+            || typeof data.body !== "string") {
+            throw new Error(`Not a Note: ${json}`);
+        }
+
+        const note = new Note(data.key, data.title, data.body);
+        return note;
+    }
+
 }
 
 // Documenting the methods that are used for accessing notes from a data storage system
 export class AbstractNotesStore {
-    async close() {}
-    async update(key, title, body) {}
-    async create(key, title, body) {}
-    async read(key) {}
-    async destroy(key) {}
-    async keylist() {}
-    async count() {}
+    async close() { }
+    async create(key, title, body) { }
+    async read(key) { }
+    async update(key, title, body) { }
+    async destroy(key) { }
+    async keylist() { }
+    async count() { }
 }
