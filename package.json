@@ -6,6 +6,8 @@
   "scripts": {
     "start": "cross-env REQUEST_LOG_FILE=log.txt REQUEST_LOG_FORMAT=common DEBUG=notes:* node app",
     "dev": "cross-env REQUEST_LOG_FILE=log.txt REQUEST_LOG_FORMAT=common DEBUG=notes:* nodemon app",
+    "fs-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=fs node app.js",
+    "fs-server2": "cross-env PORT=3001 NOTES_MODEL=fs node app.js",
     "build:css": "postcss ./main.css -o ./public/stylesheets/styles.css --watch --verbose",
     "prod:css": "NODE_ENV=production postcss ./main.css -o ./public/stylesheets/styles.css"
   },

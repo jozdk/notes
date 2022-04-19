@@ -5,7 +5,7 @@ import { default as logger } from "morgan";
 import { default as rfs } from "rotating-file-stream";
 import { default as DBG } from "debug";
 const debug = DBG("notes:debug");
-const dbgerror = DBG("notes:error");
+// const error = DBG("notes:error");
 import { default as cookieParser } from "cookie-parser";
 import * as http from "http";
 import { approotdir } from "./approotdir.js";
@@ -13,11 +13,22 @@ const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from "./appsupport.js"
-import { InMemoryNotesStore } from "./models/notes-memory.js";
-export const NotesStore = new InMemoryNotesStore();
 
 import { router as indexRouter } from "./routes/index.js";
 import { router as notesRouter } from "./routes/notes.js";
+
+import { useModel as useNotesModel } from "./models/notes-store.js";
+
+useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
+.then((store) => {
+    debug(`Using NotesStore ${store}`);
+})
+.catch((err) => {
+    onError({
+        code: "ENOTESSTORE",
+        error: err
+    });
+})
 
 export const app = express();
 

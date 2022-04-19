@@ -3,3 +3,5 @@
 node_modules
 log.txt
 public/assets/stylesheets/styles.css
+models/test.js
+notes-fs-data

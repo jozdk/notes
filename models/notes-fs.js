@@ -4,10 +4,9 @@ import * as util from "util";
 import { approotdir } from "../approotdir.js";
 import { Note, AbstractNotesStore } from "./Notes.js";
 import { default as DBG } from "debug";
-import { readJson as readJSON } from "fs-extra";
 
 const debug = DBG("notes:notes-fs");
-const dbgerror = DBG("notes:error-fs");
+const error = DBG("notes:error-fs");
 
 export default class FSNotesStore extends AbstractNotesStore {
     async close() {
