@@ -9,6 +9,9 @@
     "fs-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=fs node app.js",
     "fs-server2": "cross-env PORT=3001 NOTES_MODEL=fs node app.js",
     "level-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=level node app.js",
+    "sqlite3-setup": "sqlite3 notes.sqlite3 --init models/schema-sqlite3.sql",
+    "sqlite3-start": "cross-env DEBUG=notes:* NOTES_MODEL=sqlite3 node app.js",
+    "sqlite3-server2": "cross-env NOTES_MODEL=sqlite3 PORT=3001 node app.js",
     "build:css": "postcss ./main.css -o ./public/stylesheets/styles.css --watch --verbose",
     "prod:css": "NODE_ENV=production postcss ./main.css -o ./public/stylesheets/styles.css"
   },
@@ -26,7 +29,8 @@
     "fs-extra": "^10.1.0",
     "level": "^8.0.0",
     "morgan": "^1.10.0",
-    "rotating-file-stream": "^3.0.3"
+    "rotating-file-stream": "^3.0.3",
+    "sqlite3": "^5.0.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",

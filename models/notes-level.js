@@ -13,7 +13,7 @@ async function connectDB() {
         return db;
     }
 
-    db = new Level(process.env.LEVELDB_LOCATION || "notes-level", {
+    db = new Level(process.env.LEVELDB_LOCATION || "notes.level", {
         valueEncoding: "json"
     });
 
