@@ -36,7 +36,7 @@ export default class FSNotesStore extends AbstractNotesStore {
     async keylist() {
         const notesdir = await notesDir();
         let noteFiles = await fs.readdir(notesdir);
-        if (!noteFiles || noteFiles === undefined) {
+        if (!noteFiles) {
             noteFiles = [];
         }
         const notes = noteFiles.map(async (fname) => {

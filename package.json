@@ -8,6 +8,7 @@
     "dev": "cross-env REQUEST_LOG_FILE=log.txt REQUEST_LOG_FORMAT=common DEBUG=notes:* nodemon app",
     "fs-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=fs node app.js",
     "fs-server2": "cross-env PORT=3001 NOTES_MODEL=fs node app.js",
+    "level-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=level node app.js",
     "build:css": "postcss ./main.css -o ./public/stylesheets/styles.css --watch --verbose",
     "prod:css": "NODE_ENV=production postcss ./main.css -o ./public/stylesheets/styles.css"
   },
@@ -23,6 +24,7 @@
     "express": "^4.17.3",
     "express-handlebars": "^6.0.4",
     "fs-extra": "^10.1.0",
+    "level": "^8.0.0",
     "morgan": "^1.10.0",
     "rotating-file-stream": "^3.0.3"
   },

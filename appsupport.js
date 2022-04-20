@@ -1,7 +1,8 @@
-import { port } from "./app.js";
-import { server } from "./app.js";
+import { server, port } from "./app.js";
 import * as util from "util";
+import { NotesStore } from "./models/notes-store.js";
 import { default as DBG } from "debug";
+
 const debug = DBG("notes:debug");
 const dbgerror = DBG("notes:error");
 
@@ -87,3 +88,15 @@ process.on("uncaughtException", (err) => {
 process.on("unhandledRejection", (reason, pr) => {
     console.error(`Unhandled rejection at: ${util.inspect(pr)} reason: ${reason}`);
 });
+
+async function catchProcessExit() {
+    await NotesStore.close();
+    server.close();
+    process.exit(0);
+}
+
+process.on("SIGTERM", catchProcessExit);
+process.on("SIGINT", catchProcessExit);
+process.on("SIGHUP", catchProcessExit);
+
+process.on("exit", () => debug("exiting..."));
