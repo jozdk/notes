@@ -81,19 +81,27 @@ export function basicErrorHandler(err, req, res, next) {
 }
 
 // ???
-process.on("uncaughtException", (err) => {
-    console.error(`The App crashed - ${(err.stack || err)}`);
-});
+// process.on("uncaughtException", (err) => {
+//     console.error(`The App crashed - ${(err.stack || err)}`);
+// });
 
-process.on("unhandledRejection", (reason, pr) => {
-    console.error(`Unhandled rejection at: ${util.inspect(pr)} reason: ${reason}`);
-});
+// process.on("unhandledRejection", (reason, pr) => {
+//     console.error(`Unhandled rejection at: ${util.inspect(pr)} reason: ${reason}`);
+// });
 
 async function catchProcessExit() {
-    await NotesStore.close();
-    server.close();
-    process.exit(0);
+    try {
+        await NotesStore.close();
+        server.close();
+        process.exit(0);
+    } catch (err) {
+        console.log(err);
+    } finally {
+        server.close();
+        process.exit(0);
+    }
 }
+
 
 process.on("SIGTERM", catchProcessExit);
 process.on("SIGINT", catchProcessExit);
