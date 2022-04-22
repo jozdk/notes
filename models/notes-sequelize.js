@@ -1,9 +1,9 @@
 import { Note, AbstractNotesStore } from "./Notes.js";
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import {
     connectDB as connectSeqlz,
     close as closeSeqlz
-} from "./sequelize,js";
+} from "./sequelize.js";
 import util from "util";
 import { default as DBG } from "debug";
 
@@ -11,7 +11,7 @@ const debug = DBG("notes:notes-sequelize");
 
 let sequelize;
 
-export class SQNote extends Sequelize.Model { }
+export class SQNote extends Model { }
 
 async function connectDB() {
     if (sequelize) {
@@ -20,6 +20,7 @@ async function connectDB() {
 
     try {
         sequelize = await connectSeqlz();
+
         SQNote.init({
             notekey: {
                 type: DataTypes.STRING,
@@ -38,7 +39,7 @@ async function connectDB() {
         });
 
         await SQNote.sync();
-        debug(`The model SQNote was defined and its table was created`);
+        debug(`The table SQNote was created (if it not already existed)`);
     } catch (err) {
         console.error(err);
     }
@@ -64,7 +65,6 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
     async read(key) {
         await connectDB();
         const note = await SQNote.findOne({ where: { notekey: key } });
-        debug(note);
         if (!note) {
             throw new Error(`No note found for ${key}`);
         } else {
@@ -97,7 +97,7 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
     async keylist() {
         await connectDB();
         const notes = await SQNote.findAll({ attributes: ["notekey"] });
-        debug(`keylist: ${util.inspect(notes)}`);
+        debug(`keylist: ${util.inspect(notes[0].notekey)}`);
         const notekeys = notes.map((note) => note.notekey);
         return notekeys;
     }

@@ -1,11 +1,15 @@
 import fs from "fs";
 import { default as yaml } from "js-yaml";
 import { Sequelize } from "sequelize";
+import { default as DBG } from "debug";
+
+const debug = DBG("notes:sequelize");
+const error = DBG("notes:error-sequelize");
 
 let sequelize;
 
 export async function connectDB() {
-    if (typeof sequelize === undefined) {
+    if (!sequelize) {
         let params;
 
         try {
@@ -38,9 +42,9 @@ export async function connectDB() {
 
         try {
             await sequelize.authenticate();
-            console.log("Sequelize connection has been established successfully.")
+            debug("Sequelize connection has been established successfully.")
         } catch (err) {
-            console.error("Sequelize is unable to connect to the database: ", err);
+            error("Sequelize is unable to connect to the database: ", err);
         }
     
     }

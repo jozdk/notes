@@ -5,3 +5,4 @@ models/test.js
 notes-fs-data
 notes.level
 notes.sqlite3
+notes-sequelize.sqlite3

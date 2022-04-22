@@ -8,6 +8,7 @@ const debug = DBG("notes:debug");
 // const error = DBG("notes:error");
 import { default as cookieParser } from "cookie-parser";
 import * as http from "http";
+import util from "util";
 import { approotdir } from "./approotdir.js";
 const __dirname = approotdir;
 import {
@@ -21,7 +22,7 @@ import { useModel as useNotesModel } from "./models/notes-store.js";
 
 useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
 .then((store) => {
-    debug(`Using NotesStore ${store}`);
+    debug(`Using NotesStore ${util.inspect(store)}`);
 })
 .catch((err) => {
     onError({
