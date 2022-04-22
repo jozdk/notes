@@ -3,12 +3,11 @@ import { engine } from "express-handlebars";
 import * as path from "path";
 import { default as logger } from "morgan";
 import { default as rfs } from "rotating-file-stream";
-import { default as DBG } from "debug";
-const debug = DBG("notes:debug");
-// const error = DBG("notes:error");
 import { default as cookieParser } from "cookie-parser";
 import * as http from "http";
 import util from "util";
+import { default as DBG } from "debug";
+import dotenv from "dotenv";
 import { approotdir } from "./approotdir.js";
 const __dirname = approotdir;
 import {
@@ -19,6 +18,11 @@ import { router as indexRouter } from "./routes/index.js";
 import { router as notesRouter } from "./routes/notes.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
+
+dotenv.config();
+
+const debug = DBG("notes:debug");
+// const error = DBG("notes:error");
 
 useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
 .then((store) => {

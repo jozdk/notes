@@ -14,6 +14,7 @@
     "sqlite3-server2": "cross-env NOTES_MODEL=sqlite3 PORT=3001 node app.js",
     "sequelize-start": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml NOTES_MODEL=sequelize node app.js",
     "sequelize-server2": "cross-env SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml NOTES_MODEL=sequelize PORT=3001 node app.js",
+    "sequelize-pg-start": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-pg.yaml NOTES_MODEL=sequelize node app.js",
     "build:css": "postcss ./main.css -o ./public/stylesheets/styles.css --watch --verbose",
     "prod:css": "NODE_ENV=production postcss ./main.css -o ./public/stylesheets/styles.css"
   },
@@ -26,12 +27,14 @@
     "bootstrap-icons": "^1.8.1",
     "cookie-parser": "^1.4.6",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-handlebars": "^6.0.4",
     "fs-extra": "^10.1.0",
     "js-yaml": "^4.1.0",
     "level": "^8.0.0",
     "morgan": "^1.10.0",
+    "pg": "^8.7.3",
     "rotating-file-stream": "^3.0.3",
     "sequelize": "^6.19.0",
     "sqlite3": "^5.0.4"

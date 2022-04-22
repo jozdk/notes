@@ -97,7 +97,7 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
     async keylist() {
         await connectDB();
         const notes = await SQNote.findAll({ attributes: ["notekey"] });
-        debug(`keylist: ${util.inspect(notes[0].notekey)}`);
+        // debug(`keylist: ${util.inspect(notes)}`);
         const notekeys = notes.map((note) => note.notekey);
         return notekeys;
     }
