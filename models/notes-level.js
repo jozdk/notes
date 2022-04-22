@@ -1,5 +1,5 @@
 import util from "util";
-import { Note, AbstractNotesStore } from "./Notes.js";
+import { Note } from "./Notes.js";
 import { Level } from "level";
 import { default as DBG } from "debug";
 
@@ -20,7 +20,7 @@ async function connectDB() {
     return db;
 }
 
-export default class LevelNotesStore extends AbstractNotesStore {
+export default class LevelNotesStore {
     async close() {
         const _db = db;
         db = undefined;

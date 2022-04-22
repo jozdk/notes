@@ -1,4 +1,4 @@
-import { Note, AbstractNotesStore } from "./Notes.js";
+import { Note } from "./Notes.js";
 import { Model, DataTypes } from "sequelize";
 import {
     connectDB as connectSeqlz,
@@ -46,7 +46,7 @@ async function connectDB() {
 
 }
 
-export default class SequelizeNotesStore extends AbstractNotesStore {
+export default class SequelizeNotesStore {
     async close() {
         closeSeqlz();
         sequelize = undefined;

@@ -51,14 +51,3 @@ export class Note {
     }
 
 }
-
-// Documenting the methods that are used for accessing notes from a data storage system
-export class AbstractNotesStore {
-    async close() { }
-    async create(key, title, body) { }
-    async read(key) { }
-    async update(key, title, body) { }
-    async destroy(key) { }
-    async keylist() { }
-    async count() { }
-}

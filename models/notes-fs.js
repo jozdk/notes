@@ -2,13 +2,13 @@ import fs from "fs-extra";
 import * as path from "path";
 import * as util from "util";
 import { approotdir } from "../approotdir.js";
-import { Note, AbstractNotesStore } from "./Notes.js";
+import { Note } from "./Notes.js";
 import { default as DBG } from "debug";
 
 const debug = DBG("notes:notes-fs");
 const error = DBG("notes:error-fs");
 
-export default class FSNotesStore extends AbstractNotesStore {
+export default class FSNotesStore {
     async close() {
 
     }
