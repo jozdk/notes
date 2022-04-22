@@ -12,6 +12,8 @@
     "sqlite3-setup": "sqlite3 notes.sqlite3 --init models/schema-sqlite3.sql",
     "sqlite3-start": "cross-env DEBUG=notes:* NOTES_MODEL=sqlite3 node app.js",
     "sqlite3-server2": "cross-env NOTES_MODEL=sqlite3 PORT=3001 node app.js",
+    "sequelize-start": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml NOTES_MODEL=sequelize node app.js",
+    "sequelize-server2": "cross-env SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml NOTES_MODEL=sequelize PORT=3001 node app.js",
     "build:css": "postcss ./main.css -o ./public/stylesheets/styles.css --watch --verbose",
     "prod:css": "NODE_ENV=production postcss ./main.css -o ./public/stylesheets/styles.css"
   },
