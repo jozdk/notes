@@ -1,0 +1,19 @@
+{
+  "name": "user-auth-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "user-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^7.5.1",
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.4",
+    "fs-extra": "^10.1.0",
+    "js-yaml": "^4.1.0"
+  }
+}
