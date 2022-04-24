@@ -57,5 +57,5 @@ export function createUser(req) {
         $emails,
         $photos
     )`).run(user);
-    return findOneUser(req.params.username);    
+    return findOneUser(req.body.username);
 }

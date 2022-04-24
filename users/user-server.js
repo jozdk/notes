@@ -40,6 +40,7 @@ process.on("unhandledRejection", (reason, pr) => {
 app.post("/create-user", (req, res, next) => {
     try {
         const result = createUser(req);
+        console.log("/create-user: ", util.inspect(result));
         res.contentType = "json";
         res.json(result);
     } catch (err) {

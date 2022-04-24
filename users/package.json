@@ -10,12 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.26.1",
     "better-sqlite3": "^7.5.1",
     "commander": "^9.2.0",
     "cross-env": "^7.0.3",
     "debug": "^4.3.4",
     "express": "^4.17.3",
     "fs-extra": "^10.1.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "restify-clients": "^3.1.0"
   }
 }

@@ -1,5 +1,6 @@
 import { Command } from "commander";
-// ??? Restify-cleint ???
+import restify from "restify-clients";
+import axios from "axios";
 import * as util from "util";
 
 const program = new Command();
@@ -48,27 +49,113 @@ const client = (program) => {
         connect_url.port = client_port;
     }
 
-    // const client = // provide client
+    // restify client:
 
-    // basic auth
+    // const client = restify.createJSONClient({
+    //     url: connect_url.href
+    // });
 
-    // return client;
+    // axios client:
+
+    const client = axios.create({
+        baseURL: connect_url.href
+    });
+
+    // client.basicAuth(authid, authcode);
+
+    return client;
 
 }
 
-program
-    .option("-p, --port <port>", "Port number for user server, if using localhost")
-    .option("-h, --host <host>", "Host name for user server")
-    .option("-u, --url <url>", "Connection URL for user server, if using a remote server");
+async function main() {
+    program
+        .option("-p, --port <port>", "Port number for user server, if using localhost")
+        .option("-h, --host <host>", "Host name for user server")
+        .option("-u, --url <url>", "Connection URL for user server, if using a remote server");
 
-program
-    .command("add <username>")
-    .description("Add a user to the user server")
-    .option("--password <password>", "Password for new user")
-    .option("--family-name <familyName>", "Family name, or last name, of the user")
-    .option("--given-name <givenName>", "Given name, or first name, of the user")
-    .option("--middle-name <middleName>", "Middle name of the user")
-    .option("--email <email>", "Email address for the user")
+    program
+        .command("add <username>")
+        .description("Add a user to the user server")
+        .option("--password <password>", "Password for new user")
+        .option("--family-name <familyName>", "Family name, or last name, of the user")
+        .option("--given-name <givenName>", "Given name, or first name, of the user")
+        .option("--middle-name <middleName>", "Middle name of the user")
+        .option("--email <email>", "Email address for the user")
+        .action(async (username, options) => {
+            const { password, familyName, givenName, middleName, email } = options;
+            const topost = {
+                username,
+                password,
+                provider: "local",
+                familyName,
+                givenName,
+                middleName,
+                emails: [],
+                photos: []
+            };
+            if (email) {
+                topost.emails.push(email);
+            }
+
+            // restify:
+
+            // client(program).post("/create-user", topost, (err, req, res, obj) => {
+            //     if (err) {
+            //         console.error(err.message, err.stack);
+            //     } else {
+            //         console.log(`Created ${util.inspect(obj)}`);
+            //     }
+            // });
+
+            // axios:
+            try {
+                const result = await client(program).post("/create-user", topost);
+                console.log(`Created ${util.inspect(result.data)}`);
+            } catch (err) {
+                console.error(err.message, err.stack);
+            }
+
+
+        });
+
+    program
+        .command("find-or-create <username>")
+        .description("Add a user to the user server if not exists")
+        .option("--password <password>", "Password for new user")
+        .option("--family-name <familyName>", "Family name, or last name, of the user")
+        .option("--given-name <givenName>", "Given name, or first name, of the user")
+        .option("--middle-name <middleName>", "Middle name of the user")
+        .option("--email <email>", "Email address for the user")
+        .action((username, options) => {
+            const { password, familyName, givenName, middleName, email } = options;
+            const topost = {
+                username,
+                password,
+                provider: "local",
+                familyName,
+                givenName,
+                middleName,
+                emails: [],
+                photos: []
+            };
+            if (email) {
+                topost.emails.push(email);
+            }
+            client(program).post("/find-or-create", topost, (err, req, res, obj) => {
+                if (err) {
+                    console.error(err.message, err.stack);
+                } else {
+                    console.log(`Found or Created ${util.inspect(obj)}`);
+                }
+            })
+        });
     
+    await program.parseAsync(process.argv);
+}
 
-program.parse(process.argv);
+
+main();
+
+
+
+//program.parse(process.argv);
