@@ -1,4 +1,4 @@
-import restify from "restify";
+import express from "express";
 import * as util from "util";
 import {
     db, userParams, findOneUser, createUser
@@ -11,18 +11,18 @@ const error = DBG("users:error");
 
 // Set up REST server
 
-const server = restify.createServer({
-    name: "user-auth-service",
-    version: "0.0.1"
-});
+const app = express();
 
-server.use(restify.plugins.authorizationParser());
-// Mount custom check middleware here
-server.use(restify.plugins.queryParser());
-server.use(restify.plugins.bodyParser({ mapParams: true }));
+app.use(checkAuth);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-server.listen(process.env.PORT, "localhost", () => {
-    log(`${server.name} listening at ${server.url}`);
+app.get("/", (req, res) => {
+    res.send("Hello");
+})
+
+app.listen(process.env.PORT, () => {
+    log(`User-Auth-Server listening on ${process.env.PORT}`);
 });
 
 process.on("uncaughtException", (err) => {
@@ -37,3 +37,39 @@ process.on("unhandledRejection", (reason, pr) => {
 
 // REST server route handlers
 
+app.post("/create-user", (req, res, next) => {
+    try {
+        const result = createUser(req);
+        res.contentType = "json";
+        res.json(result);
+    } catch (err) {
+        res.status(500).send(`Something went wrong: ${err}`);
+    }
+});
+
+app.post("/find-or-create", (req, res, next) => {
+    try {
+        let user = findOneUser(req.body.username);
+        if (!user) {
+            user = createUser(req);
+            if (!user) {
+                throw new Error("No user created");
+            }
+        }
+        res.json(user);
+    } catch(err) {
+        res.status(500).send(`Something went wrong: ${err}`);
+    }
+});
+
+
+// Mimic API Key authentication
+
+const apiKeys = [
+    { user: process.env.API_USER, key: process.env.API_KEY }
+]
+
+function checkAuth(req, res, next) {
+    console.log("request headers: ", req.headers.authorization);
+    next();
+}

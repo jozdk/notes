@@ -4,15 +4,17 @@
   "description": "",
   "main": "user-server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env DEBUG=users:* PORT=5858 node user-server.js"
   },
   "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
     "better-sqlite3": "^7.5.1",
+    "commander": "^9.2.0",
     "cross-env": "^7.0.3",
     "debug": "^4.3.4",
+    "express": "^4.17.3",
     "fs-extra": "^10.1.0",
     "js-yaml": "^4.1.0"
   }

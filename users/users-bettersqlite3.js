@@ -16,14 +16,14 @@ db.prepare(`CREATE TABLE IF NOT EXISTS users (
 
 export function userParams(req) {
     return {
-        username: req.params.username,
-        password: req.params.password,
-        provider: req.params.provider,
-        familyName: req.params.familyName,
-        givenName: req.params.givenName,
-        middleName: req.params.middleName,
-        emails: JSON.stringify(req.params.emails),
-        photos: JSON.stringify(req.params.photos)
+        username: req.body.username,
+        password: req.body.password,
+        provider: req.body.provider,
+        familyName: req.body.familyName,
+        givenName: req.body.givenName,
+        middleName: req.body.middleName,
+        emails: JSON.stringify(req.body.emails),
+        photos: JSON.stringify(req.body.photos)
     };
 }
 
