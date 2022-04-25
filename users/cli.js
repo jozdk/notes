@@ -190,16 +190,24 @@ async function main() {
         .option("--given-name <givenName>", "Given name, or first name, of the user")
         .option("--middle-name <middleName>", "Middle name of the user")
         .option("--email <email>", "Email address for the user")
-        .action(async (username, userInfo) => {
-            // options.username = username;
-            userInfo.provider = "local";
-            if (userInfo.email) userInfo.email = [userInfo.email];
-            console.log("topost: ", util.inspect(userInfo));
+        .action(async (username, options) => {
+            const { password, familyName, givenName, middleName, email } = options;
+            const topost = {
+                username,
+                password,
+                provider: "local",
+                familyName,
+                givenName,
+                middleName,
+                emails: email ? [email] : [],
+                photos: []
+            };
+
             try {
-                const result = await client(program).post(`/update-user/${username}`, userInfo);
+                const result = await client(program).post(`/update-user/${username}`, topost);
                 console.log(`Updated ${util.inspect(result.data)}`);
             } catch (err) {
-                console.error("There was an error: ", err.stack);
+                console.error(err.stack);
             }
         }); 
     

@@ -15,30 +15,16 @@ db.prepare(`CREATE TABLE IF NOT EXISTS users (
     )`).run();
 
 export function userParams(req) {
-
-    console.log("req body: ", util.inspect(req.body));
-    const user = {};
-
-    Object.keys(req.body).filter((key) => {
-        return key === "username"
-            || "password"
-            || "provider"
-            || "familyName"
-            || "givenName"
-            || "middleName"
-            || "emails"
-            || "photos";
-    }).forEach((key) => {
-        if (key === "emails" || key === "photos") {
-            user[key] = JSON.stringify(req.body[key])
-        } else {
-            user[key] = req.body[key];
-        }
-    });
-
-    console.log("userParams: ", util.inspect(user));
-
-    return user;
+    return {
+        username: req.body.username,
+        password: req.body.password,
+        provider: req.body.provider,
+        familyName: req.body.familyName,
+        givenName: req.body.givenName,
+        middleName: req.body.middleName,
+        emails: JSON.stringify(req.body.emails),
+        photos: JSON.stringify(req.body.photos)
+    };
 }
 
 export function findOneUser(username) {

@@ -91,32 +91,9 @@ app.get("/list", (req, res, next) => {
 
 app.post("/update-user/:username", (req, res, next) => {
     try {
-        const toUpdate = userParams(req);
-        log("toUpdate: ", util.inspect(toUpdate))
+        const user = userParams(req);
 
-        const user = findOneUser(req.params.username);
-
-        Object.keys(toUpdate).forEach(key => {
-            log(`${key} = ${toUpdate[key]}`);
-            if (key === "email") {
-                user.emails = toUpdate[key];
-            } else {
-               user[key] = toUpdate[key]; 
-            }
-        });
-
-        // Object.keys(user).forEach((key) => {
-        //     console.log("column to update: ", key);
-        //     const info = db.prepare(`UPDATE users SET middleName = $value WHERE username = $username`).run({ column: key, value: user[key], username: req.params.username });
-        //     log("updated: ", util.inspect(info));
-        // });
-
-        user.emails = JSON.stringify(user.emails);
-        user.photos = JSON.stringify(user.photos);
-
-        log(util.inspect(user));
-
-        const info = db.prepare(`UPDATE users SET
+        db.prepare(`UPDATE users SET
             username = $username,
             password = $password,
             provider = $provider,
@@ -125,9 +102,7 @@ app.post("/update-user/:username", (req, res, next) => {
             middleName = $middleName,
             emails = $emails,
             photos = $photos 
-            WHERE username = $username`).run(user);
-
-        log("info: ", util.inspect(info));
+            WHERE username = ?`).run(user, req.params.username);
 
         const result = findOneUser(req.params.username);
         res.json(result);
