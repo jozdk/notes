@@ -71,7 +71,7 @@ app.get("/find/:username", (req, res, next) => {
         } else {
             res.json(user);
         }
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Something went wrong: ${err}`);
     }
 });
@@ -84,10 +84,58 @@ app.get("/list", (req, res, next) => {
             userlist = [];
         }
         res.json(userlist);
-    } catch(err) {
+    } catch (err) {
         res.status(500).send(`Something went wrong: ${err}`);
     }
-})
+});
+
+app.post("/update-user/:username", (req, res, next) => {
+    try {
+        const toUpdate = userParams(req);
+        log("toUpdate: ", util.inspect(toUpdate))
+
+        const user = findOneUser(req.params.username);
+
+        Object.keys(toUpdate).forEach(key => {
+            log(`${key} = ${toUpdate[key]}`);
+            if (key === "email") {
+                user.emails = toUpdate[key];
+            } else {
+               user[key] = toUpdate[key]; 
+            }
+        });
+
+        // Object.keys(user).forEach((key) => {
+        //     console.log("column to update: ", key);
+        //     const info = db.prepare(`UPDATE users SET middleName = $value WHERE username = $username`).run({ column: key, value: user[key], username: req.params.username });
+        //     log("updated: ", util.inspect(info));
+        // });
+
+        user.emails = JSON.stringify(user.emails);
+        user.photos = JSON.stringify(user.photos);
+
+        log(util.inspect(user));
+
+        const info = db.prepare(`UPDATE users SET
+            username = $username,
+            password = $password,
+            provider = $provider,
+            familyName = $familyName,
+            givenName = $givenName,
+            middleName = $middleName,
+            emails = $emails,
+            photos = $photos 
+            WHERE username = $username`).run(user);
+
+        log("info: ", util.inspect(info));
+
+        const result = findOneUser(req.params.username);
+        res.json(result);
+    } catch(err) {
+        console.error(err.stack);
+        res.send(`Something went wrong: ${err}`);
+    }
+});
 
 
 // Mimic API Key authentication

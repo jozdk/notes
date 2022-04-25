@@ -181,6 +181,27 @@ async function main() {
                 console.error(err.message, err.stack);
             }
         });
+
+    program
+        .command("update <username>")
+        .description("Update user information on the user server")
+        .option("--password <password>", "Password for new user")
+        .option("--family-name <familyName>", "Family name, or last name, of the user")
+        .option("--given-name <givenName>", "Given name, or first name, of the user")
+        .option("--middle-name <middleName>", "Middle name of the user")
+        .option("--email <email>", "Email address for the user")
+        .action(async (username, userInfo) => {
+            // options.username = username;
+            userInfo.provider = "local";
+            if (userInfo.email) userInfo.email = [userInfo.email];
+            console.log("topost: ", util.inspect(userInfo));
+            try {
+                const result = await client(program).post(`/update-user/${username}`, userInfo);
+                console.log(`Updated ${util.inspect(result.data)}`);
+            } catch (err) {
+                console.error("There was an error: ", err.stack);
+            }
+        }); 
     
     await program.parseAsync(process.argv);
 }
