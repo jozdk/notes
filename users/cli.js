@@ -126,7 +126,7 @@ async function main() {
         .option("--given-name <givenName>", "Given name, or first name, of the user")
         .option("--middle-name <middleName>", "Middle name of the user")
         .option("--email <email>", "Email address for the user")
-        .action((username, options) => {
+        .action(async (username, options) => {
             const { password, familyName, givenName, middleName, email } = options;
             const topost = {
                 username,
@@ -141,13 +141,45 @@ async function main() {
             if (email) {
                 topost.emails.push(email);
             }
-            client(program).post("/find-or-create", topost, (err, req, res, obj) => {
-                if (err) {
-                    console.error(err.message, err.stack);
-                } else {
-                    console.log(`Found or Created ${util.inspect(obj)}`);
-                }
-            })
+            // client(program).post("/find-or-create", topost, (err, req, res, obj) => {
+            //     if (err) {
+            //         console.error(err.message, err.stack);
+            //     } else {
+            //         console.log(`Found or Created ${util.inspect(obj)}`);
+            //     }
+            // });
+
+            // axios:
+            try {
+                const result = await client(program).post("/find-or-create", topost);
+                console.log(`Found or created ${util.inspect(result.data)}`);
+            } catch (err) {
+                console.error(err.message, err.stack);
+            }
+        });
+
+    program
+        .command("find <username>")
+        .description("Search for a user on the user server")
+        .action(async (username) => {
+            try {
+                const result = await client(program).get(`/find/${username}`);
+                console.log(`Found ${util.inspect(result.data)}`);
+            } catch(err) {
+                console.error(err.message, err.stack);
+            }
+        });
+
+    program
+        .command("list-users")
+        .description("List all users on the user server")
+        .action(async () => {
+            try {
+                const result = await client(program).get("/list");
+                console.log(`Userlist: ${util.inspect(result.data)}`);
+            } catch(err) {
+                console.error(err.message, err.stack);
+            }
         });
     
     await program.parseAsync(process.argv);

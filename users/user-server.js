@@ -58,10 +58,36 @@ app.post("/find-or-create", (req, res, next) => {
             }
         }
         res.json(user);
+    } catch (err) {
+        res.status(500).send(`Something went wrong: ${err}`);
+    }
+});
+
+app.get("/find/:username", (req, res, next) => {
+    try {
+        const user = findOneUser(req.params.username);
+        if (!user) {
+            res.status(404).send(new Error(`${req.params.username} not found`));
+        } else {
+            res.json(user);
+        }
     } catch(err) {
         res.status(500).send(`Something went wrong: ${err}`);
     }
 });
+
+app.get("/list", (req, res, next) => {
+    try {
+        let userlist = db.prepare("SELECT * FROM users").all();
+        log(`userlist: ${util.inspect(userlist)}`);
+        if (!userlist) {
+            userlist = [];
+        }
+        res.json(userlist);
+    } catch(err) {
+        res.status(500).send(`Something went wrong: ${err}`);
+    }
+})
 
 
 // Mimic API Key authentication
