@@ -1,7 +1,7 @@
 import express from "express";
 import * as util from "util";
 import {
-    db, userParams, findOneUser, createUser
+    db, toDB, fromDB, findOneUser, createUser
 } from "./users-bettersqlite3.js";
 
 import DBG from "debug";
@@ -44,7 +44,8 @@ app.post("/create-user", (req, res, next) => {
         res.contentType = "json";
         res.json(result);
     } catch (err) {
-        res.status(500).send(`Something went wrong: ${err}`);
+        error(`/create-user ${err.stack}`);
+        res.status(500).send(`Something went wrong: ${err.message}`);
     }
 });
 
@@ -59,7 +60,8 @@ app.post("/find-or-create", (req, res, next) => {
         }
         res.json(user);
     } catch (err) {
-        res.status(500).send(`Something went wrong: ${err}`);
+        error(`/find-or-create ${err.stack}`);
+        res.status(500).send(`Something went wrong: ${err.message}`);
     }
 });
 
@@ -72,7 +74,8 @@ app.get("/find/:username", (req, res, next) => {
             res.json(user);
         }
     } catch (err) {
-        res.status(500).send(`Something went wrong: ${err}`);
+        error(`/find/${req.params.username} ${err.stack}`);
+        res.status(500).send(`Something went wrong: ${err.message}`);
     }
 });
 
@@ -85,13 +88,14 @@ app.get("/list", (req, res, next) => {
         }
         res.json(userlist);
     } catch (err) {
-        res.status(500).send(`Something went wrong: ${err}`);
+        error(`/list ${err.stack}`);
+        res.status(500).send(`Something went wrong: ${err.message}`);
     }
 });
 
 app.post("/update-user/:username", (req, res, next) => {
     try {
-        const user = userParams(req);
+        const user = toDB(req);
 
         db.prepare(`UPDATE users SET
             username = $username,
@@ -107,11 +111,54 @@ app.post("/update-user/:username", (req, res, next) => {
         const result = findOneUser(req.params.username);
         res.json(result);
     } catch(err) {
-        console.error(err.stack);
-        res.send(`Something went wrong: ${err}`);
+        error(`/update-user/${req.params.username} ${err.stack}`);
+        res.status(500).send(`Something went wrong: ${err.message}`);
     }
 });
 
+app.delete("/destroy/:username", (req, res, next) => {
+    try {
+        const user = db.prepare("SELECT * FROM users WHERE username = ?").get(req.params.username);
+        if (!user) {
+            res.status(404).send(new Error(`${req.params.username} not found for deletion`));
+        } else {
+            db.prepare("DELETE FROM users WHERE username = ?").run(req.params.username);
+            res.json({});
+        }
+    } catch(err) {
+        error(`/destroy/${req.params.username} ${err.stack}`);
+        res.status(500).send(`Something went wrong: ${err.message}`);
+    }
+})
+
+app.post("/password-check", (req, res, next) => {
+    try {
+        const user = db.prepare("SELECT * FROM users WHERE username = ?").get(req.body.username);
+        let checked;
+        if (!user) {
+            checked = {
+                check: false,
+                username: req.body.username,
+                message: "User not found"
+            };
+        } else if (user.username === req.body.username && user.password === req.body.password) {
+            checked = {
+                check: true,
+                username: user.username
+            };
+        } else {
+            checked = {
+                check: false,
+                username: req.body.username,
+                message: "Incorrect password"
+            };
+        }
+        res.json(checked);
+    } catch(err) {
+        error(`/password-check ${err.stack}`);
+        res.status(500).send(`Something went wrong: ${err.message}`);
+    }
+})
 
 // Mimic API Key authentication
 
@@ -120,6 +167,6 @@ const apiKeys = [
 ]
 
 function checkAuth(req, res, next) {
-    console.log("request headers: ", req.headers.authorization);
+    log("request headers: ", req.headers.authorization);
     next();
 }

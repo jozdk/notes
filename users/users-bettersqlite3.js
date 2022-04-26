@@ -14,7 +14,7 @@ db.prepare(`CREATE TABLE IF NOT EXISTS users (
     photos TEXT
     )`).run();
 
-export function userParams(req) {
+export function toDB(req) {
     return {
         username: req.body.username,
         password: req.body.password,
@@ -27,25 +27,40 @@ export function userParams(req) {
     };
 }
 
-export function findOneUser(username) {
-    const user = db.prepare("SELECT * FROM users WHERE username = ?").get(username);
-    
+export function fromDB(user) {
+    // Does not return password
+    const ret = {
+        id: user.username,
+        username: user.username,
+        provider: user.provider,
+        familyName: user.familyName,
+        givenName: user.givenName,
+        middleName: user.middleName,
+    };
+
     try {
-        user.emails = JSON.parse(user.emails);
+        ret.emails = JSON.parse(user.emails);
     } catch (err) {
-        user.emails = [];
+        console.log("Error parsing emails", err);
+        ret.emails = [];
     }
     try {
-        user.photos = JSON.parse(user.photos);
+        ret.photos = JSON.parse(user.photos);
     } catch (err) {
-        user.photos = [];
+        console.log("Error parsing photos", err);
+        ret.photos = [];
     }
 
-    return user;
+    return ret;
+}
+
+export function findOneUser(username) {
+    const user = db.prepare("SELECT * FROM users WHERE username = ?").get(username);
+    return user ? fromDB(user) : undefined;
 }
 
 export function createUser(req) {
-    const user = userParams(req);
+    const user = toDB(req);
     console.log(`Create user ${util.inspect(user)}`);
     db.prepare(`INSERT INTO users VALUES (
         $username,

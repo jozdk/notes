@@ -112,7 +112,7 @@ async function main() {
                 const result = await client(program).post("/create-user", topost);
                 console.log(`Created ${util.inspect(result.data)}`);
             } catch (err) {
-                console.error(err.message, err.stack);
+                console.error(err.message);
             }
 
 
@@ -154,7 +154,7 @@ async function main() {
                 const result = await client(program).post("/find-or-create", topost);
                 console.log(`Found or created ${util.inspect(result.data)}`);
             } catch (err) {
-                console.error(err.message, err.stack);
+                console.error(err.message);
             }
         });
 
@@ -166,7 +166,7 @@ async function main() {
                 const result = await client(program).get(`/find/${username}`);
                 console.log(`Found ${util.inspect(result.data)}`);
             } catch(err) {
-                console.error(err.message, err.stack);
+                console.error(err.message);
             }
         });
 
@@ -178,7 +178,7 @@ async function main() {
                 const result = await client(program).get("/list");
                 console.log(`Userlist: ${util.inspect(result.data)}`);
             } catch(err) {
-                console.error(err.message, err.stack);
+                console.error(err.message);
             }
         });
 
@@ -207,10 +207,34 @@ async function main() {
                 const result = await client(program).post(`/update-user/${username}`, topost);
                 console.log(`Updated ${util.inspect(result.data)}`);
             } catch (err) {
-                console.error(err.stack);
+                console.error(err.message);
             }
         }); 
     
+    program
+        .command("destroy <username>")
+        .description("Destroy a user on the user server")
+        .action(async (username) => {
+            try {
+                const result = await client(program).delete(`/destroy/${username}`);
+                console.log(`Deleted - result: ${util.inspect(result.data)}`);
+            } catch(err) {
+                console.error(err.message);
+            }
+        });
+
+    program
+        .command("password-check <username> <password>")
+        .description("Check user password")
+        .action(async (username, password) => {
+            try {
+                const result = await client(program).post("/password-check", { username, password });
+                console.log(`Password check: ${util.inspect(result.data)}`);
+            } catch(err) {
+                console.error(err.message);
+            }
+        });
+
     await program.parseAsync(process.argv);
 }
 
