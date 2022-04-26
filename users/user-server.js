@@ -1,4 +1,6 @@
+import "dotenv/config";
 import express from "express";
+import basicAuth from "express-basic-auth";
 import * as util from "util";
 import {
     db, toDB, fromDB, findOneUser, createUser
@@ -13,7 +15,12 @@ const error = DBG("users:error");
 
 const app = express();
 
-app.use(checkAuth);
+// app.use(basicAuth({ authorizer: checkAuth }));
+app.use(basicAuth({
+    users: {
+        [process.env.API_USER]: process.env.API_KEY
+    }
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -81,7 +88,7 @@ app.get("/find/:username", (req, res, next) => {
 
 app.get("/list", (req, res, next) => {
     try {
-        let userlist = db.prepare("SELECT * FROM users").all();
+        let userlist = db.prepare("SELECT * FROM users").all().map((user) => fromDB(user));
         log(`userlist: ${util.inspect(userlist)}`);
         if (!userlist) {
             userlist = [];
@@ -160,13 +167,22 @@ app.post("/password-check", (req, res, next) => {
     }
 })
 
-// Mimic API Key authentication
+// HTTP Basic Auth Check
 
-const apiKeys = [
-    { user: process.env.API_USER, key: process.env.API_KEY }
-]
+// const apiKeys = [
+//     { user: process.env.API_USER, key: process.env.API_KEY }
+// ]
 
-function checkAuth(req, res, next) {
-    log("request headers: ", req.headers.authorization);
-    next();
-}
+// function checkAuth(authid, authcode) {
+//     let found = false;
+
+//     apiKeys.forEach((auth) => {
+//         const idMatches = basicAuth.safeCompare(authid, auth.user);
+//         const passwordMatches = basicAuth.safeCompare(authcode, auth.key);
+//         if (idMatches & passwordMatches) {
+//             found = true;
+//         }
+//     });
+
+//     return found;
+// }

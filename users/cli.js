@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Command } from "commander";
 import restify from "restify-clients";
 import axios from "axios";
@@ -9,7 +10,7 @@ let client_port,
     client_host,
     client_version = "*",
     client_protocol,
-    authid = process.env.API_ID,
+    authid = process.env.API_USER,
     authcode = process.env.API_KEY;
 
 const client = (program) => {
@@ -55,15 +56,21 @@ const client = (program) => {
     //     url: connect_url.href
     // });
 
-    // axios client:
-
-    const client = axios.create({
-        baseURL: connect_url.href
-    });
-
     // client.basicAuth(authid, authcode);
 
-    return client;
+    // return client;
+
+    // axios client:
+
+    const instance = axios.create({
+        baseURL: connect_url.href,
+        auth: {
+            username: authid,
+            password: authcode
+        }
+    });
+
+    return instance;
 
 }
 
@@ -162,6 +169,15 @@ async function main() {
         .command("find <username>")
         .description("Search for a user on the user server")
         .action(async (username) => {
+            // restify:
+
+            // client(program).get(`/find/${username}`, (err, req, res, obj) => {
+            //     if (err) console.error(err.message);
+            //     else console.log(`Found ${util.inspect(obj)}`);
+            // })
+
+            // axios:
+
             try {
                 const result = await client(program).get(`/find/${username}`);
                 console.log(`Found ${util.inspect(result.data)}`);
