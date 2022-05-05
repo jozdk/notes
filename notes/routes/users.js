@@ -19,6 +19,7 @@ export function initPassport(app) {
 
 export function ensureAuthenticated(req, res, next) {
     try {
+        debug("ensureAuthenticated: ", req.user);
         if (req.user) {
             next();
         } else {
@@ -29,7 +30,7 @@ export function ensureAuthenticated(req, res, next) {
     }
 }
 
-router.get("login", (req, res, next) => {
+router.get("/login", (req, res, next) => {
     try {
         res.render("login", { title: "Login to Notes", user: req.user });
     } catch(err) {
@@ -37,9 +38,9 @@ router.get("login", (req, res, next) => {
     }
 });
 
-router.post("login", passport.authenticate("local", {
+router.post("/login", passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/login"
+    failureRedirect: "/users/login"
 }));
 
 router.get("/logout", (req, res, next) => {
@@ -47,6 +48,7 @@ router.get("/logout", (req, res, next) => {
         req.session.destroy();
         req.logout();
         res.clearCookie(sessionCookieName);
+        debug("Logged out user");
         res.redirect("/");
     } catch(err) {
         next(err);
@@ -60,9 +62,11 @@ passport.use(new LocalStrategy(
             if (check.check) {
                 done(null, { id: check.username, username: check.username });
             } else {
+                debug(check.message);
                 done(null, false, check.message);
             }
         } catch(err) {
+            error(err);
             done(err);
         }
     }

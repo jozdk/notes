@@ -10,8 +10,11 @@
                     <i class="bi-house"></i>
                 </a>
             </div>
-
+            
+            {{#if user}}
             <a class="nav-item nav-link" href='/notes/add'>Add a Note</a>
+            {{/if}}
+
             <div class="collapse navbar-collapse" id="navbarContent">
                 <div class="navbar-nav me-auto mb-2 mb-lg-0">
                     {{#if breadcrumb}}
@@ -24,6 +27,15 @@
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-secondary" type="submit">Search</button>
                 </form>
+                {{#if user}}
+                <div class="nav-item nav-link mb-2 mb-lg-0">
+                    <a href="/users/logout" class="btn btn-dark col-auto">Logout <span class="badge badge-light">{{ user.username }}</span></a>
+                </div>
+                {{else}}
+                <div class="nav-item nav-link mb-2 mb-lg-0">
+                    <a href="/users/login" class="btn btn-dark col-auto">Login</a>
+                </div>
+                {{/if}}
 
             </div>
         </div>

@@ -1,18 +1,21 @@
 import { default as express } from "express";
 import { NotesStore as notes } from "../models/notes-store.js";
+import { ensureAuthenticated } from "./users.js";
+
 export const router = express.Router();
 
-router.get("/add", (req, res, next) => {
+router.get("/add", ensureAuthenticated, (req, res, next) => {
     res.render("note-edit", {
         title: "Add a Note",
         docreate: true,
         notekey: "",
         notetitle: undefined,
-        notebody: undefined
+        notebody: undefined,
+        user: req.user
     })
 });
 
-router.post("/save", async (req, res, next) => {
+router.post("/save", ensureAuthenticated, async (req, res, next) => {
     try {
         const { docreate, notekey, title, body } = req.body;
         let note;
@@ -35,14 +38,15 @@ router.get("/view", async (req, res, next) => {
             title: note ? note.title : "",
             notekey: key,
             notetitle: note ? note.title : "",
-            notebody: note ? note.body : ""
+            notebody: note ? note.body : "",
+            user: req.user ? req.user : undefined
         });
     } catch(err) {
         next(err);
     }
 });
 
-router.get("/edit", async (req, res, next) => {
+router.get("/edit", ensureAuthenticated, async (req, res, next) => {
     try {
         const { key } = req.query;
         const note = await notes.read(key);
@@ -51,14 +55,15 @@ router.get("/edit", async (req, res, next) => {
             docreate: false,
             notekey: key,
             notetitle: note.title,
-            notebody: note.body
-        })
+            notebody: note.body,
+            user: req.user
+        });
     } catch(err) {
         next(err);
     }
 });
 
-router.get("/destroy", async (req, res, next) => {
+router.get("/destroy", ensureAuthenticated, async (req, res, next) => {
     try {
         const { key } = req.query;
         const note = await notes.read(key);
@@ -66,14 +71,15 @@ router.get("/destroy", async (req, res, next) => {
             title: note ? note.title : "",
             notekey: key,
             notetitle: note.title,
-            notebody: note.body
+            notebody: note.body,
+            user: req.user
         });
     } catch(err) {
         next(err);
     } 
 });
 
-router.post("/destroy/confirm", async (req, res, next) => {
+router.post("/destroy/confirm", ensureAuthenticated, async (req, res, next) => {
     try {
         const { notekey } = req.body;
         await notes.destroy(notekey);

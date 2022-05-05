@@ -20,7 +20,8 @@ router.get("/", async (req, res, next) => {
         // console.log(util.inspect(noteList));
         res.render("index", {
             title: "Notes",
-            notelist: noteListLean
+            notelist: noteListLean,
+            user: req.user ? req.user : undefined
         });
     } catch (err) {
         next(err);

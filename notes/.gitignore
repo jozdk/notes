@@ -7,3 +7,4 @@ notes-fs-data
 notes.level
 notes.sqlite3
 notes-sequelize.sqlite3
+sessions
