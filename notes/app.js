@@ -8,14 +8,19 @@ import * as http from "http";
 import util from "util";
 import { default as DBG } from "debug";
 import dotenv from "dotenv";
+import session from "express-session";
+import sessionFileStore from "session-file-store";
+const FileStore = sessionFileStore(session);
+export const sessionCookieName = "notescookie.sid";
 import { approotdir } from "./approotdir.js";
 const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
-} from "./appsupport.js"
+} from "./appsupport.js";
 
 import { router as indexRouter } from "./routes/index.js";
 import { router as notesRouter } from "./routes/notes.js";
+import { router as usersRouter, initPassport } from "./routes/users.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
 
@@ -24,6 +29,7 @@ dotenv.config();
 const debug = DBG("notes:debug");
 // const error = DBG("notes:error");
 
+// Set NotesModel
 useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
 .then((store) => {
     debug(`Using NotesStore ${util.inspect(store)}`);
@@ -35,6 +41,7 @@ useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
     });
 })
 
+// Express set-up
 export const app = express();
 
 app.engine("handlebars", engine());
@@ -57,13 +64,22 @@ if (process.env.REQUEST_LOG_FILE) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    name: sessionCookieName,
+    store: new FileStore({ path: "sessions" })
+}));
+initPassport(app);
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/assets/vendor/bootstrap", express.static(path.join(__dirname, "node_modules", "bootstrap", "dist")));
 app.use("/assets/vendor/bootstrap-icons", express.static(path.join(__dirname, "node_modules", "bootstrap-icons", "font")))
 
-// Router functions
+// Routers
 app.use("/", indexRouter);
 app.use("/notes", notesRouter);
+app.use("/users", usersRouter);
 
 // Error handlers
 app.use(handle404);
