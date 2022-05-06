@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import basicAuth from "express-basic-auth";
+import bcrypt from "bcrypt";
 import * as util from "util";
 import {
     db, toDB, fromDB, findOneUser, createUser
@@ -117,7 +118,7 @@ app.post("/update-user/:username", (req, res, next) => {
 
         const result = findOneUser(req.params.username);
         res.json(result);
-    } catch(err) {
+    } catch (err) {
         error(`/update-user/${req.params.username} ${err.stack}`);
         res.status(500).send(`Something went wrong: ${err.message}`);
     }
@@ -132,13 +133,13 @@ app.delete("/destroy/:username", (req, res, next) => {
             db.prepare("DELETE FROM users WHERE username = ?").run(req.params.username);
             res.json({});
         }
-    } catch(err) {
+    } catch (err) {
         error(`/destroy/${req.params.username} ${err.stack}`);
         res.status(500).send(`Something went wrong: ${err.message}`);
     }
 })
 
-app.post("/password-check", (req, res, next) => {
+app.post("/password-check", async (req, res, next) => {
     try {
         const user = db.prepare("SELECT * FROM users WHERE username = ?").get(req.body.username);
         let checked;
@@ -148,20 +149,28 @@ app.post("/password-check", (req, res, next) => {
                 username: req.body.username,
                 message: "User not found"
             };
-        } else if (user.username === req.body.username && user.password === req.body.password) {
-            checked = {
-                check: true,
-                username: user.username
-            };
         } else {
-            checked = {
-                check: false,
-                username: req.body.username,
-                message: "Incorrect password"
-            };
+            let pwcheck = false;
+
+            if (user.username === req.body.username) {
+                pwcheck = await bcrypt.compare(req.body.password, user.password);
+            }
+
+            if (pwcheck) {
+                checked = {
+                    check: true,
+                    username: user.username
+                };
+            } else {
+                checked = {
+                    check: false,
+                    username: req.body.username,
+                    message: "Incorrect username or password"
+                };
+            }
         }
         res.json(checked);
-    } catch(err) {
+    } catch (err) {
         error(`/password-check ${err.stack}`);
         res.status(500).send(`Something went wrong: ${err.message}`);
     }

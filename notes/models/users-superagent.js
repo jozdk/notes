@@ -1,4 +1,5 @@
 import { default as superagent } from "superagent";
+import bcrypt from "bcrypt";
 import DBG from "debug";
 
 const debug = DBG("notes:users-superagent");
@@ -11,12 +12,24 @@ function reqURL(path) {
     return requrl.toString();
 }
 
+async function genHash(password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(password, salt);
+    return hashed;
+}
+
 export async function create(username, password, provider, familyName, givenName, middleName, emails, photos) {
     const res = await superagent
         .post(reqURL("/create-user"))
         .send({
-            username, password, provider, familyName,
-            givenName, middleName, emails, photos
+            username,
+            password: await genHash(password),
+            provider,
+            familyName,
+            givenName,
+            middleName,
+            emails,
+            photos
         })
         .set("Content-Type", "application/json")
         .set("Accept", "application/json")
@@ -28,8 +41,14 @@ export async function update(username, password, provider, familyName, givenName
     const res = await superagent
         .post(reqURL(`/update-user/${username}`))
         .send({
-            username, password, provider, familyName,
-            givenName, middleName, emails, photos
+            username,
+            password: await genHash(password),
+            provider,
+            familyName,
+            givenName,
+            middleName,
+            emails,
+            photos
         })
         .set("Content-Type", "application/json")
         .set("Accept", "application/json")
@@ -61,7 +80,7 @@ export async function findOrCreate(profile) {
         .post(reqURL("/find-or-create"))
         .send({
             username: profile.id,
-            password: profile.password,
+            password: await genHash(profile.password),
             provider: profile.provider,
             familyName: profile.familyName,
             givenName: profile.givenName,

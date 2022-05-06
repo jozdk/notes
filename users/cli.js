@@ -3,6 +3,7 @@ import { Command } from "commander";
 import restify from "restify-clients";
 import axios from "axios";
 import * as util from "util";
+import bcrypt from "bcrypt";
 
 const program = new Command();
 
@@ -74,6 +75,12 @@ const client = (program) => {
 
 }
 
+async function genHash(password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(password, salt);
+    return hashed;
+}
+
 async function main() {
     program
         .option("-p, --port <port>", "Port number for user server, if using localhost")
@@ -92,7 +99,7 @@ async function main() {
             const { password, familyName, givenName, middleName, email } = options;
             const topost = {
                 username,
-                password,
+                password: await genHash(password),
                 provider: "local",
                 familyName,
                 givenName,
@@ -137,7 +144,7 @@ async function main() {
             const { password, familyName, givenName, middleName, email } = options;
             const topost = {
                 username,
-                password,
+                password: await genHash(password),
                 provider: "local",
                 familyName,
                 givenName,
@@ -210,7 +217,7 @@ async function main() {
             const { password, familyName, givenName, middleName, email } = options;
             const topost = {
                 username,
-                password,
+                password: await genHash(password),
                 provider: "local",
                 familyName,
                 givenName,

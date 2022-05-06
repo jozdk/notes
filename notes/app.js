@@ -66,8 +66,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: new FileStore({ path: "sessions" }),
     name: sessionCookieName,
     cookie: {
