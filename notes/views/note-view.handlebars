@@ -1,10 +1,14 @@
-{{#if notetitle}}<h3>{{notetitle}}</h3>{{/if}}
-{{#if notebody}}<p>{{notebody}}</p>{{/if}}
-<p>Key: {{notekey}}</p>
-{{#if notekey}}
-<hr>
-<p>
-    <a href="/notes/destroy?key={{notekey}}">Delete</a>
-    <a href="/notes/edit?key={{notekey}}">Edit</a>
-</p>
-{{/if}}
+<div class="container-fluid">
+    {{#if notetitle}}<h3>{{notetitle}}</h3>{{/if}}
+    {{#if notebody}}<p>{{notebody}}</p>{{/if}}
+    <p>Key: {{notekey}}</p>
+    {{#if user}}
+    {{#if notekey}}
+    <hr>
+    <p>
+        <a href="/notes/destroy?key={{notekey}}">Delete</a>
+        <a href="/notes/edit?key={{notekey}}">Edit</a>
+    </p>
+    {{/if}}
+    {{/if}}
+</div>

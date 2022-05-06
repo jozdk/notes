@@ -68,8 +68,13 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
+    store: new FileStore({ path: "sessions" }),
     name: sessionCookieName,
-    store: new FileStore({ path: "sessions" })
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 6,
+        httpOnly: true,
+        sameSite: true
+    }
 }));
 initPassport(app);
 app.use(express.static(path.join(__dirname, "public")));

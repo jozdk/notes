@@ -1,18 +1,25 @@
 <form method="POST" action="/notes/save">
-    <input type="hidden" name="docreate" value="{{#if docreate}}create{{else}}update{{/if}}">
-    <p>
-        Key:
-        {{#if docreate}}
-        <input type="text" name="notekey" value="">
+    <div class="container-fluid">
+        {{#if user}}
+        <input type="hidden" name="docreate" value="{{#if docreate}}create{{else}}update{{/if}}">
+        <p>
+            Key:
+            {{#if docreate}}
+            <input type="text" name="notekey" value="">
+            {{else}}
+            {{#if notekey}}{{notekey}}{{/if}}
+            <input type="hidden" name="notekey" value="{{#if notekey}}{{notekey}}{{/if}}">
+            {{/if}}
+        </p>
+        <p>
+            Title:
+            <input type="text" name="title" value="{{#if notetitle}}{{notetitle}}{{/if}}">
+        </p>
+        <textarea name="body" id="" cols="40" rows="5">{{#if notebody}}{{notebody}}{{/if}}</textarea>
+        <br><input type="submit" value="Submit" style="">
         {{else}}
-        {{#if notekey}}{{notekey}}{{/if}}
-        <input type="hidden" name="notekey" value="{{#if notekey}}{{notekey}}{{/if}}">
+        {{> not-logged-in}}
         {{/if}}
-    </p>
-    <p>
-        Title:
-        <input type="text" name="title" value="{{#if notetitle}}{{notetitle}}{{/if}}">
-    </p>
-    <textarea name="body" id="" cols="40" rows="5">{{#if notebody}}{{notebody}}{{/if}}</textarea>
-    <br><input type="submit" value="Submit" style="">
+    </div>
+
 </form>
