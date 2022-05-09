@@ -1,5 +1,5 @@
 import util from "util";
-import { Note } from "./Notes.js";
+import { Note, AbstractNotesStore } from "./Notes.js";
 import { Level } from "level";
 import { default as DBG } from "debug";
 
@@ -20,7 +20,7 @@ async function connectDB() {
     return db;
 }
 
-export default class LevelNotesStore {
+export default class LevelNotesStore extends AbstractNotesStore {
     async close() {
         const _db = db;
         db = undefined;
@@ -28,7 +28,9 @@ export default class LevelNotesStore {
     }
 
     async create(key, title, body) {
-        return createOrUpdate(key, title, body);
+        const note = createOrUpdate(key, title, body);
+        this.emitCreated(note);
+        return note;
     }
 
     async read(key) {
@@ -40,12 +42,15 @@ export default class LevelNotesStore {
     }
 
     async update(key, title, body) {
-        return createOrUpdate(key, title, body);
+        const note = createOrUpdate(key, title, body);
+        this.emitUpdated(note);
+        return note;
     }
 
     async destroy(key) {
         const db = await connectDB();
         await db.del(key);
+        this.emitDestroyed(key);
     }
 
     async keylist() {

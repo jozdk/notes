@@ -1,4 +1,4 @@
-import { Note } from "./Notes.js";
+import { Note, AbstractNotesStore } from "./Notes.js";
 import { Model, DataTypes } from "sequelize";
 import {
     connectDB as connectSeqlz,
@@ -46,7 +46,7 @@ async function connectDB() {
 
 }
 
-export default class SequelizeNotesStore {
+export default class SequelizeNotesStore extends AbstractNotesStore {
     async close() {
         closeSeqlz();
         sequelize = undefined;
@@ -59,7 +59,9 @@ export default class SequelizeNotesStore {
             title: title,
             body: body
         });
-        return new Note(sqnote.notekey, sqnote.title, sqnote.body);
+        const note = new Note(sqnote.notekey, sqnote.title, sqnote.body);
+        this.emitCreated(note);
+        return note;
     }
 
     async read(key) {
@@ -84,7 +86,9 @@ export default class SequelizeNotesStore {
             }, {
                 where: { notekey: key }
             });
-            return this.read(key);
+            const note = this.read(key);
+            this.emitUpdated(note);
+            return note;
         }
     }
 
@@ -92,6 +96,7 @@ export default class SequelizeNotesStore {
         await connectDB();
         await SQNote.destroy({ where: { notekey: key } });
         debug(`DESTROY ${key}`);
+        this.emitDestroyed(key);
     }
 
     async keylist() {

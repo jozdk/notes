@@ -2,19 +2,21 @@ import fs from "fs-extra";
 import * as path from "path";
 import * as util from "util";
 import { approotdir } from "../approotdir.js";
-import { Note } from "./Notes.js";
+import { Note, AbstractNotesStore } from "./Notes.js";
 import { default as DBG } from "debug";
 
 const debug = DBG("notes:notes-fs");
 const error = DBG("notes:error-fs");
 
-export default class FSNotesStore {
+export default class FSNotesStore extends AbstractNotesStore {
     async close() {
 
     }
 
     async create(key, title, body) {
-        return createOrUpdate(key, title, body);
+        const note = createOrUpdate(key, title, body);
+        this.emitCreated(note);
+        return note;
     }
 
     async read(key) {
@@ -25,12 +27,15 @@ export default class FSNotesStore {
     }
 
     async update(key, title, body) {
-        return createOrUpdate(key, title, body);
+        const note = createOrUpdate(key, title, body);
+        this.emitUpdated(note);
+        return note;
     }
 
     async destroy(key) {
         const notesdir = await notesDir();
         await fs.unlink(filePath(notesdir, key));
+        this.emitDestroyed(key);
     }
 
     async keylist() {

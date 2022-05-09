@@ -1,5 +1,5 @@
 import util from "util";
-import { Note } from "./Notes.js";
+import { Note, AbstractNotesStore } from "./Notes.js";
 import { default as sqlite3 } from "sqlite3";
 import { default as DBG } from "debug";
 
@@ -29,7 +29,7 @@ async function connectDB() {
     return db;
 }
 
-export default class SQLite3NotesStore {
+export default class SQLite3NotesStore extends AbstractNotesStore {
     async close() {
         const _db = db;
         db = undefined;
@@ -60,6 +60,7 @@ export default class SQLite3NotesStore {
                 }
             );
         });
+        this.emitCreated(note);
         return note;
     }
 
@@ -96,6 +97,7 @@ export default class SQLite3NotesStore {
                 }
             );
         });
+        this.emitUpdated(note);
         return note;
     }
 
@@ -109,6 +111,7 @@ export default class SQLite3NotesStore {
                         return reject(err);
                     }
                     debug(`DESTROY ${key}`);
+                    this.emitDestroyed(key);
                     resolve();
                 }
             );

@@ -10,16 +10,15 @@ import { default as DBG } from "debug";
 import dotenv from "dotenv";
 import session from "express-session";
 import sessionFileStore from "session-file-store";
-const FileStore = sessionFileStore(session);
-export const sessionCookieName = "notescookie.sid";
+import { Server as SocketioServer } from "socket.io";
 import { approotdir } from "./approotdir.js";
 const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from "./appsupport.js";
 
-import { router as indexRouter } from "./routes/index.js";
-import { router as notesRouter } from "./routes/notes.js";
+import { router as indexRouter, init as indexInit } from "./routes/index.js";
+import { router as notesRouter, init as notesInit } from "./routes/notes.js";
 import { router as usersRouter, initPassport } from "./routes/users.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
@@ -33,6 +32,8 @@ const debug = DBG("notes:debug");
 useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
 .then((store) => {
     debug(`Using NotesStore ${util.inspect(store)}`);
+    indexInit();
+    notesInit();
 })
 .catch((err) => {
     onError({
@@ -41,8 +42,48 @@ useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
     });
 })
 
+// Set up express session and session store
+const FileStore = sessionFileStore(session);
+export const sessionCookieName = "notescookie.sid";
+const sessionMiddleware = session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new FileStore({ path: "sessions" }),
+    name: sessionCookieName,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 6,
+        httpOnly: true,
+        sameSite: true
+    }
+})
+
 // Express set-up
 export const app = express();
+
+export const port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
+
+export const server = http.createServer(app);
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+server.on("request", (req, res) => {
+    debug(`${new Date().toISOString()} request ${req.method} ${req.url}`);
+});
+
+// Set up socket.io
+export const io = new SocketioServer(server);
+
+io.use((socket, next) => {
+    sessionMiddleware(socket.request, {}, next);
+});
+io.use((socket, next) => {
+    // write some form of authentication
+    debug("hey");
+    next();
+});
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
@@ -64,18 +105,7 @@ if (process.env.REQUEST_LOG_FILE) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: new FileStore({ path: "sessions" }),
-    name: sessionCookieName,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 6,
-        httpOnly: true,
-        sameSite: true
-    }
-}));
+app.use(sessionMiddleware);
 initPassport(app);
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/assets/vendor/bootstrap", express.static(path.join(__dirname, "node_modules", "bootstrap", "dist")));
@@ -89,15 +119,3 @@ app.use("/users", usersRouter);
 // Error handlers
 app.use(handle404);
 app.use(basicErrorHandler);
-
-export const port = normalizePort(process.env.PORT || "3000");
-app.set("port", port);
-
-export const server = http.createServer(app);
-
-server.listen(port);
-server.on("error", onError);
-server.on("listening", onListening);
-server.on("request", (req, res) => {
-    debug(`${new Date().toISOString()} request ${req.method} ${req.url}`);
-});

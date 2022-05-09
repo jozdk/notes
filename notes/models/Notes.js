@@ -1,3 +1,5 @@
+import EventEmitter from "events";
+
 const _note_key = Symbol("key");
 const _note_title = Symbol("title");
 const _note_body = Symbol("body");
@@ -50,4 +52,18 @@ export class Note {
         return note;
     }
 
+}
+
+export class AbstractNotesStore extends EventEmitter {
+    emitCreated(note) {
+        this.emit("notecreated", note);
+    }
+
+    emitUpdated(note) {
+        this.emit("noteupdated", note);
+    }
+
+    emitDestroyed(key) {
+        this.emit("notedestroyed", key);
+    }
 }

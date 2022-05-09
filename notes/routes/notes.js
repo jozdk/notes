@@ -88,3 +88,7 @@ router.post("/destroy/confirm", ensureAuthenticated, async (req, res, next) => {
         next(err);
     }
 });
+
+export function init() {
+    
+}

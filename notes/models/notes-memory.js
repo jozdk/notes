@@ -1,12 +1,13 @@
-import { Note } from "./Notes.js";
+import { Note, AbstractNotesStore } from "./Notes.js";
 
 const notes = [];
 
-export default class InMemoryNotesStore {
+export default class InMemoryNotesStore extends AbstractNotesStore {
     async close() {}
 
     async create(key, title, body) {
         notes[key] = new Note(key, title, body);
+        this.emitCreated(notes[key]);
         return notes[key];
     }
 
@@ -20,12 +21,14 @@ export default class InMemoryNotesStore {
 
     async update(key, title, body) {
         notes[key] = new Note(key, title, body);
+        this.emitUpdated(notes[key]);
         return notes[key];
     }
 
     async destroy(key) {
         if (notes[key]) {
             delete notes[key];
+            this.emitDestroyed(key);
         } else {
             throw new Error(`Note ${key} does not exist`);
         }
