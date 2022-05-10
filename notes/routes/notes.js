@@ -1,6 +1,11 @@
 import { default as express } from "express";
+import { io } from "../app.js";
+import { emitNoteTitles } from "./index.js";
 import { NotesStore as notes } from "../models/notes-store.js";
 import { ensureAuthenticated } from "./users.js";
+import DBG from "debug";
+
+const debug = DBG("notes:notes");
 
 export const router = express.Router();
 
@@ -90,5 +95,26 @@ router.post("/destroy/confirm", ensureAuthenticated, async (req, res, next) => {
 });
 
 export function init() {
-    
+    io.of("/notes").on("connect", (socket) => {
+        debug("socketio connection on /notes");
+
+        if (socket.handshake.query.key) {
+            debug(`New client in room ${socket.handshake.query.key}`);
+            socket.join(socket.handshake.query.key);
+        }
+
+        notes.on("noteupdated", (note) => {
+            const toemit = {
+                key: note.key,
+                title: note.title,
+                body: note.body
+            };
+            io.of("/notes").to(note.key).emit("noteupdated", toemit);
+            emitNoteTitles();
+        });
+        notes.on("notedestroyed", (key) => {
+            io.of("/notes").to(key).emit("notedestroyed", key);
+            emitNoteTitles();
+        });
+    });
 }

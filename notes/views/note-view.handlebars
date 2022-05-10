@@ -1,6 +1,6 @@
 <div class="container-fluid">
-    {{#if notetitle}}<h3>{{notetitle}}</h3>{{/if}}
-    {{#if notebody}}<p>{{notebody}}</p>{{/if}}
+    {{#if notetitle}}<h3 id="notetitle">{{notetitle}}</h3>{{/if}}
+    {{#if notebody}}<p id="notebody">{{notebody}}</p>{{/if}}
     <p>Key: {{notekey}}</p>
     {{#if user}}
     {{#if notekey}}
@@ -12,3 +12,23 @@
     {{/if}}
     {{/if}}
 </div>
+
+{{#if notekey}}
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io("/notes?key={{notekey}}");
+    console.log(socket);
+    socket.on("noteupdated", (note) => {
+        const notetitleElement = document.querySelector("#notetitle");
+        const notebodyElement = document.querySelector("#notebody");
+
+        notetitleElement.innerHTML = "";
+        notetitleElement.textContent = note.title;
+        notebodyElement.innerHTML = "";
+        notebodyElement.textContent = note.body;
+    });
+    socket.on("notedestroyed", (key) => {
+        window.location.href = "/";
+    });
+</script>
+{{/if}}
