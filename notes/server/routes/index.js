@@ -8,12 +8,16 @@ const debug = DBG("notes:home");
 
 export const router = express.Router();
 
-router.get("/", async (req, res, next) => {
+router.get("/api/list", async (req, res, next) => {
     try {
         const noteList = await getKeyTitlesList();
         // console.log(util.inspect(noteList));
-        res.render("index", {
-            title: "Notes",
+        // res.render("index", {
+        //     title: "Notes",
+        //     notelist: noteList,
+        //     user: req.user ? req.user : undefined
+        // });
+        res.json({
             notelist: noteList,
             user: req.user ? req.user : undefined
         });
