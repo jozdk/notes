@@ -11,7 +11,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import sessionFileStore from "session-file-store";
 import { Server as SocketioServer } from "socket.io";
-import { approotdir } from "./approotdir.js";
+import { approotdir } from "../approotdir.js";
 const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
@@ -107,7 +107,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(sessionMiddleware);
 initPassport(app);
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "client", "public")));
 app.use("/assets/vendor/bootstrap", express.static(path.join(__dirname, "node_modules", "bootstrap", "dist")));
 app.use("/assets/vendor/bootstrap-icons", express.static(path.join(__dirname, "node_modules", "bootstrap-icons", "font")))
 
