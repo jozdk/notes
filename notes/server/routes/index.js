@@ -19,7 +19,7 @@ router.get("/api/list", async (req, res, next) => {
         // });
         res.json({
             notelist: noteList,
-            user: req.user ? req.user : undefined
+            user: req.user ? req.user : null
         });
     } catch (err) {
         next(err);
