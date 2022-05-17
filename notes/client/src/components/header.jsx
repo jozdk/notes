@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Header = ({ user, breadcrumb }) => {
     return (
         <header>
@@ -26,10 +28,12 @@ const Header = ({ user, breadcrumb }) => {
 
                         {user
                             ? <div className="nav-item nav-link mb-2 mb-lg-0">
-                                <a href="/users/logout" className="btn btn-dark col-auto">Logout <span className="badge bg-light text-dark">{user.username}</span></a>
+                                <Link to="/users/logout" className="btn btn-dark col-auto">Logout<span className="badge bg-light text-dark">{user.username}</span></Link>
+                                {/* <a href="/users/logout" className="btn btn-dark col-auto">Logout <span className="badge bg-light text-dark">{user.username}</span></a> */}
                             </div>
                             : <div className="nav-item nav-link mb-2 mb-lg-0">
-                                <a href="/users/login" className="btn btn-dark col-auto">Login</a>
+                                <Link to="/users/login" className="btn btn-dark col-auto">Login</Link>
+                                {/* <a href="/users/login" className="btn btn-dark col-auto">Login</a> */}
                             </div>}
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 //import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/header.jsx";
 import Notelist from "./components/noteslist.jsx";
 
@@ -23,7 +24,6 @@ const App = () => {
             <Header user={user} />
             <Notelist notelist={notelist} />
         </>
-
     );
 };
 

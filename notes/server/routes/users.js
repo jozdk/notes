@@ -30,13 +30,13 @@ export function ensureAuthenticated(req, res, next) {
     }
 }
 
-router.get("/login", (req, res, next) => {
-    try {
-        res.render("login", { title: "Login to Notes", user: req.user });
-    } catch(err) {
-        next(err);
-    }
-});
+// router.get("/login", (req, res, next) => {
+//     try {
+//         res.render("login", { title: "Login to Notes", user: req.user });
+//     } catch(err) {
+//         next(err);
+//     }
+// });
 
 router.post("/login", passport.authenticate("local", {
     successRedirect: "/",
@@ -53,6 +53,11 @@ router.get("/logout", (req, res, next) => {
     } catch(err) {
         next(err);
     }
+});
+
+router.get("*", (req, res, next) => {
+    debug(path.resolve("build/public/index.html"));
+    res.sendFile(path.resolve("build/public/index.html"));
 });
 
 passport.use(new LocalStrategy(
