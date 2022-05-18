@@ -1,6 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../App.jsx";
 
-const Layout = ({ user, breadcrumb }) => {
+const Layout = ({ breadcrumb }) => {
+    const user = useContext(AuthContext);
+
     return (
         <>
             <header>

@@ -25,8 +25,24 @@ export function ensureAuthenticated(req, res, next) {
         } else {
             res.redirect("/users/login");
         }
-    } catch(err) {
+    } catch (err) {
         next(err);
+    }
+}
+
+function login(req, res, next) {
+    if (req.user) {
+        res.json({
+            success: true,
+            user: {
+                id: req.user.id,
+                username: req.user.username
+            }
+        })
+    } else {
+        res.json({
+            success: false
+        });
     }
 }
 
@@ -38,10 +54,18 @@ export function ensureAuthenticated(req, res, next) {
 //     }
 // });
 
-router.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/users/login"
-}));
+// router.post("/login", passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/users/login"
+// }));
+
+router.post("/api/login",
+    passport.authenticate("local"),
+    (req, res, next) => {
+        debug("/api/login requested");
+        login(req, res, next);
+    }
+);
 
 router.get("/logout", (req, res, next) => {
     try {
@@ -50,7 +74,7 @@ router.get("/logout", (req, res, next) => {
         res.clearCookie(sessionCookieName);
         debug("Logged out user");
         res.redirect("/");
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 });
@@ -65,7 +89,7 @@ passport.use(new LocalStrategy(
                 debug(check.message);
                 done(null, false, check.message);
             }
-        } catch(err) {
+        } catch (err) {
             error(err);
             done(err);
         }
@@ -84,7 +108,7 @@ passport.deserializeUser(async (username, done) => {
     try {
         const user = await usersModel.find(username);
         done(null, user);
-    } catch(err) {
+    } catch (err) {
         done(err);
     }
 });
