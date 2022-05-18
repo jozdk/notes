@@ -22,6 +22,7 @@ import { router as notesRouter, init as notesInit } from "./routes/notes.js";
 import { router as usersRouter, initPassport } from "./routes/users.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
+import passport from "passport";
 
 dotenv.config();
 
@@ -80,9 +81,17 @@ io.use((socket, next) => {
     sessionMiddleware(socket.request, {}, next);
 });
 io.use((socket, next) => {
-    // write some form of authentication
-    debug("hey");
-    next();
+    passport.initialize()(socket.request, {}, next);
+})
+io.use((socket, next) => {
+    passport.session()(socket.request, {}, next);
+})
+io.use((socket, next) => {
+    if (socket.request.user) {
+        next();
+    } else {
+        next(new Error("unauthorized"));
+    }
 });
 
 app.engine("handlebars", engine());
