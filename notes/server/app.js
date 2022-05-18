@@ -115,8 +115,8 @@ app.use("/assets/vendor/bootstrap-icons", express.static(path.join(__dirname, "n
 app.use("/", indexRouter);
 app.use("/notes", notesRouter);
 app.use("/users", usersRouter);
-app.get("*", (req, res, next) => {
-    res.sendFile(path.resolve("build/public/index.html"));
+app.get("/*", (req, res, next) => {
+    res.sendFile(path.resolve("client/public/index.html"));
 });
 
 // Error handlers

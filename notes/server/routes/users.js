@@ -55,11 +55,6 @@ router.get("/logout", (req, res, next) => {
     }
 });
 
-router.get("*", (req, res, next) => {
-    debug(path.resolve("build/public/index.html"));
-    res.sendFile(path.resolve("build/public/index.html"));
-});
-
 passport.use(new LocalStrategy(
     async (username, password, done) => {
         try {

@@ -1,8 +1,9 @@
 //import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/header.jsx";
-import Notelist from "./components/noteslist.jsx";
+import Layout from "./components/layout.jsx";
+import Home from "./components/home.jsx";
+import Login from "./components/login.jsx";
 
 const App = () => {
     const [notelist, setNotelist] = useState([]);
@@ -20,10 +21,14 @@ const App = () => {
     }, []);
 
     return (
-        <>
-            <Header user={user} />
-            <Notelist notelist={notelist} />
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route element={<Layout user={user} />}>
+                    <Route index element={<Home notelist={notelist} />} />
+                    <Route path="users/login" element={<Login />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
     );
 };
 
