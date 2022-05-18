@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout.jsx";
 import Home from "./components/home.jsx";
 import Login from "./components/login.jsx";
+import NotFound from "./components/notfound.jsx";
 
 const App = () => {
     const [notelist, setNotelist] = useState([]);
@@ -26,6 +27,7 @@ const App = () => {
                 <Route element={<Layout user={user} />}>
                     <Route index element={<Home notelist={notelist} />} />
                     <Route path="users/login" element={<Login />} />
+                    <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
         </BrowserRouter>
