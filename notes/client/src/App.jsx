@@ -39,25 +39,24 @@ export const App = () => {
 
     const checkPassword = async () => {
         try {
-            // const response = await fetch("/users/login", {
-            //     method: "POST",
-            //     // mode: "same-origin",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify({
-            //         username: username,
-            //         password: password
-            //     })
-            // });
+            const response = await fetch("/users/login", {
+                method: "POST",
+                mode: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            });
+            const data = await response.json();
             // const data = await response.json();
 
-            const response = await axios.post("/users/login", { username: username, password: password });
+            // const response = await axios.post("/users/login", { username: username, password: password });
 
-            console.log(response.data);
-
-            if (response.data.success === true) {
-                setUser(response.data.user);
+            if (data.success === true) {
+                setUser(data.user);
             } else {
                 setUser(null);
             }
@@ -70,15 +69,25 @@ export const App = () => {
 
     const handleLogin = (event) => {
         event.preventDefault();
-        console.log("trying the fuck to log in")
         checkPassword();
+    };
+
+    const handleLogout = (event) => {
+        const logout = async () => {
+            const response = await fetch("/users/logout");
+            const data = await response.json();
+            if (data.success === true) {
+                setUser(null);
+            }
+        }
+        logout();
     };
 
     return (
         <AuthContext.Provider value={user}>
             <BrowserRouter>
                 <Routes>
-                    <Route element={<Layout user={user} />}>
+                    <Route element={<Layout user={user} onLogout={handleLogout} />}>
                         <Route index element={<Home notelist={notelist} />} />
                         <Route path="users/login" element={<Login
                             onLogin={handleLogin}

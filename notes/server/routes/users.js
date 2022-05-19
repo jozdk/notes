@@ -71,17 +71,34 @@ router.post("/login",
     }
 );
 
-router.get("/logout", (req, res, next) => {
-    try {
-        req.session.destroy();
-        req.logout();
-        res.clearCookie(sessionCookieName);
-        debug("Logged out user");
-        res.redirect("/");
-    } catch (err) {
-        next(err);
-    }
-});
+// router.get("/logout", (req, res, next) => {
+//     try {
+//         req.session.destroy();
+//         req.logout();
+//         res.clearCookie(sessionCookieName);
+//         debug("Logged out user");
+//         res.redirect("/");
+//     } catch (err) {
+//         next(err);
+//     }
+// });
+
+router.get("/logout",
+    ensureAuthenticated,
+    (req, res, next) => {
+        try {
+            req.session.destroy();
+            req.logout();
+            res.clearCookie(sessionCookieName);
+            debug("Logged out user");
+            res.status(200).json({
+                success: true,
+                msg: "Logout successfull"
+            });
+        } catch (err) {
+            next(err);
+        }
+    });
 
 passport.use(new LocalStrategy(
     async (username, password, done) => {
