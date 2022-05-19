@@ -1,10 +1,11 @@
 //import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect, createContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./components/layout.jsx";
-import Home from "./components/home.jsx";
-import Login from "./components/login.jsx";
-import NotFound from "./components/notfound.jsx";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import Layout from "./components/Layout.jsx";
+import Home from "./components/Home.jsx";
+import Login from "./components/Login.jsx";
+import NotFound from "./components/NotFound.jsx";
+import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
 import axios from "axios";
 
 export const AuthContext = createContext(null);
@@ -12,6 +13,8 @@ export const AuthContext = createContext(null);
 export const App = () => {
     const [notelist, setNotelist] = useState([]);
     const [user, setUser] = useState(null);
+    // const [loggedOut, setLoggedOut] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,6 +27,10 @@ export const App = () => {
         fetchData();
     }, []);
 
+    // useEffect(() => {
+    //     navigate("/");
+    // }, [user]);
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -32,8 +39,6 @@ export const App = () => {
     };
 
     const handlePasswordChange = (event) => {
-        console.log("hello?");
-        console.log(event.target.value);
         setPassword(event.target.value);
     };
 
@@ -57,6 +62,7 @@ export const App = () => {
 
             if (data.success === true) {
                 setUser(data.user);
+                navigate("/");
             } else {
                 setUser(null);
             }
@@ -72,31 +78,60 @@ export const App = () => {
         checkPassword();
     };
 
-    const handleLogout = (event) => {
-        const logout = async () => {
-            const response = await fetch("/users/logout");
+    const handleLogout = async (event) => {
+        try {
+            const response = await fetch("/users/logout", {
+                method: "POST",
+                mode: "same-origin",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            });
             const data = await response.json();
+
             if (data.success === true) {
                 setUser(null);
+                navigate("/");
             }
+        } catch (err) {
+            console.log(err);
         }
-        logout();
     };
+
+    // return (
+    //     <AuthContext.Provider value={user}>
+    //         <Routes>
+    //             <Route element={<Layout user={user} onLogout={handleLogout} />}>
+    //                 <Route index element={<Home notelist={notelist} />} />
+    //                 <Route path="users/login" element={<Login
+    //                     onLogin={handleLogin}
+    //                     onUsernameChange={handleUsernameChange}
+    //                     onPasswordChange={handlePasswordChange} />} />
+    //                 <Route path="*" element={<NotFound />} />
+    //             </Route>
+    //         </Routes>
+    //     </AuthContext.Provider>
+    // );
 
     return (
         <AuthContext.Provider value={user}>
-            <BrowserRouter>
-                <Routes>
-                    <Route element={<Layout user={user} onLogout={handleLogout} />}>
-                        <Route index element={<Home notelist={notelist} />} />
-                        <Route path="users/login" element={<Login
-                            onLogin={handleLogin}
-                            onUsernameChange={handleUsernameChange}
-                            onPasswordChange={handlePasswordChange} />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+
+            <Layout user={user} onLogout={handleLogout} />
+            <Routes>
+                <Route path="/" element={<Home notelist={notelist} />} />
+                <Route path="/users/login" element={<Login
+                    onLogin={handleLogin}
+                    onUsernameChange={handleUsernameChange}
+                    onPasswordChange={handlePasswordChange} />} />
+                <Route path="/notes/view" element={<NoteView />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+            <ProtectedRoutes>
+                
+            </ProtectedRoutes>
+
         </AuthContext.Provider>
     );
 };

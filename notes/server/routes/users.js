@@ -83,7 +83,7 @@ router.post("/login",
 //     }
 // });
 
-router.get("/logout",
+router.post("/logout",
     ensureAuthenticated,
     (req, res, next) => {
         try {
