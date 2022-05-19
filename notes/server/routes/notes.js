@@ -35,16 +35,40 @@ router.post("/save", ensureAuthenticated, async (req, res, next) => {
     }
 })
 
+// router.get("/view", async (req, res, next) => {
+//     try {
+//         const { key } = req.query;
+//         const note = await notes.read(key);
+//         res.render("note-view", {
+//             title: note ? note.title : "",
+//             notekey: key,
+//             notetitle: note ? note.title : "",
+//             notebody: note ? note.body : "",
+//             user: req.user ? req.user : undefined
+//         });
+//     } catch(err) {
+//         next(err);
+//     }
+// });
+
 router.get("/view", async (req, res, next) => {
     try {
         const { key } = req.query;
         const note = await notes.read(key);
-        res.render("note-view", {
-            title: note ? note.title : "",
-            notekey: key,
-            notetitle: note ? note.title : "",
-            notebody: note ? note.body : "",
-            user: req.user ? req.user : undefined
+        debug(note);
+        // res.render("note-view", {
+        //     title: note ? note.title : "",
+        //     notekey: key,
+        //     notetitle: note ? note.title : "",
+        //     notebody: note ? note.body : "",
+        //     user: req.user ? req.user : undefined
+        // });
+        res.json({
+            note: {
+                key: note.key,
+                title: note.title,
+                body: note.body
+            }
         });
     } catch(err) {
         next(err);

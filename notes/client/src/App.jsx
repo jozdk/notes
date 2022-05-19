@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import Layout from "./components/Layout.jsx";
 import Home from "./components/Home.jsx";
 import Login from "./components/Login.jsx";
+import { NoteView } from "./components/NoteView.jsx";
 import NotFound from "./components/NotFound.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
 import axios from "axios";
@@ -16,6 +17,7 @@ export const App = () => {
     // const [loggedOut, setLoggedOut] = useState(false);
     const navigate = useNavigate();
 
+    // Probably better to do that in Home.jsx
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch("/api/list");
@@ -125,12 +127,12 @@ export const App = () => {
                     onLogin={handleLogin}
                     onUsernameChange={handleUsernameChange}
                     onPasswordChange={handlePasswordChange} />} />
-                <Route path="/notes/view" element={<NoteView />} />
+                <Route path="/notes/view/:notekey" element={<NoteView />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
-            <ProtectedRoutes>
+            {/* <ProtectedRoutes>
                 
-            </ProtectedRoutes>
+            </ProtectedRoutes> */}
 
         </AuthContext.Provider>
     );
