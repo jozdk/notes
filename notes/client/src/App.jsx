@@ -28,16 +28,18 @@ export const App = () => {
     const [password, setPassword] = useState("");
 
     const handleUsernameChange = (event) => {
-        setUsername(event.target);
+        setUsername(event.target.value);
     };
 
     const handlePasswordChange = (event) => {
-        setPassword(event.target);
+        console.log("hello?");
+        console.log(event.target.value);
+        setPassword(event.target.value);
     };
 
     const checkPassword = async () => {
         try {
-            // const response = await fetch("http://localhost:3000/api/login", {
+            // const response = await fetch("/users/login", {
             //     method: "POST",
             //     // mode: "same-origin",
             //     headers: {
@@ -50,7 +52,7 @@ export const App = () => {
             // });
             // const data = await response.json();
 
-            const response = await axios.post("/api/login", { username, password });
+            const response = await axios.post("/users/login", { username: username, password: password });
 
             console.log(response.data);
 
@@ -61,6 +63,7 @@ export const App = () => {
             }
 
         } catch (err) {
+            console.log(err);
             setUser(null);
         }
     }

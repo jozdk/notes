@@ -59,7 +59,11 @@ function login(req, res, next) {
 //     failureRedirect: "/users/login"
 // }));
 
-router.post("/api/login",
+router.post("/login",
+    (req, res, next) => {
+        debug(req.body);
+        next();
+    },
     passport.authenticate("local"),
     (req, res, next) => {
         debug("/api/login requested");

@@ -11,8 +11,8 @@ const Login = ({ onUsernameChange, onPasswordChange, onLogin }) => {
                             <input onChange={onUsernameChange} type="text" id="username" name="username" defaultValue="" placeholder="Your username" className="form-control" />
                         </div>
                         <div className="mb-3">
-                            <label onChange={onPasswordChange} htmlFor="password" className="form-label">Password</label>
-                            <input type="password" id="password" name="password" defaultValue="" placeholder="Your password" className="form-control" />
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input onChange={onPasswordChange} type="password" id="password" name="password" defaultValue="" placeholder="Your password" className="form-control" />
                         </div>
                         <button type="submit" className="btn btn-secondary" onClick={onLogin}>Submit</button>
                     </form>
