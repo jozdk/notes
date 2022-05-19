@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../App.jsx";
 
@@ -10,7 +10,6 @@ export const NoteView = () => {
     useEffect(() => {
         const fetchNote = async () => {
             try {
-                console.log("fetching note");
                 const response = await fetch(`/notes/view?key=${notekey}`);
                 const data = await response.json();
                 setNote(data.note);
@@ -23,7 +22,7 @@ export const NoteView = () => {
     }, []);
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid mt-2">
 
             {note ? (
                 <>
@@ -34,10 +33,15 @@ export const NoteView = () => {
                     {user && notekey && (
                         <>
                             <hr />
-                            <p>
+                            <div className="btn-group">
+                                <Link className="btn btn-outline-dark" to={`/notes/destroy/${notekey}`}>Delete</Link>
+                                <Link className="btn btn-outline-dark" to="/notes/edit">Edit</Link>
+                            </div>
+                            {/* <p>
+                                <button>Delete</button>
                                 <a className="btn btn-outline-dark m-1" href="/notes/destroy?key={{notekey}}">Delete</a>
                                 <a className="btn btn-outline-dark m-1" href="/notes/edit?key={{notekey}}">Edit</a>
-                            </p>
+                            </p> */}
                         </>
 
                     )}

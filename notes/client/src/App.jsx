@@ -5,6 +5,7 @@ import Layout from "./components/Layout.jsx";
 import Home from "./components/Home.jsx";
 import Login from "./components/Login.jsx";
 import { NoteView } from "./components/NoteView.jsx";
+import { NoteDestroy } from "./components/NoteDestroy.jsx";
 import NotFound from "./components/NotFound.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
 import axios from "axios";
@@ -102,6 +103,27 @@ export const App = () => {
         }
     };
 
+    const destroyNote = async (notekey) => {
+        try {
+            const response = await fetch(`/notes/destroy/confirm?key=${notekey}`, {
+                method: "POST",
+                mode: "same-origin",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ notekey: notekey })
+            });
+            const data = await response.json();
+
+            if (data.success === true) {
+                setNotelist(notelist.filter(note => note.key !== notekey));
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     // return (
     //     <AuthContext.Provider value={user}>
     //         <Routes>
@@ -128,6 +150,7 @@ export const App = () => {
                     onUsernameChange={handleUsernameChange}
                     onPasswordChange={handlePasswordChange} />} />
                 <Route path="/notes/view/:notekey" element={<NoteView />} />
+                <Route path="/notes/destroy/:notekey" element={<NoteDestroy destroyNote={destroyNote} />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
             {/* <ProtectedRoutes>

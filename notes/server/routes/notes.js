@@ -96,12 +96,19 @@ router.get("/destroy", ensureAuthenticated, async (req, res, next) => {
     try {
         const { key } = req.query;
         const note = await notes.read(key);
-        res.render("note-destroy", {
-            title: note ? note.title : "",
-            notekey: key,
-            notetitle: note.title,
-            notebody: note.body,
-            user: req.user
+        // res.render("note-destroy", {
+        //     title: note ? note.title : "",
+        //     notekey: key,
+        //     notetitle: note.title,
+        //     notebody: note.body,
+        //     user: req.user
+        // });
+        res.json({
+            note: {
+                key: note.key,
+                title: note.title,
+                body: note.body
+            }
         });
     } catch(err) {
         next(err);
@@ -112,7 +119,10 @@ router.post("/destroy/confirm", ensureAuthenticated, async (req, res, next) => {
     try {
         const { notekey } = req.body;
         await notes.destroy(notekey);
-        res.redirect("/");
+        // res.redirect("/");
+        res.json({
+            success: true
+        });
     } catch(err) {
         next(err);
     }
