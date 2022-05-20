@@ -53,7 +53,7 @@ const sessionMiddleware = session({
     store: new FileStore({ path: "sessions" }),
     name: sessionCookieName,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 6,
+        maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
         sameSite: true
     }
