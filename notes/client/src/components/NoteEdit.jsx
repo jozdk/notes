@@ -26,7 +26,7 @@ export const NoteEdit = ({ doCreate }) => {
     }, [doCreate]);
 
 
-    return user ? (
+    return (
         <form method="POST" action="/notes/save">
             <div className="container-fluid">
 
@@ -50,7 +50,5 @@ export const NoteEdit = ({ doCreate }) => {
 
             </div>
         </form>
-    ) : (
-        <NotLoggedIn />
-    )
+    );
 }

@@ -1,6 +1,5 @@
-//import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect, createContext } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Layout from "./components/Layout.jsx";
 import Home from "./components/Home.jsx";
 import Login from "./components/Login.jsx";
@@ -9,7 +8,7 @@ import { NoteDestroy } from "./components/NoteDestroy.jsx";
 import { NoteEdit } from "./components/NoteEdit.jsx";
 import NotFound from "./components/NotFound.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
-import axios from "axios";
+// import axios from "axios";
 
 export const AuthContext = createContext(null);
 
@@ -93,21 +92,18 @@ export const App = () => {
 
     return (
         <AuthContext.Provider value={user}>
-
             <Layout user={user} onLogout={handleLogout} />
             <Routes>
+                <Route element={<ProtectedRoutes />}>
+                    <Route path="/notes/add" element={<NoteEdit doCreate={true} />} />
+                    <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate={false} />} />
+                    <Route path="/notes/destroy/:notekey" element={<NoteDestroy destroyNote={destroyNote} />} />
+                </Route>
                 <Route path="/" element={<Home notelist={notelist} />} />
                 <Route path="/users/login" element={<Login setUser={setUser} />} />
-                <Route path="/notes/add" element={<NoteEdit doCreate={true} />} />
-                <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate={false} />} />
                 <Route path="/notes/view/:notekey" element={<NoteView />} />
-                <Route path="/notes/destroy/:notekey" element={<NoteDestroy destroyNote={destroyNote} />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
-            {/* <ProtectedRoutes>
-                
-            </ProtectedRoutes> */}
-
         </AuthContext.Provider>
     );
 };
