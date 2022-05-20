@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
-export const NoteDestroy = ({ destroyNote }) => {
+export const NoteDestroy = ({ setNotelist }) => {
     const navigate = useNavigate();
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
@@ -27,17 +27,36 @@ export const NoteDestroy = ({ destroyNote }) => {
         navigate("/");
     };
 
-    return (
+    const destroyNote = async (notekey) => {
+        try {
+            const response = await fetch(`/notes/destroy/confirm?key=${notekey}`, {
+                method: "POST",
+                mode: "same-origin",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ notekey: notekey })
+            });
+            const data = await response.json();
 
+            if (data.success === true) {
+                setNotelist((notelist) => notelist.filter(note => note.key !== notekey));
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    return (
         <div className="container-fluid">
             {
                 note ? (
                     <>
-                        {/* <input type="hidden" name="notekey" value="{{#if notekey}}{{notekey}}{{/if}}" /> */}
                         <p>Delete {note.title}?</p>
                         <div className="btn-group">
                             <button className="btn btn-outline-dark" onClick={handleDestroy}>DELETE</button>
-                            <a href="/notes/view?key={{#if notekey}}{{notekey}}{{/if}}" className="btn btn-outline-dark" role="button">Cancel</a>
+                            <Link to={`/notes/view/${notekey}`} className="btn btn-outline-dark" role="button">Cancel</Link>
                         </div>
                     </>
                 ) : (
@@ -45,6 +64,5 @@ export const NoteDestroy = ({ destroyNote }) => {
                 )
             }
         </div>
-
-    )
+    );
 }

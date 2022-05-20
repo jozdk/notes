@@ -48,27 +48,6 @@ export const App = () => {
         }
     };
 
-    const destroyNote = async (notekey) => {
-        try {
-            const response = await fetch(`/notes/destroy/confirm?key=${notekey}`, {
-                method: "POST",
-                mode: "same-origin",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ notekey: notekey })
-            });
-            const data = await response.json();
-
-            if (data.success === true) {
-                setNotelist(notelist.filter(note => note.key !== notekey));
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
     return (
         <AuthContext.Provider value={user}>
             <Layout user={user} onLogout={handleLogout} />
@@ -76,7 +55,7 @@ export const App = () => {
                 <Route element={<ProtectedRoutes />}>
                     <Route path="/notes/add" element={<NoteEdit doCreate={true} />} />
                     <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate={false} />} />
-                    <Route path="/notes/destroy/:notekey" element={<NoteDestroy destroyNote={destroyNote} />} />
+                    <Route path="/notes/destroy/:notekey" element={<NoteDestroy setNotelist={setNotelist} />} />
                 </Route>
                 <Route path="/" element={<Home notelist={notelist} />} />
                 <Route path="/users/login" element={<Login setUser={setUser} />} />
