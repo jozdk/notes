@@ -8,7 +8,6 @@ import { NoteDestroy } from "./components/NoteDestroy.jsx";
 import { NoteEdit } from "./components/NoteEdit.jsx";
 import NotFound from "./components/NotFound.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
-// import axios from "axios";
 
 export const AuthContext = createContext(null);
 
@@ -21,16 +20,11 @@ export const App = () => {
         const fetchData = async () => {
             const response = await fetch("/api/list");
             const data = await response.json();
-            // console.log(data);
             setNotelist(data.notelist);
             setUser(data.user);
         };
         fetchData();
     }, []);
-
-    // useEffect(() => {
-    //     navigate("/");
-    // }, [user]);
 
     const handleLogout = async (event) => {
         try {
@@ -74,21 +68,6 @@ export const App = () => {
             console.log(err);
         }
     }
-
-    // return (
-    //     <AuthContext.Provider value={user}>
-    //         <Routes>
-    //             <Route element={<Layout user={user} onLogout={handleLogout} />}>
-    //                 <Route index element={<Home notelist={notelist} />} />
-    //                 <Route path="users/login" element={<Login
-    //                     onLogin={handleLogin}
-    //                     onUsernameChange={handleUsernameChange}
-    //                     onPasswordChange={handlePasswordChange} />} />
-    //                 <Route path="*" element={<NotFound />} />
-    //             </Route>
-    //         </Routes>
-    //     </AuthContext.Provider>
-    // );
 
     return (
         <AuthContext.Provider value={user}>

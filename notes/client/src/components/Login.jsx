@@ -28,9 +28,6 @@ const Login = ({ setUser }) => {
                 })
             });
             const data = await response.json();
-            // const data = await response.json();
-
-            // const response = await axios.post("/users/login", { username: username, password: password });
 
             if (data.success === true) {
                 setUser(data.user);
