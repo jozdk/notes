@@ -15,16 +15,16 @@ const Layout = ({ onLogout, breadcrumb }) => {
                                 data-bs-target="#navbarContent">
                                 <span className="navbar-toggler-icon"></span>
                             </button>
-                            <a className="nav-item nav-link" href="/">
+                            <Link className="nav-item nav-link" to="/">
                                 <i className="bi-house"></i>
-                            </a>
+                            </Link>
                         </div>
 
-                        {user && <a className="nav-item nav-link" href='/notes/add'>Add a Note</a>}
+                        {user && <Link className="nav-item nav-link" to='/notes/add'>Add a Note</Link>}
 
                         <div className="collapse navbar-collapse" id="navbarContent">
                             <div className="navbar-nav me-auto mb-2 mb-lg-0">
-                                {breadcrumb && (<a className="nav-item nav-link" href='{{breadcrumb.url}}'>{breadcrumb.title}</a>)}
+                                {breadcrumb && (<Link className="nav-item nav-link" to='{{breadcrumb.url}}'>{breadcrumb.title}</Link>)}
                             </div>
                             <form className="d-flex">
                                 <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
