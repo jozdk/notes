@@ -89,7 +89,7 @@ router.post("/logout",
         try {
             req.session.destroy();
             req.logout();
-            res.clearCookie(sessionCookieName);
+            // res.clearCookie(sessionCookieName);
             debug("Logged out user");
             res.status(200).json({
                 success: true,
