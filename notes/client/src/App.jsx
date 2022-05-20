@@ -6,6 +6,7 @@ import Home from "./components/Home.jsx";
 import Login from "./components/Login.jsx";
 import { NoteView } from "./components/NoteView.jsx";
 import { NoteDestroy } from "./components/NoteDestroy.jsx";
+import { NoteEdit } from "./components/NoteEdit.jsx";
 import NotFound from "./components/NotFound.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
 import axios from "axios";
@@ -18,7 +19,6 @@ export const App = () => {
     // const [loggedOut, setLoggedOut] = useState(false);
     const navigate = useNavigate();
 
-    // Probably better to do that in Home.jsx
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch("/api/list");
@@ -149,6 +149,8 @@ export const App = () => {
                     onLogin={handleLogin}
                     onUsernameChange={handleUsernameChange}
                     onPasswordChange={handlePasswordChange} />} />
+                <Route path="/notes/add" element={<NoteEdit doCreate={true} /> } />
+                <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate={false} /> } />
                 <Route path="/notes/view/:notekey" element={<NoteView />} />
                 <Route path="/notes/destroy/:notekey" element={<NoteDestroy destroyNote={destroyNote} />} />
                 <Route path="*" element={<NotFound />} />

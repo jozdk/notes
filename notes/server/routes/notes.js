@@ -9,16 +9,16 @@ const debug = DBG("notes:notes");
 
 export const router = express.Router();
 
-router.get("/add", ensureAuthenticated, (req, res, next) => {
-    res.render("note-edit", {
-        title: "Add a Note",
-        docreate: true,
-        notekey: "",
-        notetitle: undefined,
-        notebody: undefined,
-        user: req.user
-    })
-});
+// router.get("/add", ensureAuthenticated, (req, res, next) => {
+//     res.render("note-edit", {
+//         title: "Add a Note",
+//         docreate: true,
+//         notekey: "",
+//         notetitle: undefined,
+//         notebody: undefined,
+//         user: req.user
+//     })
+// });
 
 router.post("/save", ensureAuthenticated, async (req, res, next) => {
     try {
