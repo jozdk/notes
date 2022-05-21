@@ -26,7 +26,7 @@ router.get("/api/list", async (req, res, next) => {
     }
 });
 
-async function getKeyTitlesList() {
+export async function getKeyTitlesList() {
     const keylist = await notes.keylist();
     const keyPromises = keylist.map((key) => {
         return notes.read(key);

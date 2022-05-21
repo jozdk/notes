@@ -3,7 +3,10 @@ import { io } from "../app.js";
 import { emitNoteTitles } from "./index.js";
 import { NotesStore as notes } from "../models/notes-store.js";
 import { ensureAuthenticated } from "./users.js";
+import { getKeyTitlesList } from "./index.js";
 import DBG from "debug";
+import util from "util";
+import { UniqueConstraintError } from "sequelize";
 
 const debug = DBG("notes:notes");
 
@@ -22,16 +25,29 @@ export const router = express.Router();
 
 router.post("/save", ensureAuthenticated, async (req, res, next) => {
     try {
-        const { docreate, notekey, title, body } = req.body;
-        let note;
-        if (docreate === "create") {
-            note = await notes.create(notekey, title, body);
+        const { doCreate, note } = req.body;
+        let savedNote;
+
+        if (doCreate === "create") {
+            savedNote = await notes.create(note.key, note.title, note.body);
         } else {
-            note = await notes.update(notekey, title, body);
+            savedNote = await notes.update(note.key, note.title, note.body);
         }
-        res.redirect(`/notes/view?key=${notekey}`);
+
+        const newNotelist = await getKeyTitlesList();
+        res.json({
+            success: true,
+            notekey: savedNote.notekey,
+            notelist: newNotelist
+        });
     } catch (err) {
-        next(err);
+        if (err instanceof UniqueConstraintError) {
+            err.message = "This note key is already in use";
+        }
+        res.json({
+            success: false,
+            msg: err.message
+        });
     }
 })
 

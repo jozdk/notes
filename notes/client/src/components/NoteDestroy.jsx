@@ -22,7 +22,7 @@ export const NoteDestroy = ({ setNotelist }) => {
         fetchNote();
     }, []);
 
-    const handleDestroy = (event) => {
+    const handleDestroyNote = (event) => {
         destroyNote(notekey);
         navigate("/");
     };
@@ -55,7 +55,7 @@ export const NoteDestroy = ({ setNotelist }) => {
                     <>
                         <p>Delete {note.title}?</p>
                         <div className="btn-group">
-                            <button className="btn btn-outline-dark" onClick={handleDestroy}>DELETE</button>
+                            <button className="btn btn-outline-dark" onClick={handleDestroyNote}>DELETE</button>
                             <Link to={`/notes/view/${notekey}`} className="btn btn-outline-dark" role="button">Cancel</Link>
                         </div>
                     </>

@@ -53,8 +53,8 @@ export const App = () => {
             <Layout user={user} onLogout={handleLogout} />
             <Routes>
                 <Route element={<ProtectedRoutes />}>
-                    <Route path="/notes/add" element={<NoteEdit doCreate={true} />} />
-                    <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate={false} />} />
+                    <Route path="/notes/add" element={<NoteEdit doCreate="create" setNotelist={setNotelist} />} />
+                    <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate="update" setNotelist={setNotelist} />} />
                     <Route path="/notes/destroy/:notekey" element={<NoteDestroy setNotelist={setNotelist} />} />
                 </Route>
                 <Route path="/" element={<Home notelist={notelist} />} />
