@@ -37,7 +37,7 @@ router.post("/save", ensureAuthenticated, async (req, res, next) => {
         const newNotelist = await getKeyTitlesList();
         res.json({
             success: true,
-            notekey: savedNote.notekey,
+            notekey: savedNote.key,
             notelist: newNotelist
         });
     } catch (err) {
@@ -86,7 +86,7 @@ router.get("/view", async (req, res, next) => {
                 body: note.body
             }
         });
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 });
@@ -95,15 +95,22 @@ router.get("/edit", ensureAuthenticated, async (req, res, next) => {
     try {
         const { key } = req.query;
         const note = await notes.read(key);
-        res.render("note-edit", {
-            title: note ? `Edit ${note.title}` : "Add a Note",
-            docreate: false,
-            notekey: key,
-            notetitle: note.title,
-            notebody: note.body,
-            user: req.user
+        // res.render("note-edit", {
+        //     title: note ? `Edit ${note.title}` : "Add a Note",
+        //     docreate: false,
+        //     notekey: key,
+        //     notetitle: note.title,
+        //     notebody: note.body,
+        //     user: req.user
+        // });
+        res.json({
+            note: {
+                key: note.key,
+                title: note.title,
+                body: note.body
+            }
         });
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 });
@@ -126,9 +133,9 @@ router.get("/destroy", ensureAuthenticated, async (req, res, next) => {
                 body: note.body
             }
         });
-    } catch(err) {
+    } catch (err) {
         next(err);
-    } 
+    }
 });
 
 router.post("/destroy/confirm", ensureAuthenticated, async (req, res, next) => {
@@ -139,7 +146,7 @@ router.post("/destroy/confirm", ensureAuthenticated, async (req, res, next) => {
         res.json({
             success: true
         });
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 });

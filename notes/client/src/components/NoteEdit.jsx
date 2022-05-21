@@ -1,25 +1,19 @@
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../App.jsx";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { NotLoggedIn } from "./NotLoggedIn.jsx";
-import { data } from "autoprefixer";
 
 export const NoteEdit = ({ doCreate, setNotelist }) => {
     const navigate = useNavigate();
-    const user = useContext(AuthContext);
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
 
     useEffect(() => {
         const fetchNote = async () => {
-            console.log("doCreate: ", doCreate);
             if (doCreate === "update") {
                 try {
                     const response = await fetch(`/notes/edit?key=${notekey}`);
                     const data = await response.json();
                     setNote(data.note);
                 } catch (err) {
-                    console.log(err);
                     setNote(null);
                 }
             }
@@ -87,8 +81,8 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
                 setNotelist(data.notelist);
                 navigate(`/notes/view/${data.notekey}`);
             } else {
-                setNote({ error: data.msg });
-                console.log(JSON.stringify(note, null, 2));
+                console.log(data.msg)
+                setNote({ error: "Internal Server Error: This note could not be saved" });
             }
         } catch (err) {
             setNote({ error: err.message });
@@ -106,7 +100,7 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
                     {doCreate === "create" ? (
                         <input type="text" defaultValue="" onChange={onNoteKeyChange} />
                     ) : (
-                        <span>{notekey}</span>
+                        <span className="ms-1">{notekey}</span>
                     )}
                     {/* <input type="hidden" name="notekey" value="{{#if notekey}}{{notekey}}{{/if}}" /> */}
                 </p>

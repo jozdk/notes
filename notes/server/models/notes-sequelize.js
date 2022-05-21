@@ -59,7 +59,8 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
             title: title,
             body: body
         });
-        const note = sqnote.get();
+        // const note = sqnote.get();
+        const note = { key: note.notekey, title: note.title, body: note.body }
         this.emitCreated(note);
         return note;
     }
@@ -70,7 +71,8 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
         if (!note) {
             throw new Error(`No note found for ${key}`);
         } else {
-            return new Note(note.notekey, note.title, note.body);
+            // return new Note(note.notekey, note.title, note.body);
+            return { key: note.notekey, title: note.title, body: note.body };
         }
     }
 

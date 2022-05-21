@@ -35,7 +35,7 @@ export const NoteView = () => {
                             <hr />
                             <div className="btn-group">
                                 <Link className="btn btn-outline-dark" to={`/notes/destroy/${notekey}`}>Delete</Link>
-                                <Link className="btn btn-outline-dark" to="/notes/edit">Edit</Link>
+                                <Link className="btn btn-outline-dark" to={`/notes/edit/${notekey}`}>Edit</Link>
                             </div>
                             {/* <p>
                                 <button>Delete</button>
