@@ -1,9 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../App.jsx";
+import { useAuth } from "./AuthProvider.jsx";
 
 export const NoteView = () => {
-    const user = useContext(AuthContext);
+    // const user = useContext(AuthContext);
+    const { user } = useAuth();
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
 

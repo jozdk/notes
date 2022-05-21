@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthProvider.jsx";
 
-const Login = ({ setUser }) => {
-    const navigate = useNavigate();
+export const Login = () => {
+    const auth = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,38 +14,10 @@ const Login = ({ setUser }) => {
         setPassword(event.target.value);
     };
 
-    const checkPassword = async () => {
-        try {
-            const response = await fetch("/users/login", {
-                method: "POST",
-                mode: "same-origin",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
-                })
-            });
-            const data = await response.json();
-
-            if (data.success === true) {
-                setUser(data.user);
-                navigate("/");
-            } else {
-                setUser(null);
-            }
-
-        } catch (err) {
-            console.log(err);
-            setUser(null);
-        }
-    }
-
     const handleLogin = (event) => {
         event.preventDefault();
-        checkPassword();
-    };
+        auth.login(username, password);
+    }
 
     return (
         <div className="container-fluid">
@@ -67,5 +39,3 @@ const Login = ({ setUser }) => {
         </div>
     );
 }
-
-export default Login;

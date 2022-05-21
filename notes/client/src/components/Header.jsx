@@ -1,9 +1,15 @@
 import { Link, Outlet } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../App.jsx";
+// import { useContext } from "react";
+// import { AuthContext } from "../App.jsx";
+import { useAuth } from "./AuthProvider.jsx";
 
-const Layout = ({ onLogout, breadcrumb }) => {
-    const user = useContext(AuthContext);
+const Header = ({ breadcrumb }) => {
+    // const user = useContext(AuthContext);
+    const { user, logout } = useAuth();
+
+    const handleLogout = () => {
+        logout();
+    }
 
     return (
         <>
@@ -33,7 +39,7 @@ const Layout = ({ onLogout, breadcrumb }) => {
 
                             {user
                                 ? <div className="nav-item nav-link mb-2 mb-lg-0">
-                                    <button onClick={onLogout} className="btn btn-dark col-auto">Logout<span className="badge bg-light text-dark">{user.username}</span></button>
+                                    <button onClick={handleLogout} className="btn btn-dark col-auto">Logout<span className="badge bg-light text-dark">{user.username}</span></button>
                                     {/* <Link to="/users/logout" className="btn btn-dark col-auto">Logout<span className="badge bg-light text-dark">{user.username}</span></Link> */}
                                 </div>
                                 : <div className="nav-item nav-link mb-2 mb-lg-0">
@@ -48,4 +54,4 @@ const Layout = ({ onLogout, breadcrumb }) => {
     )
 }
 
-export default Layout;
+export default Header;
