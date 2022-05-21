@@ -5,7 +5,7 @@ import { useAuth } from "./AuthProvider.jsx";
 
 export const NoteView = () => {
     // const user = useContext(AuthContext);
-    const { user } = useAuth();
+    const { authState: { user } } = useAuth();
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
 

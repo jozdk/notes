@@ -8,7 +8,7 @@ import { NoteDestroy } from "./components/NoteDestroy.jsx";
 import { NoteEdit } from "./components/NoteEdit.jsx";
 import NotFound from "./components/NotFound.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
-import { PrivateRoute } from "./components/PrivateRoute.jsx";
+// import { PrivateRoute } from "./components/PrivateRoute.jsx";
 import { AuthProvider } from "./components/AuthProvider.jsx";
 
 // export const AuthContext = createContext(null);

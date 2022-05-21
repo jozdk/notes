@@ -10,10 +10,11 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
-            // setIsLoading(true);
+            setIsLoading(true);
             const response = await fetch("/auth", {
                 method: "POST",
                 mode: "same-origin",
@@ -26,11 +27,11 @@ export const AuthProvider = ({ children }) => {
             const data = await response.json();
 
             if (data.success === true) {
-                console.log("hi")
                 setUser(data.user);
+                setIsLoading(false);
             } else {
                 // setIsRejected(true);
-                console.log("bye");
+                setIsLoading(false);
                 setUser(null);
             }
         };
@@ -45,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     // }, []);
 
     const value = {
-        user: user,
+        authState: { user, isLoading },
         login: async (username, password) => {
             try {
                 const response = await fetch("/users/login", {

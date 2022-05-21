@@ -4,7 +4,20 @@ import { useState, useEffect } from "react";
 import { Login } from "./Login.jsx";
 
 export const ProtectedRoutes = () => {
-    const { user } = useAuth();
+    const { authState: { user, isLoading } } = useAuth();
 
-    return user ? <Outlet /> : <Login />
+    console.log(isLoading);
+
+    // return user ? <Outlet /> : <Login />
+    if (user) {
+        return <Outlet />;
+    } else if (isLoading) {
+        return (
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        )
+    } else {
+        return <Navigate to="/users/login" />
+    }
 }

@@ -5,7 +5,7 @@ import { useAuth } from "./AuthProvider.jsx";
 
 const Header = ({ breadcrumb }) => {
     // const user = useContext(AuthContext);
-    const { user, logout } = useAuth();
+    const { authState: { user }, logout } = useAuth();
 
     const handleLogout = () => {
         logout();
