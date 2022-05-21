@@ -60,7 +60,7 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
             body: body
         });
         // const note = sqnote.get();
-        const note = { key: note.notekey, title: note.title, body: note.body }
+        const note = { key: sqnote.notekey, title: sqnote.title, body: sqnote.body }
         this.emitCreated(note);
         return note;
     }

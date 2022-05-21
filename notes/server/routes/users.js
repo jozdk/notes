@@ -30,7 +30,7 @@ export function ensureAuthenticated(req, res, next) {
     }
 }
 
-function login(req, res, next) {
+export function login(req, res, next) {
     if (req.user) {
         res.json({
             success: true,

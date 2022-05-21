@@ -72,13 +72,6 @@ router.get("/view", async (req, res, next) => {
         const { key } = req.query;
         const note = await notes.read(key);
         debug(note);
-        // res.render("note-view", {
-        //     title: note ? note.title : "",
-        //     notekey: key,
-        //     notetitle: note ? note.title : "",
-        //     notebody: note ? note.body : "",
-        //     user: req.user ? req.user : undefined
-        // });
         res.json({
             note: {
                 key: note.key,

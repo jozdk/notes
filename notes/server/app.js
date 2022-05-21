@@ -20,6 +20,7 @@ import {
 import { router as indexRouter, init as indexInit } from "./routes/index.js";
 import { router as notesRouter, init as notesInit } from "./routes/notes.js";
 import { router as usersRouter, initPassport } from "./routes/users.js";
+import { router } from "./routes/router.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
 import passport from "passport";
@@ -121,10 +122,11 @@ app.use("/assets/vendor/bootstrap", express.static(path.join(__dirname, "node_mo
 app.use("/assets/vendor/bootstrap-icons", express.static(path.join(__dirname, "node_modules", "bootstrap-icons", "font")))
 
 // Routers
-app.use("/", indexRouter);
-app.use("/notes", notesRouter);
-app.use("/users", usersRouter);
-app.get("/*", (req, res, next) => {
+// app.use("/", indexRouter);
+// app.use("/notes", notesRouter);
+// app.use("/users", usersRouter);
+app.use(router);
+app.get("*", (req, res, next) => {
     res.sendFile(path.resolve("client/public/index.html"));
 });
 
