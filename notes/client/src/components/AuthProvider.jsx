@@ -10,37 +10,39 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    
-
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         setIsLoading(true);
-    //         const response = await fetch("/auth", {
-    //             method: "POST",
-    //             mode: "same-origin",
-    //             credentials: "same-origin",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify({})
-    //         });
-    //         const data = response.json();
-
-    //         if (data.success === true) {
-    //             setUser(data.user);
-    //         } else {
-    //             setIsRejected(true);
-    //         }
-    //     };
-    //     fetchUser();
-    // }, []);
 
     useEffect(() => {
-        const loggedInUser = localStorage.getItem("user");
-        if (loggedInUser) {
-            setUser(JSON.parse(loggedInUser));
-        }
+        const fetchUser = async () => {
+            // setIsLoading(true);
+            const response = await fetch("/auth", {
+                method: "POST",
+                mode: "same-origin",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            });
+            const data = await response.json();
+
+            if (data.success === true) {
+                console.log("hi")
+                setUser(data.user);
+            } else {
+                // setIsRejected(true);
+                console.log("bye");
+                setUser(null);
+            }
+        };
+        fetchUser();
     }, []);
+
+    // useEffect(() => {
+    //     const loggedInUser = localStorage.getItem("user");
+    //     if (loggedInUser) {
+    //         setUser(JSON.parse(loggedInUser));
+    //     }
+    // }, []);
 
     const value = {
         user: user,
@@ -61,17 +63,17 @@ export const AuthProvider = ({ children }) => {
 
                 if (data.success === true) {
                     setUser(data.user);
-                    localStorage.setItem("user", JSON.stringify(data.user));
+                    // localStorage.setItem("user", JSON.stringify(data.user));
                     navigate("/");
                 } else {
                     setUser(null);
-                    localStorage.setItem("user", null);
+                    // localStorage.setItem("user", null);
                 }
 
             } catch (err) {
                 console.log(err);
                 setUser(null);
-                localStorage.setItem("user", null);
+                // localStorage.setItem("user", null);
             }
         },
         logout: async () => {
