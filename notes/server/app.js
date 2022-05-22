@@ -95,9 +95,9 @@ io.use((socket, next) => {
     }
 });
 
-app.engine("handlebars", engine());
-app.set("view engine", "handlebars");
-app.set("views", path.join(__dirname, "views"));
+// app.engine("handlebars", engine());
+// app.set("view engine", "handlebars");
+// app.set("views", path.join(__dirname, "views"));
 
 // Middleware
 app.use(logger(process.env.REQUEST_LOG_FORMAT || "dev", {
