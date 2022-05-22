@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import io from "socket.io-client";
 import Header from "./components/Header.jsx";
 import Home from "./components/Home.jsx";
 import { Login } from "./components/Login.jsx";
@@ -16,7 +17,7 @@ import { AuthProvider } from "./components/AuthProvider.jsx";
 export const App = () => {
     const [notelist, setNotelist] = useState([]);
     // const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+    const [socket, setSocket] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,6 +27,19 @@ export const App = () => {
             // setUser(data.user);
         };
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        const newSocket = io("/home");
+        setSocket(newSocket);
+        newSocket.on("connect", () => {
+            console.log("socketio connection on /home");
+        });
+        newSocket.on("notetitles", (arg) => {
+            const notelist = arg.notelist;
+            setNotelist(notelist);
+        });
+        return () => newSocket.close();
     }, []);
 
     return (
