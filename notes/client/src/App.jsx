@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import io from "socket.io-client";
-import Header from "./components/Header.jsx";
+import { Header } from "./components/Header.jsx";
 import Home from "./components/Home.jsx";
 import { Login } from "./components/Login.jsx";
 import { NoteView } from "./components/NoteView.jsx";
