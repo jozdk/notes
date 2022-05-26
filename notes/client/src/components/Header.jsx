@@ -27,7 +27,7 @@ export const Header = () => {
             <header className="w-full bg-dark text-white p-4">
                 <div className="flex flex-col md:flex-row container mx-auto md:items-center">
 
-                    <div id="nav-base" className="text-white flex justify-between pr-5">
+                    <div id="nav-base" className="text-white flex justify-between md:pr-5">
 
                         {/* Always visible: Home and Add-Button */}
                         <div className="flex items-center">
