@@ -42,7 +42,7 @@ export const NoteView = () => {
     }, [notekey]);
 
     return (
-        <div className="basis-4/5 flex h-[calc(100vh_-_72px)] max-h-screen">
+        <div className="basis-4/5 flex h-[calc(100vh_-_72px)] overflow-y-scroll">
 
             {note ? (
                 <div className="p-5 mx-auto w-full 2xl:w-3/4">

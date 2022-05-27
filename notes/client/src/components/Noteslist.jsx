@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const Notelist = ({ notelist }) => {
     return (
-        <div className="basis-1/5 bg-gray-50 border border-slate-200 rounded-md" id="notetitles">
+        <div className="basis-1/5 bg-gray-50 border border-slate-200 rounded-md h-[calc(100vh_-_72px)] hover:overflow-y-scroll" id="notetitles">
             {notelist.map((note) => {
                 return (
                     <Link key={note.key} to={`/notes/view/${note.key}`} className="block border-b border-gray-200 flex justify-between hover:bg-main">
