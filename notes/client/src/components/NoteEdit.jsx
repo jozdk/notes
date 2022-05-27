@@ -47,19 +47,6 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
         });
     };
 
-    const onNoteKeyChange = (event) => {
-        setNote((prevNote) => {
-            if (prevNote) {
-                prevNote.key = event.target.value;
-                return prevNote;
-            } else {
-                const note = {};
-                note.key = event.target.value;
-                return note;
-            }
-        });
-    };
-
     const handleSaveNote = async (event) => {
         event.preventDefault();
         try {
@@ -89,37 +76,6 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
         }
 
     };
-
-    (
-        <form>
-            <div className="container-fluid">
-
-                {/* <input type="hidden" name="docreate" value="{{#if docreate}}create{{else}}update{{/if}}" /> */}
-                <p>
-                    Key:
-                    {doCreate === "create" ? (
-                        <input type="text" defaultValue="" onChange={onNoteKeyChange} />
-                    ) : (
-                        <span className="ms-1">{notekey}</span>
-                    )}
-                    {/* <input type="hidden" name="notekey" value="{{#if notekey}}{{notekey}}{{/if}}" /> */}
-                </p>
-                <p>
-                    Title:
-                    <input type="text" name="title" defaultValue={note?.title ? note.title : ""} onChange={onNoteTitleChange} />
-                </p>
-
-                {note?.error && (
-                    <p className="lead text-danger mt-1">{note.error}</p>
-                )}
-
-                <textarea name="body" id="" cols="40" rows="5" defaultValue={note?.body ? note.body : ""} onChange={onNoteBodyChange}></textarea>
-                <br />
-                <input type="submit" value="Submit" onClick={handleSaveNote} />
-
-            </div>
-        </form>
-    );
 
     return (
 
@@ -158,8 +114,6 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
                 </div>
 
             </div>
-
-
         </div>
 
     );
