@@ -49,7 +49,7 @@ export const App = () => {
                 {/* <Route path="/" element={<Home notelist={notelist} />} /> */}
                 <Route path="/" element={<Home notelist={notelist} />}>
                     <Route path="/users/login" element={<Login />} />
-                    <Route path="/notes/view/:notekey" element={<NoteView />} />
+                    <Route path="/notes/view/:notekey" element={<NoteView setNotelist={setNotelist} />} />
                     <Route path="*" element={<NotFound />} />
                     <Route element={<ProtectedRoutes />}>
                         <Route path="/notes/add" element={<NoteEdit doCreate="create" setNotelist={setNotelist} />} />
