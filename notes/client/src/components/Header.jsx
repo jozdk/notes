@@ -55,7 +55,7 @@ export const Header = () => {
 
                         <div className="mr-auto pb-3 md:pb-0">
                             <form>
-                                <input className="outline focus:outline-mainIntensive p-2 rounded-md mr-3" type="search" placeholder="Search Note" aria-label="Search" />
+                                <input className="focus:outline focus:outline-main focus:ring focus:ring-main p-2 rounded-md mr-3" type="search" placeholder="Search Note" aria-label="Search" />
                                 {/* <button className="p-2 bg-main text-black rounded-md hover:outline hover:outline-white" type="submit">Search</button> */}
                             </form>
                         </div>

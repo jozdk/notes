@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export const NoteDelete = ({ showModal, setShowModal, note, setNotelist }) => {
+    const navigate = useNavigate();
+
     const handleCloseModal = (event) => {
         event.stopPropagation();
         setShowModal(false);
