@@ -7,6 +7,7 @@ import { login } from "./users.js";
 import DBG from "debug";
 import util from "util";
 import { UniqueConstraintError } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 
 const debug = DBG("notes:api");
 
@@ -75,10 +76,11 @@ router.get("/notes/destroy", ensureAuthenticated, async (req, res, next) => {
 router.post("/notes/save", ensureAuthenticated, async (req, res, next) => {
     try {
         const { doCreate, note } = req.body;
+        const uuid = uuidv4();
         let savedNote;
 
         if (doCreate === "create") {
-            savedNote = await notes.create(note.key, note.title, note.body);
+            savedNote = await notes.create(uuid, note.title, note.body);
         } else {
             savedNote = await notes.update(note.key, note.title, note.body);
         }
