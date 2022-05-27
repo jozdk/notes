@@ -61,9 +61,6 @@ export const NoteView = ({ setNotelist }) => {
                                     <Link to={`/notes/edit/${notekey}`}>
                                         <i className="bi bi-pencil-fill text-slate-500 cursor-pointer"></i>
                                     </Link>
-                                    {/* <Link to={`/notes/destroy/${notekey}`}>
-                                        <i className="bi bi-trash3-fill text-slate-500 cursor pointer"></i>
-                                    </Link> */}
                                     <button onClick={handleShowModal}>
                                         <i className="bi bi-trash3-fill text-slate-500 cursor pointer"></i>
                                     </button>
@@ -81,12 +78,11 @@ export const NoteView = ({ setNotelist }) => {
                     {user && notekey && (
 
                         <div className="inline-block border-t border-grey-100 pt-2 pb-5 pr-3">
-                            {/* <Link className="inline-block py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark mr-2" to={`/notes/destroy/${notekey}`}><i className="bi bi-trash3-fill mr-1"></i> Delete</Link> */}
+                            <Link className="inline-block py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark mr-2" to={`/notes/edit/${notekey}`}><i className="bi bi-pencil-fill mr-1"></i> Edit</Link>
                             <button
-                                className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark mr-2"
+                                className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark"
                                 onClick={handleShowModal}
                             ><i className="bi bi-trash3-fill mr-1"></i> Delete</button>
-                            <Link className="inline-block py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark" to={`/notes/edit/${notekey}`}><i className="bi bi-pencil-fill mr-1"></i> Edit</Link>
                         </div>
 
 
