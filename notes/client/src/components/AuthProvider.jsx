@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
                 if (data.success === true) {
                     setUser(data.user);
                     // localStorage.setItem("user", JSON.stringify(data.user));
-                    navigate("/");
+                    navigate("/notes");
                 } else {
                     setUser(null);
                     // localStorage.setItem("user", null);

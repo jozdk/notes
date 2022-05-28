@@ -46,15 +46,15 @@ export const App = () => {
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<Header setSearchTerm={setSearchTerm} />}>
                         <Route element={<Layout notelist={notelist} searchTerm={searchTerm} />}>
-                            <Route path="/" element={<Home />} />
+                            <Route path="/notes" element={<Home />} />
                             <Route path="/notes/view/:notekey" element={<NoteView setNotelist={setNotelist} />} />
                             <Route path="/notes/add" element={<NoteEdit doCreate="create" setNotelist={setNotelist} />} />
                             <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate="update" setNotelist={setNotelist} />} />
-                            <Route path="*" element={<NotFound />} />
                         </Route>
                     </Route>
                 </Route>
-                <Route path="/users/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </AuthProvider>
     );

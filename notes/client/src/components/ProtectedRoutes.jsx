@@ -19,6 +19,6 @@ export const ProtectedRoutes = () => {
             </div>
         )
     } else {
-        return <Navigate to="/users/login" />
+        return <Navigate to="/" />
     }
 }

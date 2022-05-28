@@ -38,7 +38,7 @@ export const NoteView = ({ setNotelist }) => {
                 setNote(note);
             });
             newSocket.on("notedestroyed", (key) => {
-                navigate("/");
+                navigate("/notes");
             });
             return () => newSocket.close();
         }

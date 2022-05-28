@@ -10,7 +10,7 @@ export const NoteDelete = ({ showModal, setShowModal, note, setNotelist }) => {
 
     const handleDeleteNote = () => {
         deleteNote(note.key);
-        navigate("/");
+        navigate("/notes");
     };
 
     const deleteNote = async (notekey) => {
