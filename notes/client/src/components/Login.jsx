@@ -20,22 +20,43 @@ export const Login = () => {
     }
 
     return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-12 btn-group-vertical" role="group">
-                    <form>
-                        <div className="mb-3">
-                            <label htmlFor="username" className="form-label">Username</label>
-                            <input onChange={handleUsernameChange} type="text" id="username" name="username" defaultValue="" placeholder="Your username" className="form-control" />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Password</label>
-                            <input onChange={handlePasswordChange} type="password" id="password" name="password" defaultValue="" placeholder="Your password" className="form-control" />
-                        </div>
-                        <button type="submit" className="btn btn-secondary" onClick={handleLogin}>Submit</button>
-                    </form>
+        <div className="bg-dark h-screen w-screen">
+            <div className="flex h-full">
+                <div className="flex flex-col m-auto">
+                    <h1 className="text-6xl text-main text-center mb-20">NOTES</h1>
+                    <div>
+                        <form>
+                            <div className="mb-3">
+                                <input
+                                    onChange={handleUsernameChange}
+                                    type="text"
+                                    defaultValue=""
+                                    placeholder="Username"
+                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                />
+                            </div>
+                            <div className="mb-5">
+                                <input
+                                    onChange={handlePasswordChange}
+                                    type="password"
+                                    defaultValue=""
+                                    placeholder="Password"
+                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                />
+                            </div>
+                            <div className="text-right">
+                                <button
+                                    type="submit"
+                                    className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-white w-full"
+                                    onClick={handleLogin}
+                                >Submit</button>
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     );
+
 }

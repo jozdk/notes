@@ -38,19 +38,20 @@ export const App = () => {
 
     return (
         <AuthProvider>
-            <Header />
+            {/* <Header /> */}
             <Routes>
                 {/* <Route path="/" element={<Home notelist={notelist} />} /> */}
-                <Route path="/" element={<Home notelist={notelist} />}>
-                    <Route path="/users/login" element={<Login />} />
-                    <Route path="/notes/view/:notekey" element={<NoteView setNotelist={setNotelist} />} />
-                    <Route path="*" element={<NotFound />} />
-                    <Route element={<ProtectedRoutes />}>
-                        <Route path="/notes/add" element={<NoteEdit doCreate="create" setNotelist={setNotelist} />} />
-                        <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate="update" setNotelist={setNotelist} />} />
+                <Route element={<ProtectedRoutes />}>
+                    <Route element={<Header />}>
+                        <Route path="/" element={<Home notelist={notelist} />}>
+                            <Route path="/notes/view/:notekey" element={<NoteView setNotelist={setNotelist} />} />
+                            <Route path="*" element={<NotFound />} />
+                            <Route path="/notes/add" element={<NoteEdit doCreate="create" setNotelist={setNotelist} />} />
+                            <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate="update" setNotelist={setNotelist} />} />
+                        </Route>
                     </Route>
                 </Route>
-
+                <Route path="/users/login" element={<Login />} />
             </Routes>
         </AuthProvider>
     );
