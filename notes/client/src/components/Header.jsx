@@ -24,14 +24,14 @@ export const Header = () => {
 
     return (
         <>
-            <header className="w-full bg-dark text-white p-4">
-                <div className="flex flex-col md:flex-row container mx-auto md:items-center">
+            <header className="w-full bg-dark text-white py-4">
+                <div className="flex flex-col md:flex-row mx-auto md:items-center md:px-12 px-7">
 
                     <div id="nav-base" className="text-white flex justify-between md:pr-5">
 
                         {/* Always visible: Home and Add-Button */}
                         <div className="flex items-center">
-                            <Link className="text-white pr-5" to="/">
+                            <Link className="text-white pr-5 pl-3" to="/">
                                 <i className="bi-house text-3xl hover:text-main"></i>
                             </Link>
                             {user && <Link className="inline-block py-2 px-4 bg-main text-text rounded-md hover:outline hover:outline-white" to='/notes/add'>Add a Note</Link>}

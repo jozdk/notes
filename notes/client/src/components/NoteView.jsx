@@ -49,10 +49,9 @@ export const NoteView = ({ setNotelist }) => {
     }
 
     return (
-        <div className="basis-4/5 flex h-[calc(100vh_-_72px)] overflow-y-scroll">
-
+        <>
             {note ? (
-                <div className="p-5 mx-auto w-full 2xl:w-3/4">
+                <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg-w-10/12">
 
                     <div className="min-h-[calc(100%_-_57px)]">
                         <div className="pb-1 mb-3 border-b border-grey-100 flex justify-between">
@@ -99,6 +98,6 @@ export const NoteView = ({ setNotelist }) => {
                 setShowModal={setShowModal}
                 setNotelist={setNotelist}
             />
-        </div>
+        </>
     );
 }

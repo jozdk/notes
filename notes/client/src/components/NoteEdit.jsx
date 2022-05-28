@@ -78,43 +78,39 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
     };
 
     return (
+        <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg:w-10/12 min-h-[calc(100%_-_57px)] flex flex-col">
 
-        <div className="basis-4/5 h-[calc(100vh_-_72px)] overflow-y-scroll">
-            <div className="p-5 mx-auto w-full 2xl:w-3/4 min-h-[calc(100%_-_57px)] flex flex-col">
-
-                <input
-                    className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-2 w-96"
-                    type="text" name="title"
-                    placeholder="Title"
-                    defaultValue={note?.title ? note.title : ""}
-                    onChange={onNoteTitleChange}
-                />
+            <input
+                className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-2 w-96"
+                type="text" name="title"
+                placeholder="Title"
+                defaultValue={note?.title ? note.title : ""}
+                onChange={onNoteTitleChange}
+            />
 
 
-                {note?.error && (
-                    <p className="text-red-600 mt-1">{note.error}</p>
-                )}
+            {note?.error && (
+                <p className="text-red-600 mt-1">{note.error}</p>
+            )}
 
-                <textarea
-                    className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-3"
-                    cols="40"
-                    rows="10"
-                    defaultValue={note?.body ? note.body : ""}
-                    onChange={onNoteBodyChange}
-                    placeholder="Note"
-                ></textarea>
-                
-                <div className="flex justify-end">
-                    <button
-                        className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark"
-                        onClick={handleSaveNote}
-                    >
-                        Submit
-                    </button>
-                </div>
+            <textarea
+                className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-3"
+                cols="40"
+                rows="10"
+                defaultValue={note?.body ? note.body : ""}
+                onChange={onNoteBodyChange}
+                placeholder="Note"
+            ></textarea>
 
+            <div className="flex justify-end">
+                <button
+                    className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark"
+                    onClick={handleSaveNote}
+                >
+                    Submit
+                </button>
             </div>
-        </div>
 
+        </div>
     );
 }
