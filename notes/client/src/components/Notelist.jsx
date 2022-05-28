@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
-export const Notelist = ({ notelist }) => {
+export const Notelist = ({ notelist, searchTerm }) => {
+    if (searchTerm) {
+        notelist = notelist.filter((note) => {
+            const regex = new RegExp(searchTerm, "gi");
+            return note.title.match(regex);
+        });
+    }
+
     return (
         <>
             {notelist.map((note) => {

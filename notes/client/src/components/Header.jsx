@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 // import { AuthContext } from "../App.jsx";
 import { useAuth } from "./AuthProvider.jsx";
 
-export const Header = () => {
+export const Header = ({ setSearchTerm }) => {
     // const user = useContext(AuthContext);
     const { authState: { user }, logout } = useAuth();
     const [displayMenu, setDisplayMenu] = useState(false);
@@ -20,6 +20,11 @@ export const Header = () => {
         } else {
             setDisplayMenu(true);
         }
+    }
+
+    const handleSearchInput = (event) => {
+        console.log(event.target.value);
+        setSearchTerm(event.target.value);
     }
 
     return (
@@ -54,10 +59,14 @@ export const Header = () => {
                     <div id="nav-additional" className={`grow md:flex md:flex-row ${displayMenu ? "flex flex-col" : "hidden"} pt-4 md:pt-0`}>
 
                         <div className="mr-auto pb-3 md:pb-0">
-                            <form>
-                                <input className="focus:outline focus:outline-main focus:ring focus:ring-main p-2 rounded-md mr-3" type="search" placeholder="Search Note" aria-label="Search" />
-                                {/* <button className="p-2 bg-main text-black rounded-md hover:outline hover:outline-white" type="submit">Search</button> */}
-                            </form>
+                            <input
+                                className="text-text focus:outline focus:outline-main focus:ring focus:ring-main p-2 rounded-md mr-3"
+                                type="search"
+                                placeholder="Search Note by Title"
+                                defaultValue=""
+                                onChange={handleSearchInput}
+                            />
+                            {/* <button className="p-2 bg-main text-black rounded-md hover:outline hover:outline-white" type="submit">Search</button> */}
                         </div>
 
                         <div className="md:ml-2">
