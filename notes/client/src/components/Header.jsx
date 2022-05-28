@@ -34,7 +34,7 @@ export const Header = () => {
                             <Link className="text-white pr-5" to="/">
                                 <i className="bi-house text-3xl hover:text-main"></i>
                             </Link>
-                            {user && <Link className="inline-block py-2 px-4 bg-main text-black rounded-md hover:outline hover:outline-white" to='/notes/add'>Add a Note</Link>}
+                            {user && <Link className="inline-block py-2 px-4 bg-main text-text rounded-md hover:outline hover:outline-white" to='/notes/add'>Add a Note</Link>}
                         </div>
 
                         {/* Menu Bars: hidden for medium screen upwards */}
@@ -62,10 +62,10 @@ export const Header = () => {
 
                         <div className="md:ml-2">
                             {user
-                                ? <button onClick={handleLogout} className="py-2 px-4 bg-main text-black rounded-md hover:outline hover:outline-white">
+                                ? <button onClick={handleLogout} className="py-2 px-4 bg-main text-text rounded-md hover:outline hover:outline-white">
                                     Logout <span className="p-1 rounded-md font-medium">{user.username}</span>
                                 </button>
-                                : <Link to="/users/login" className="inline-block py-2 px-4 bg-main text-black rounded-md hover:outline hover:outline-white" onClick={() => setDisplayMenu(false)}>Login</Link>
+                                : <Link to="/users/login" className="inline-block py-2 px-4 bg-main text-text rounded-md hover:outline hover:outline-white" onClick={() => setDisplayMenu(false)}>Login</Link>
                             }
                         </div>
 

@@ -9,6 +9,7 @@ import { NoteEdit } from "./components/NoteEdit.jsx";
 import { NotFound } from "./components/NotFound.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
 import { AuthProvider } from "./components/AuthProvider.jsx";
+import { Placeholder } from "./components/Placeholder.jsx";
 
 export const App = () => {
     const [notelist, setNotelist] = useState([]);
@@ -44,6 +45,7 @@ export const App = () => {
                 <Route element={<ProtectedRoutes />}>
                     <Route element={<Header />}>
                         <Route path="/" element={<Home notelist={notelist} />}>
+                            <Route index element={<Placeholder />} />
                             <Route path="/notes/view/:notekey" element={<NoteView setNotelist={setNotelist} />} />
                             <Route path="*" element={<NotFound />} />
                             <Route path="/notes/add" element={<NoteEdit doCreate="create" setNotelist={setNotelist} />} />

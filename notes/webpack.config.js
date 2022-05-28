@@ -23,7 +23,8 @@ export default ({ MODE }) => {
             new CopyWebpackPlugin({
                 patterns: [
                     { from: "client/src/static", to: "." },
-                    { from: "client/src/css", to: "./assets/stylesheets" }
+                    { from: "client/src/css", to: "./assets/stylesheets" },
+                    { from: "client/src/static/add_notes.svg", to: "./assets/svg" }
                 ]
             })
         ],
