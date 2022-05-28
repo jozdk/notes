@@ -3,6 +3,7 @@ import passport from "passport";
 import { NotesStore as notes } from "../models/notes-store.js";
 import { ensureAuthenticated } from "./users.js";
 import { getKeyTitlesList } from "./index.js";
+import { sessionCookieName } from "../app.js";
 import { login } from "./users.js";
 import DBG from "debug";
 import util from "util";
