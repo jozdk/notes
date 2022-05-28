@@ -22,9 +22,9 @@ export default ({ MODE }) => {
             new CleanWebpackPlugin(),
             new CopyWebpackPlugin({
                 patterns: [
-                    { from: "client/src/static", to: "." },
+                    { from: "client/src/index.html", to: "." },
                     { from: "client/src/css", to: "./assets/stylesheets" },
-                    { from: "client/src/static/add_notes.svg", to: "./assets/svg" }
+                    { from: "client/src/static", to: "./assets/svg" }
                 ]
             })
         ],
