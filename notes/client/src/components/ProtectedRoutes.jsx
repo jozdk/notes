@@ -1,5 +1,6 @@
 import { useAuth } from "./AuthProvider.jsx";
 import { Outlet, Navigate } from "react-router-dom";
+import { Spinner } from "./Spinner.jsx";
 import { useState, useEffect } from "react";
 import { Login } from "./Login.jsx";
 
@@ -13,8 +14,8 @@ export const ProtectedRoutes = () => {
         return <Outlet />;
     } else if (isLoading) {
         return (
-            <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
+            <div className="h-screen w-screen flex">
+                <Spinner />
             </div>
         )
     } else {

@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import { AuthContext } from "../App.jsx";
 import { useAuth } from "./AuthProvider.jsx";
 import { NoteDelete } from "./NoteDelete.jsx";
+import { Spinner } from "./Spinner.jsx";
 
 export const NoteView = ({ setNotelist }) => {
     // const user = useContext(AuthContext);
@@ -89,7 +90,7 @@ export const NoteView = ({ setNotelist }) => {
                     )}
                 </div>
             ) : (
-                <p>Loading...</p>
+                <Spinner />
             )}
 
             <NoteDelete
