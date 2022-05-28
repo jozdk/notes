@@ -118,7 +118,6 @@ app.use(cookieParser());
 app.use(sessionMiddleware);
 initPassport(app);
 app.use(express.static(path.join(__dirname, "client", "public")));
-app.use("/assets/vendor/bootstrap", express.static(path.join(__dirname, "node_modules", "bootstrap", "dist")));
 app.use("/assets/vendor/bootstrap-icons", express.static(path.join(__dirname, "node_modules", "bootstrap-icons", "font")))
 
 // Routers
