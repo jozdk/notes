@@ -36,7 +36,7 @@ export const NoteDelete = ({ showModal, setShowModal, note, setNotelist }) => {
 
     return showModal && (
         <div className="flex justify-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 bg-modal" onClick={handleCloseModal}>
-            <div className="w-3/12 my-6 mx-auto mt-64 min-w-96">
+            <div className="w-10/12 md:w-450 my-6 mx-auto mt-64 min-w-96">
                 <div className="border-0 rounded-lg shadow-lg flex flex-col w-full bg-white outline-none focus:outline-none">
                     <div className="p-3 flex justify-between">
                         <i className="bi bi-info-circle"></i>
