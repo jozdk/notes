@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { io } from "socket.io-client";
 import { AuthContext } from "../App.jsx";
@@ -13,6 +13,7 @@ export const NoteView = ({ setNotelist }) => {
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const setDisplaySidebar = useOutletContext();
 
     useEffect(() => {
         const fetchNote = async () => {
@@ -20,6 +21,9 @@ export const NoteView = ({ setNotelist }) => {
                 const response = await fetch(`/notes/view?key=${notekey}`);
                 const data = await response.json();
                 setNote(data.note);
+                if (window.innerWidth <= 768) {
+                    setDisplaySidebar(false);
+                }
             } catch (err) {
                 console.log(err);
                 setNote(null);
