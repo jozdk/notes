@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 export const NoteEdit = ({ doCreate, setNotelist }) => {
     const navigate = useNavigate();
@@ -103,6 +103,12 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
             ></textarea>
 
             <div className="flex justify-end">
+                <Link
+                    className="py-2 px-4 bg-gray-100 text-black shadow-md rounded-md hover:outline hover:outline-dark mr-2"
+                    to={`/notes/view/${notekey}`}
+                >
+                    Cancel
+                </Link>
                 <button
                     className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark"
                     onClick={handleSaveNote}
