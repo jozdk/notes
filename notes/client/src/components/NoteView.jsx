@@ -73,7 +73,7 @@ export const NoteView = ({ setNotelist }) => {
                         </div>
 
 
-                        <p className="mb-10">{note.body}</p>
+                        <p className="mb-10 whitespace-pre-wrap">{note.body}</p>
                         {/* <p>Key: {notekey}</p> */}
                     </div>
 

@@ -26,7 +26,6 @@ export const Header = ({ setSearchTerm }) => {
     }, [])
 
     const handleLogout = () => {
-        setDisplayMenu(false);
         logout();
     }
 
