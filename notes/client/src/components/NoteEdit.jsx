@@ -81,7 +81,7 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
         <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg:w-10/12 min-h-[calc(100%_-_57px)] flex flex-col">
 
             <input
-                className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-2 w-96"
+                className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-2"
                 type="text" name="title"
                 placeholder="Title"
                 defaultValue={note?.title ? note.title : ""}

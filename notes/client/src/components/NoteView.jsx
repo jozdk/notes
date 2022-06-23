@@ -61,11 +61,11 @@ export const NoteView = ({ setNotelist }) => {
                         <div className="pb-1 mb-3 border-b border-grey-100 flex justify-between">
                             <h3 className="text-2xl font-semibold ">{note.title}</h3>
                             {user && notekey && (
-                                <div className="w-20 flex justify-around items-center">
-                                    <Link to={`/notes/edit/${notekey}`}>
+                                <div className="w-20 flex justify-around items-end">
+                                    <Link to={`/notes/edit/${notekey}`} style={{paddingBottom: "2px"}}>
                                         <i className="bi bi-pencil-fill text-slate-500 cursor-pointer"></i>
                                     </Link>
-                                    <button onClick={handleShowModal}>
+                                    <button onClick={handleShowModal} style={{paddingBottom: "2px"}}>
                                         <i className="bi bi-trash3-fill text-slate-500 cursor pointer"></i>
                                     </button>
                                 </div>
