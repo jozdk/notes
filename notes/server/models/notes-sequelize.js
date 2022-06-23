@@ -72,7 +72,7 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
             throw new Error(`No note found for ${key}`);
         } else {
             // return new Note(note.notekey, note.title, note.body);
-            return { key: note.notekey, title: note.title, body: note.body };
+            return { key: note.notekey, title: note.title, body: note.body, createdAt: note.createdAt, updatedAt: note.updatedAt };
         }
     }
 

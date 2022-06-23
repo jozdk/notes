@@ -36,6 +36,7 @@ export async function getKeyTitlesList() {
         return {
             key: note.key,
             title: note.title,
+            date: note.updatedAt
         }
     });
 }
