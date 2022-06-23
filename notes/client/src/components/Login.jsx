@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "./AuthProvider.jsx";
+import { Spinner } from "./Spinner.jsx";
+import { Navigate } from "react-router-dom";
 
 export const Login = () => {
     const auth = useAuth();
@@ -19,44 +21,54 @@ export const Login = () => {
         auth.login(username, password);
     }
 
-    return (
-        <div className="bg-dark h-screen w-screen">
-            <div className="flex h-full">
-                <div className="flex flex-col m-auto">
-                    <h1 className="text-6xl text-main text-center mb-20">NOTES</h1>
-                    <div>
-                        <form>
-                            <div className="mb-3">
-                                <input
-                                    onChange={handleUsernameChange}
-                                    type="text"
-                                    defaultValue=""
-                                    placeholder="Username"
-                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
-                                />
-                            </div>
-                            <div className="mb-5">
-                                <input
-                                    onChange={handlePasswordChange}
-                                    type="password"
-                                    defaultValue=""
-                                    placeholder="Password"
-                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
-                                />
-                            </div>
-                            <div className="text-right">
-                                <button
-                                    type="submit"
-                                    className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-white w-full"
-                                    onClick={handleLogin}
-                                >Submit</button>
-                            </div>
-
-                        </form>
+    if (auth.authState?.user) {
+        return <Navigate to="/notes" />
+    } else if (auth.authState?.isLoading) {
+        return (
+            <div className="h-screen w-screen flex">
+                <Spinner />
+            </div>
+        )
+    } else {
+        return (
+            <div className="bg-dark h-screen w-screen">
+                <div className="flex h-full">
+                    <div className="flex flex-col m-auto">
+                        <h1 className="text-6xl text-main text-center mb-20">NOTES</h1>
+                        <div>
+                            <form>
+                                <div className="mb-3">
+                                    <input
+                                        onChange={handleUsernameChange}
+                                        type="text"
+                                        defaultValue=""
+                                        placeholder="Username"
+                                        className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                    />
+                                </div>
+                                <div className="mb-5">
+                                    <input
+                                        onChange={handlePasswordChange}
+                                        type="password"
+                                        defaultValue=""
+                                        placeholder="Password"
+                                        className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                    />
+                                </div>
+                                <div className="text-right">
+                                    <button
+                                        type="submit"
+                                        className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-white w-full"
+                                        onClick={handleLogin}
+                                    >Submit</button>
+                                </div>
+    
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    }
 
 }
