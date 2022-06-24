@@ -5,6 +5,7 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
     const navigate = useNavigate();
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchNote = async () => {
@@ -29,6 +30,7 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
             } else {
                 const note = {};
                 note.title = event.target.value;
+                note.body = "";
                 return note;
             }
         });
@@ -42,6 +44,7 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
             } else {
                 const note = {};
                 note.body = event.target.value;
+                note.title = "";
                 return note;
             }
         });
@@ -50,6 +53,9 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
     const handleSaveNote = async (event) => {
         event.preventDefault();
         try {
+            if (!note) {
+                throw new Error("This note has no content. Write a note title and/or body.")
+            }
             const response = await fetch("/notes/save", {
                 method: "POST",
                 mode: "same-origin",
@@ -69,10 +75,14 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
                 navigate(`/notes/view/${data.notekey}`);
             } else {
                 console.log(data.msg)
-                setNote({ error: "Internal Server Error: This note could not be saved" });
+                setError("This note could not be saved.");
             }
         } catch (err) {
-            setNote({ error: err.message });
+            if (err.message === "This note has no content. Write a note title and/or body.") {
+                setError(err.message);
+            } else {
+                setError("Internal Server Error: This note could not be saved.");
+            }
         }
 
     };
@@ -89,8 +99,8 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
             />
 
 
-            {note?.error && (
-                <p className="text-red-600 mt-1">{note.error}</p>
+            {error && (
+                <p className="text-red-600 mt-1">{error}</p>
             )}
 
             <textarea
