@@ -62,9 +62,9 @@ export const Header = ({ setSearchTerm }) => {
     return (
         <>
             <header className="w-full bg-dark text-white py-4">
-                <div className="flex flex-col md:flex-row mx-auto md:items-center md:px-12 px-3">
+                <div className="flex flex-col md:flex-row mx-auto md:items-center lg:px-12 px-3">
 
-                    <div id="nav-base" className="text-white flex grow justify-between md:pr-5">
+                    <div id="nav-base" className="text-white flex grow justify-between">
 
                         {/* Always visible: Home and Add-Button */}
                         <div className="flex items-center">
