@@ -5,6 +5,7 @@ import { AuthContext } from "../App.jsx";
 import { useAuth } from "./AuthProvider.jsx";
 import { NoteDelete } from "./NoteDelete.jsx";
 import { Spinner } from "./Spinner.jsx";
+import { NoteNotFound } from "./NoteNotFound.jsx";
 
 export const NoteView = ({ setNotelist }) => {
     // const user = useContext(AuthContext);
@@ -19,14 +20,18 @@ export const NoteView = ({ setNotelist }) => {
         const fetchNote = async () => {
             try {
                 const response = await fetch(`/notes/view?key=${notekey}`);
+                if (!response.ok) {
+                    throw new Error();
+                }
                 const data = await response.json();
-                setNote(data.note);
+                if (data) {
+                    setNote(data.note);
+                }
                 if (window.innerWidth <= 768) {
                     setDisplaySidebar(false);
                 }
             } catch (err) {
-                console.log(err);
-                setNote(null);
+                setNote("Not found");
             }
         };
         fetchNote();
@@ -54,8 +59,8 @@ export const NoteView = ({ setNotelist }) => {
 
     return (
         <>
-            {note ? (
-                <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg-w-10/12">
+            {note != null && note !== "Not found" ? (
+                <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg:w-10/12">
 
                     <div className="min-h-[calc(100%_-_57px)]">
                         <div className="pb-1 mb-3 border-b border-grey-100 flex justify-between">
@@ -74,7 +79,6 @@ export const NoteView = ({ setNotelist }) => {
 
 
                         <p className="mb-10 whitespace-pre-wrap">{note.body}</p>
-                        {/* <p>Key: {notekey}</p> */}
                     </div>
 
 
@@ -92,9 +96,10 @@ export const NoteView = ({ setNotelist }) => {
 
                     )}
                 </div>
-            ) : (
-                <Spinner />
-            )}
+            ) : note === "Not found"
+                ? <NoteNotFound />
+                : <Spinner />
+            }
 
             <NoteDelete
                 note={note}

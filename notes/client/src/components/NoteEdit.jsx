@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { NoteNotFound } from "./NoteNotFound";
 
 export const NoteEdit = ({ doCreate, setNotelist }) => {
     const navigate = useNavigate();
@@ -12,10 +13,13 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
             if (doCreate === "update") {
                 try {
                     const response = await fetch(`/notes/edit?key=${notekey}`);
+                    if (!response.ok) {
+                        throw new Error();
+                    }
                     const data = await response.json();
                     setNote(data.note);
                 } catch (err) {
-                    setNote(null);
+                    setNote("Not found");
                 }
             }
         };
@@ -87,46 +91,50 @@ export const NoteEdit = ({ doCreate, setNotelist }) => {
 
     };
 
-    return (
-        <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg:w-10/12 min-h-[calc(100%_-_57px)] flex flex-col">
+    if ((note !== "Not found") || doCreate === "create") {
+        return (
+            <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg:w-10/12 min-h-[calc(100%_-_57px)] flex flex-col">
 
-            <input
-                className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-2"
-                type="text" name="title"
-                placeholder="Title"
-                defaultValue={note?.title ? note.title : ""}
-                onChange={onNoteTitleChange}
-            />
+                <input
+                    className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-2"
+                    type="text" name="title"
+                    placeholder="Title"
+                    defaultValue={note?.title ? note.title : ""}
+                    onChange={onNoteTitleChange}
+                />
 
 
-            {error && (
-                <p className="text-red-600 mt-1">{error}</p>
-            )}
+                {error && (
+                    <p className="text-red-600 mt-1">{error}</p>
+                )}
 
-            <textarea
-                className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-3"
-                cols="40"
-                rows="10"
-                defaultValue={note?.body ? note.body : ""}
-                onChange={onNoteBodyChange}
-                placeholder="Note"
-            ></textarea>
+                <textarea
+                    className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-3"
+                    cols="40"
+                    rows="10"
+                    defaultValue={note?.body ? note.body : ""}
+                    onChange={onNoteBodyChange}
+                    placeholder="Note"
+                ></textarea>
 
-            <div className="flex justify-end">
-                <Link
-                    className="py-2 px-4 bg-gray-100 text-black shadow-md rounded-md hover:outline hover:outline-dark mr-2"
-                    to={`/notes/view/${notekey}`}
-                >
-                    Cancel
-                </Link>
-                <button
-                    className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark"
-                    onClick={handleSaveNote}
-                >
-                    Submit
-                </button>
+                <div className="flex justify-end">
+                    <Link
+                        className="py-2 px-4 bg-gray-100 text-black shadow-md rounded-md hover:outline hover:outline-dark mr-2"
+                        to={notekey ? `/notes/view/${notekey}` : "/notes"}
+                    >
+                        Cancel
+                    </Link>
+                    <button
+                        className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark"
+                        onClick={handleSaveNote}
+                    >
+                        Submit
+                    </button>
+                </div>
+
             </div>
-
-        </div>
-    );
+        );
+    } else {
+        return <NoteNotFound />;
+    }
 }
