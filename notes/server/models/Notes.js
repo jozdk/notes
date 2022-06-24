@@ -3,12 +3,16 @@ import EventEmitter from "events";
 const _note_key = Symbol("key");
 const _note_title = Symbol("title");
 const _note_body = Symbol("body");
+const _created_at = Symbol("createdAt");
+const _updated_at = Symbol("updatedAt");
 
 export class Note {
-    constructor(key, title, body) {
+    constructor(key, title, body, createdAt, updatedAt) {
         this[_note_key] = key;
         this[_note_title] = title;
         this[_note_body] = body;
+        this[_created_at] = createdAt;
+        this[_updated_at] = updatedAt;
     }
 
     get key() {
@@ -27,11 +31,25 @@ export class Note {
         this[_note_body] = newBody;
     }
 
+    get createdAt() {
+        return this[_created_at];
+    }
+
+    get updatedAt() {
+        return this[_updated_at];
+    }
+
+    set updatedAt(newDate) {
+        this[_updated_at] = newDate;
+    }
+
     toJSON() {
         return JSON.stringify({
             key: this.key,
             title: this.title,
-            body: this.body
+            body: this.body,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt
         });
     }
 
@@ -44,11 +62,16 @@ export class Note {
             || !data.hasOwnProperty("title")
             || typeof data.title !== "string"
             || !data.hasOwnProperty("body")
-            || typeof data.body !== "string") {
+            || typeof data.body !== "string"
+            || !data.hasOwnProperty("createdAt")
+            || typeof data.createdAt !== "string"
+            || !data.hasOwnProperty("updatedAt")
+            || typeof data.updatedAt !== "string"
+        ) {
             throw new Error(`Not a Note: ${json}`);
         }
 
-        const note = new Note(data.key, data.title, data.body);
+        const note = new Note(data.key, data.title, data.body, data.createdAt, data.updatedAt);
         return note;
     }
 

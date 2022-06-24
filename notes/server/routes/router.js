@@ -50,7 +50,9 @@ router.get("/notes/edit", ensureAuthenticated, async (req, res, next) => {
             note: {
                 key: note.key,
                 title: note.title,
-                body: note.body
+                body: note.body,
+                createdAt: note.createdAt,
+                updatedAt: note.updatedAt
             }
         });
     } catch (err) {
@@ -78,12 +80,13 @@ router.post("/notes/save", ensureAuthenticated, async (req, res, next) => {
     try {
         const { doCreate, note } = req.body;
         const uuid = uuidv4();
+        const noteDate = new Date().toISOString();
         let savedNote;
 
         if (doCreate === "create") {
-            savedNote = await notes.create(uuid, note.title, note.body);
+            savedNote = await notes.create(uuid, note.title, note.body, noteDate, noteDate);
         } else {
-            savedNote = await notes.update(note.key, note.title, note.body);
+            savedNote = await notes.update(note.key, note.title, note.body, note.createdAt, noteDate);
         }
 
         const newNotelist = await getKeyTitlesList();

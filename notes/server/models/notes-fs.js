@@ -13,8 +13,8 @@ export default class FSNotesStore extends AbstractNotesStore {
 
     }
 
-    async create(key, title, body) {
-        const note = createOrUpdate(key, title, body);
+    async create(key, title, body, createdAt, updatedAt) {
+        const note = createOrUpdate(key, title, body, createdAt, updatedAt);
         this.emitCreated(note);
         return note;
     }
@@ -26,8 +26,8 @@ export default class FSNotesStore extends AbstractNotesStore {
         return note;
     }
 
-    async update(key, title, body) {
-        const note = createOrUpdate(key, title, body);
+    async update(key, title, body, createdAt, updatedAt) {
+        const note = createOrUpdate(key, title, body, createdAt, updatedAt);
         this.emitUpdated(note);
         return note;
     }
@@ -77,14 +77,14 @@ async function readJSON(notesdir, key) {
     return Note.fromJSON(data);
 }
 
-async function createOrUpdate(key, title, body) {
+async function createOrUpdate(key, title, body, createdAt, updatedAt) {
     const notesdir = await notesDir();
 
     if (key.includes("/")) {
         throw new Error(`Key ${key} cannot contain "/"`);
     }
 
-    const note = new Note(key, title, body);
+    const note = new Note(key, title, body, createdAt, updatedAt);
     const nFilePath = filePath(notesdir, key);
     const jsonNote = note.toJSON();
     debug(`WRITE ${nFilePath} ${jsonNote}`);
