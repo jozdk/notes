@@ -5,8 +5,8 @@ const notes = [];
 export default class InMemoryNotesStore extends AbstractNotesStore {
     async close() {}
 
-    async create(key, title, body) {
-        notes[key] = new Note(key, title, body);
+    async create(key, title, body, createdAt, updatedAt) {
+        notes[key] = new Note(key, title, body, createdAt, updatedAt);
         this.emitCreated(notes[key]);
         return notes[key];
     }
@@ -19,8 +19,8 @@ export default class InMemoryNotesStore extends AbstractNotesStore {
         }
     }
 
-    async update(key, title, body) {
-        notes[key] = new Note(key, title, body);
+    async update(key, title, body, createdAt, updatedAt) {
+        notes[key] = new Note(key, title, body, createdAt, updatedAt);
         this.emitUpdated(notes[key]);
         return notes[key];
     }

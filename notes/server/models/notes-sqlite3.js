@@ -44,12 +44,12 @@ export default class SQLite3NotesStore extends AbstractNotesStore {
             }) : undefined;
     }
 
-    async create(key, title, body) {
+    async create(key, title, body, createdAt, updatedAt) {
         const db = await connectDB();
-        const note = new Note(key, title, body);
+        const note = new Note(key, title, body, createdAt, updatedAt);
         await new Promise((resolve, reject) => {
-            db.run("INSERT INTO notes (notekey, title, body) VALUES (?, ?, ?)",
-                [key, title, body],
+            db.run("INSERT INTO notes (notekey, title, body, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?)",
+                [key, title, body, createdAt, updatedAt],
                 (err) => {
                     if (err) {
                         return reject(err);
@@ -72,22 +72,25 @@ export default class SQLite3NotesStore extends AbstractNotesStore {
                 (err, row) => {
                     if (err) {
                         return reject(err);
+                    } else if (!row) {
+                        return reject(new Error(`No note found for ${key}`));
+                    } else {
+                        const note = new Note(row.notekey, row.title, row.body, row.createdAt, row.updatedAt);
+                        debug(`READ ${util.inspect(note)}`);
+                        resolve(note);
                     }
-                    const note = new Note(row.notekey, row.title, row.body);
-                    debug(`READ ${util.inspect(note)}`);
-                    resolve(note);
                 }
             );
         });
         return note;
     }
 
-    async update(key, title, body) {
+    async update(key, title, body, createdAt, updatedAt) {
         const db = await connectDB();
-        const note = new Note(key, title, body);
+        const note = new Note(key, title, body, createdAt, updatedAt);
         await new Promise((resolve, reject) => {
-            db.run("UPDATE notes SET title = ?, body = ? WHERE notekey = ?",
-                [title, body, key],
+            db.run("UPDATE notes SET title = ?, body = ?, createdAt = ?, updatedAt = ? WHERE notekey = ?",
+                [title, body, createdAt, updatedAt, key],
                 (err) => {
                     if (err) {
                         return reject(err);

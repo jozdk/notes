@@ -27,8 +27,8 @@ export default class LevelNotesStore extends AbstractNotesStore {
         return _db ? _db.close() : undefined;
     }
 
-    async create(key, title, body) {
-        const note = createOrUpdate(key, title, body);
+    async create(key, title, body, createdAt, updatedAt) {
+        const note = createOrUpdate(key, title, body, createdAt, updatedAt);
         this.emitCreated(note);
         return note;
     }
@@ -41,8 +41,8 @@ export default class LevelNotesStore extends AbstractNotesStore {
         return note;
     }
 
-    async update(key, title, body) {
-        const note = createOrUpdate(key, title, body);
+    async update(key, title, body, createdAt, updatedAt) {
+        const note = createOrUpdate(key, title, body, createdAt, updatedAt);
         this.emitUpdated(note);
         return note;
     }
@@ -74,10 +74,10 @@ export default class LevelNotesStore extends AbstractNotesStore {
 
 }
 
-async function createOrUpdate(key, title, body) {
-    debug(`createOrUpdate ${key} ${title} ${body}`);
+async function createOrUpdate(key, title, body, createdAt, updatedAt) {
+    debug(`createOrUpdate ${key} ${title} ${body} ${createdAt} ${updatedAt}`);
     const db = await connectDB();
-    let note = new Note(key, title, body);
+    const note = new Note(key, title, body, createdAt, updatedAt);
     await db.put(key, note.toJSON());
     debug(`createOrUpdate saved ${util.inspect(note)}`);
     return note;
