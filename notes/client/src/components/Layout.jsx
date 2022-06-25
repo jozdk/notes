@@ -1,9 +1,10 @@
 import { Notelist } from "./Notelist.jsx";
 import { Outlet, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
+import io from "socket.io-client";
 
 export const Layout = () => {
-    const [displaySidebar, setDisplaySidebar, searchTerm] = useOutletContext();
+    const { displaySidebar, setDisplaySidebar, searchTerm } = useOutletContext();
     const [notelist, setNotelist] = useState([]);
 
     useEffect(() => {
@@ -13,6 +14,18 @@ export const Layout = () => {
             setNotelist(data.notelist);
         };
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        const newSocket = io("/home");
+        newSocket.on("connect", () => {
+            console.log("socketio connection on /home");
+        });
+        newSocket.on("notetitles", (arg) => {
+            const notelist = arg.notelist;
+            setNotelist(notelist);
+        });
+        return () => newSocket.close();
     }, []);
 
     const handleHideSidebar = () => {
@@ -28,7 +41,7 @@ export const Layout = () => {
             </div>
             <div className={`fixed w-100 h-100 top-72px left-0 right-0 bottom-0 bg-modal ${displaySidebar ? "block md:hidden" : "hidden"}`} onClick={handleHideSidebar}></div>
             <div className={`flex h-[calc(100vh_-_72px)] grow overflow-y-scroll ${displaySidebar ? "ml-0 md:ml-320px" : "ml-0"}`}>
-                <Outlet context={[setDisplaySidebar, setNotelist]} />
+                <Outlet context={{ setDisplaySidebar, setNotelist }} />
             </div>
         </div>
     )

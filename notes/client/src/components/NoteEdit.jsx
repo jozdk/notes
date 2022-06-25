@@ -7,7 +7,7 @@ export const NoteEdit = ({ doCreate }) => {
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
     const [error, setError] = useState(null);
-    const [setNotelist] = useOutletContext();
+    const { setNotelist } = useOutletContext();
 
     useEffect(() => {
         const fetchNote = async () => {

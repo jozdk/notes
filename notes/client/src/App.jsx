@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import io from "socket.io-client";
 import { Header } from "./components/Header.jsx";
 import { Layout } from "./components/Layout.jsx";
 import { Login } from "./components/Login.jsx";
@@ -12,21 +10,6 @@ import { AuthProvider } from "./components/AuthProvider.jsx";
 import { Home } from "./components/Home.jsx";
 
 export const App = () => {
-    const [socket, setSocket] = useState(null);
-
-    useEffect(() => {
-        const newSocket = io("/home");
-        setSocket(newSocket);
-        newSocket.on("connect", () => {
-            console.log("socketio connection on /home");
-        });
-        newSocket.on("notetitles", (arg) => {
-            const notelist = arg.notelist;
-            setNotelist(notelist);
-        });
-        return () => newSocket.close();
-    }, []);
-
     return (
         <AuthProvider>
             {/* <Header /> */}

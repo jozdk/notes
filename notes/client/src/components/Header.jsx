@@ -155,7 +155,7 @@ export const Header = () => {
 
                 </div>
             </header>
-            <Outlet context={[displaySidebar, setDisplaySidebar, searchTerm]} />
+            <Outlet context={{ displaySidebar, setDisplaySidebar, searchTerm }} />
         </>
     )
 }
