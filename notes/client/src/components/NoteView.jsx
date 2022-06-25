@@ -7,14 +7,14 @@ import { NoteDelete } from "./NoteDelete.jsx";
 import { Spinner } from "./Spinner.jsx";
 import { NoteNotFound } from "./NoteNotFound.jsx";
 
-export const NoteView = ({ setNotelist }) => {
+export const NoteView = () => {
     // const user = useContext(AuthContext);
     const navigate = useNavigate();
     const { authState: { user } } = useAuth();
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const setDisplaySidebar = useOutletContext();
+    const [setDisplaySidebar, setNotelist] = useOutletContext();
 
     useEffect(() => {
         const fetchNote = async () => {

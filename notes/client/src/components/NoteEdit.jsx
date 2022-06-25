@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useOutletContext } from "react-router-dom";
 import { NoteNotFound } from "./NoteNotFound";
 
-export const NoteEdit = ({ doCreate, setNotelist }) => {
+export const NoteEdit = ({ doCreate }) => {
     const navigate = useNavigate();
     const { notekey } = useParams();
     const [note, setNote] = useState(null);
     const [error, setError] = useState(null);
+    const [setNotelist] = useOutletContext();
 
     useEffect(() => {
         const fetchNote = async () => {

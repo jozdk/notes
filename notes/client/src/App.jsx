@@ -12,18 +12,7 @@ import { AuthProvider } from "./components/AuthProvider.jsx";
 import { Home } from "./components/Home.jsx";
 
 export const App = () => {
-    const [notelist, setNotelist] = useState([]);
     const [socket, setSocket] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch("/list");
-            const data = await response.json();
-            setNotelist(data.notelist);
-        };
-        fetchData();
-    }, []);
 
     useEffect(() => {
         const newSocket = io("/home");
@@ -44,12 +33,12 @@ export const App = () => {
             <Routes>
                 {/* <Route path="/" element={<Home notelist={notelist} />} /> */}
                 <Route element={<ProtectedRoutes />}>
-                    <Route element={<Header setSearchTerm={setSearchTerm} />}>
-                        <Route element={<Layout notelist={notelist} searchTerm={searchTerm} />}>
+                    <Route element={<Header />}>
+                        <Route element={<Layout />}>
                             <Route path="/notes" element={<Home />} />
-                            <Route path="/notes/view/:notekey" element={<NoteView setNotelist={setNotelist} />} />
-                            <Route path="/notes/add" element={<NoteEdit doCreate="create" setNotelist={setNotelist} />} />
-                            <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate="update" setNotelist={setNotelist} />} />
+                            <Route path="/notes/view/:notekey" element={<NoteView />} />
+                            <Route path="/notes/add" element={<NoteEdit doCreate="create" />} />
+                            <Route path="/notes/edit/:notekey" element={<NoteEdit doCreate="update" />} />
                         </Route>
                     </Route>
                 </Route>

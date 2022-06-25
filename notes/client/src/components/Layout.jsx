@@ -1,8 +1,19 @@
 import { Notelist } from "./Notelist.jsx";
 import { Outlet, useOutletContext } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-export const Layout = ({ notelist, searchTerm }) => {
-    const [displaySidebar, setDisplaySidebar] = useOutletContext();
+export const Layout = () => {
+    const [displaySidebar, setDisplaySidebar, searchTerm] = useOutletContext();
+    const [notelist, setNotelist] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch("/notes/list");
+            const data = await response.json();
+            setNotelist(data.notelist);
+        };
+        fetchData();
+    }, []);
 
     const handleHideSidebar = () => {
         if (displaySidebar) {
@@ -17,7 +28,7 @@ export const Layout = ({ notelist, searchTerm }) => {
             </div>
             <div className={`fixed w-100 h-100 top-72px left-0 right-0 bottom-0 bg-modal ${displaySidebar ? "block md:hidden" : "hidden"}`} onClick={handleHideSidebar}></div>
             <div className={`flex h-[calc(100vh_-_72px)] grow overflow-y-scroll ${displaySidebar ? "ml-0 md:ml-320px" : "ml-0"}`}>
-                <Outlet context={setDisplaySidebar} />
+                <Outlet context={[setDisplaySidebar, setNotelist]} />
             </div>
         </div>
     )

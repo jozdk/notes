@@ -4,12 +4,13 @@ import { useState, useEffect, useRef } from "react";
 // import { AuthContext } from "../App.jsx";
 import { useAuth } from "./AuthProvider.jsx";
 
-export const Header = ({ setSearchTerm }) => {
+export const Header = () => {
     // const user = useContext(AuthContext);
     const { authState: { user }, logout } = useAuth();
     const [displaySidebar, setDisplaySidebar] = useState(window.innerWidth <= 768 ? false : true);
     const [displayUserDropdown, setDisplayUserDropdown] = useState(false);
     const [useSearch, setUseSearch] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const searchRef = useRef(null);
 
@@ -154,7 +155,7 @@ export const Header = ({ setSearchTerm }) => {
 
                 </div>
             </header>
-            <Outlet context={[displaySidebar, setDisplaySidebar]} />
+            <Outlet context={[displaySidebar, setDisplaySidebar, searchTerm]} />
         </>
     )
 }

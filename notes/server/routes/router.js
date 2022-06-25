@@ -14,7 +14,7 @@ const debug = DBG("notes:api");
 
 export const router = express.Router();
 
-router.get("/list", async (req, res, next) => {
+router.get("/notes/list", ensureAuthenticated, async (req, res, next) => {
     try {
         const noteList = await getKeyTitlesList();
         res.json({
@@ -26,7 +26,7 @@ router.get("/list", async (req, res, next) => {
     }
 });
 
-router.get("/notes/view", async (req, res, next) => {
+router.get("/notes/view", ensureAuthenticated, async (req, res, next) => {
     try {
         const { key } = req.query;
         const note = await notes.read(key);

@@ -23,7 +23,8 @@ export function ensureAuthenticated(req, res, next) {
         if (req.user) {
             next();
         } else {
-            res.redirect("/users/login");
+            // res.redirect("/users/login");
+            res.status(403).json({ msg: "Not authorized" });
         }
     } catch (err) {
         next(err);
