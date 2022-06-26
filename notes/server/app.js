@@ -19,7 +19,7 @@ import {
 
 import { router as indexRouter, init as indexInit } from "./routes/index.js";
 import { router as notesRouter, init as notesInit } from "./routes/notes.js";
-import { router as usersRouter, initPassport } from "./routes/users.js";
+import { router as usersRouter, initPassport, initPassportForSocketIo } from "./routes/users.js";
 import { router } from "./routes/router.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
@@ -78,22 +78,8 @@ server.on("request", (req, res) => {
 // Set up socket.io
 export const io = new SocketioServer(server);
 
-io.use((socket, next) => {
-    sessionMiddleware(socket.request, {}, next);
-});
-io.use((socket, next) => {
-    passport.initialize()(socket.request, {}, next);
-})
-io.use((socket, next) => {
-    passport.session()(socket.request, {}, next);
-})
-io.use((socket, next) => {
-    if (socket.request.user) {
-        next();
-    } else {
-        next(new Error("unauthorized"));
-    }
-});
+initPassportForSocketIo(io.of("/home"), sessionMiddleware);
+initPassportForSocketIo(io.of("/notes"), sessionMiddleware);
 
 // app.engine("handlebars", engine());
 // app.set("view engine", "handlebars");

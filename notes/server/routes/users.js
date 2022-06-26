@@ -17,6 +17,22 @@ export function initPassport(app) {
     app.use(passport.session());
 }
 
+export function initPassportForSocketIo(parentNamespace, sessionMiddleware) {
+    const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
+
+    parentNamespace.use(wrap(sessionMiddleware));
+    parentNamespace.use(wrap(passport.initialize()));
+    parentNamespace.use(wrap(passport.session()));
+
+    parentNamespace.use((socket, next) => {
+        if (socket.request.user) {
+            next();
+        } else {
+            next(new Error("unauthorized"));
+        }
+    });
+}
+
 export function ensureAuthenticated(req, res, next) {
     try {
         debug("ensureAuthenticated: ", req.user);
