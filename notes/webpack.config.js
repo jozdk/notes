@@ -1,6 +1,7 @@
 import path from "path";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
+import MiniCSSExtractPlugin from "mini-css-extract-plugin";
 
 export default ({ MODE }) => {
     return {
@@ -12,6 +13,10 @@ export default ({ MODE }) => {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     use: ["babel-loader"]
+                },
+                {
+                    test: /\.css$/,
+                    use: [MiniCSSExtractPlugin.loader, "css-loader", "postcss-loader"]
                 }
             ]
         },
@@ -23,9 +28,12 @@ export default ({ MODE }) => {
             new CopyWebpackPlugin({
                 patterns: [
                     { from: "client/src/index.html", to: "." },
-                    { from: "client/src/css", to: "./assets/stylesheets" },
+                    // { from: "client/src/css", to: "./assets/stylesheets" },
                     { from: "client/src/static", to: "./assets/svg" }
                 ]
+            }),
+            new MiniCSSExtractPlugin({
+                filename: "assets/css/style.css"
             })
         ],
         output: {

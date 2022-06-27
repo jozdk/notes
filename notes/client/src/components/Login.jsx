@@ -34,7 +34,7 @@ export const Login = () => {
             <div className="bg-dark h-screen w-screen">
                 <div className="flex h-full">
                     <div className="flex flex-col m-auto">
-                        <h1 className="text-6xl text-main text-center mb-20">NOTES</h1>
+                        <h1 className="text-6xl text-main text-center mb-10">NOTES</h1>
                         <div>
                             <form>
                                 <div className="mb-3">
