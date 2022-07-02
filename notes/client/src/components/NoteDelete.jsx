@@ -15,7 +15,7 @@ export const NoteDelete = ({ showModal, setShowModal, note, setNotelist }) => {
 
     const deleteNote = async (notekey) => {
         try {
-            const response = await fetch(`/notes/destroy/confirm?key=${notekey}`, {
+            const response = await fetch(`/notes/destroy?key=${notekey}`, {
                 method: "POST",
                 mode: "same-origin",
                 credentials: "same-origin",

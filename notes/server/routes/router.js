@@ -18,8 +18,7 @@ router.get("/notes/list", ensureAuthenticated, async (req, res, next) => {
     try {
         const noteList = await getKeyTitlesList();
         res.json({
-            notelist: noteList,
-            user: req.user ? req.user : null
+            notelist: noteList
         });
     } catch (err) {
         next(err);
@@ -34,41 +33,9 @@ router.get("/notes/view", ensureAuthenticated, async (req, res, next) => {
             note: {
                 key: note.key,
                 title: note.title,
-                body: note.body
-            }
-        });
-    } catch (err) {
-        next(err);
-    }
-});
-
-router.get("/notes/edit", ensureAuthenticated, async (req, res, next) => {
-    try {
-        const { key } = req.query;
-        const note = await notes.read(key);
-        res.json({
-            note: {
-                key: note.key,
-                title: note.title,
                 body: note.body,
                 createdAt: note.createdAt,
                 updatedAt: note.updatedAt
-            }
-        });
-    } catch (err) {
-        next(err);
-    }
-});
-
-router.get("/notes/destroy", ensureAuthenticated, async (req, res, next) => {
-    try {
-        const { key } = req.query;
-        const note = await notes.read(key);
-        res.json({
-            note: {
-                key: note.key,
-                title: note.title,
-                body: note.body
             }
         });
     } catch (err) {
@@ -107,11 +74,10 @@ router.post("/notes/save", ensureAuthenticated, async (req, res, next) => {
     }
 });
 
-router.post("/notes/destroy/confirm", ensureAuthenticated, async (req, res, next) => {
+router.post("/notes/destroy", ensureAuthenticated, async (req, res, next) => {
     try {
         const { notekey } = req.body;
         await notes.destroy(notekey);
-        // res.redirect("/");
         res.json({
             success: true
         });

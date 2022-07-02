@@ -13,7 +13,7 @@ export const NoteEdit = ({ doCreate }) => {
         const fetchNote = async () => {
             if (doCreate === "update") {
                 try {
-                    const response = await fetch(`/notes/edit?key=${notekey}`);
+                    const response = await fetch(`/notes/view?key=${notekey}`);
                     if (!response.ok) {
                         throw new Error();
                     }

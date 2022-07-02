@@ -1,8 +1,6 @@
 import express from "express";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import path from "path";
-import util from "util";
 import * as usersModel from "../models/users-superagent.js";
 import { sessionCookieName } from "../app.js";
 import DBG from "debug";
@@ -63,59 +61,48 @@ export function login(req, res, next) {
     }
 }
 
-// router.get("/login", (req, res, next) => {
-//     try {
-//         res.render("login", { title: "Login to Notes", user: req.user });
-//     } catch(err) {
-//         next(err);
-//     }
-// });
-
-// router.post("/login", passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/users/login"
-// }));
-
-router.post("/login",
+router.post("/users/login",
     (req, res, next) => {
         debug(req.body);
         next();
     },
     passport.authenticate("local"),
     (req, res, next) => {
-        debug("/api/login requested");
+        debug("/users/login requested");
         login(req, res, next);
     }
 );
 
-// router.get("/logout", (req, res, next) => {
-//     try {
-//         req.session.destroy();
-//         req.logout();
-//         res.clearCookie(sessionCookieName);
-//         debug("Logged out user");
-//         res.redirect("/");
-//     } catch (err) {
-//         next(err);
-//     }
-// });
+router.post("/users/logout", ensureAuthenticated, (req, res, next) => {
+    try {
+        req.session.destroy();
+        req.logout();
+        res.clearCookie(sessionCookieName);
+        debug("Logged out user");
+        res.status(200).json({
+            success: true,
+            msg: "Logout successfull"
+        });
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.post("/logout",
-    ensureAuthenticated,
-    (req, res, next) => {
-        try {
-            req.session.destroy();
-            req.logout();
-            // res.clearCookie(sessionCookieName);
-            debug("Logged out user");
-            res.status(200).json({
-                success: true,
-                msg: "Logout successfull"
-            });
-        } catch (err) {
-            next(err);
-        }
-    });
+router.post("/auth", (req, res, next) => {
+    if (req.isAuthenticated() && req.user) {
+        res.json({
+            success: true,
+            user: {
+                id: req.user.id,
+                username: req.user.username
+            }
+        });
+    } else {
+        res.json({
+            success: false
+        });
+    }
+});
 
 passport.use(new LocalStrategy(
     async (username, password, done) => {
