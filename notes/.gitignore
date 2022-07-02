@@ -1,7 +1,6 @@
 node_modules
 .env
 log.txt
-public/assets/stylesheets/styles.css
 models/test.js
 notes-fs-data
 notes.level

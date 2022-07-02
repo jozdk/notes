@@ -28,7 +28,6 @@ export default ({ MODE }) => {
             new CopyWebpackPlugin({
                 patterns: [
                     { from: "client/src/index.html", to: "." },
-                    // { from: "client/src/css", to: "./assets/stylesheets" },
                     { from: "client/src/static", to: "./assets/svg" }
                 ]
             }),
