@@ -1,5 +1,4 @@
 import { default as express } from "express";
-import { engine } from "express-handlebars";
 import * as path from "path";
 import { default as logger } from "morgan";
 import { default as rfs } from "rotating-file-stream";
@@ -20,10 +19,8 @@ import {
 import { router as indexRouter, init as indexInit } from "./routes/index.js";
 import { router as notesRouter, init as notesInit } from "./routes/notes.js";
 import { router as usersRouter, initPassport, initPassportForSocketIo } from "./routes/users.js";
-// import { router } from "./routes/router.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
-import passport from "passport";
 
 dotenv.config();
 
@@ -81,10 +78,6 @@ export const io = new SocketioServer(server);
 initPassportForSocketIo(io.of("/home"), sessionMiddleware);
 initPassportForSocketIo(io.of("/notes"), sessionMiddleware);
 
-// app.engine("handlebars", engine());
-// app.set("view engine", "handlebars");
-// app.set("views", path.join(__dirname, "views"));
-
 // Middleware
 app.use(logger(process.env.REQUEST_LOG_FORMAT || "dev", {
     stream: process.env.REQUEST_LOG_FILE ?
@@ -110,7 +103,6 @@ app.use("/assets/vendor/bootstrap-icons", express.static(path.join(__dirname, "n
 app.use(indexRouter);
 app.use(notesRouter);
 app.use(usersRouter);
-// app.use(router);
 app.get("*", (req, res, next) => {
     res.sendFile(path.resolve("client/public/index.html"));
 });
