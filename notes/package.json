@@ -10,7 +10,7 @@
     "sqlite3-setup": "sqlite3 notes.sqlite3 --init server/models/schema-sqlite3.sql",
     "sqlite3-start": "cross-env DEBUG=notes:* NOTES_MODEL=sqlite3 node server/app.js & npm run dev:build-client & npm run dev:build-client",
     "sequelize-start": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=server/models/sequelize-sqlite.yaml NOTES_MODEL=sequelize node server/app.js & npm run dev:build-client",
-    "sequelize-pg-start": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=server/models/sequelize-pg.yaml NOTES_MODEL=sequelize node server/app.js & npm run dev:build-client",
+    "postgres-start": "cross-env DEBUG=notes:* NOTES_MODEL=postgres node server/app.js & npm run dev:build-client",
     "dev:build-client": "webpack watch --config ./webpack.config.js --env MODE=development"
   },
   "type": "module",
