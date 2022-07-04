@@ -23,10 +23,10 @@ async function connectDB() {
             password: process.env.PG_PASSWD,
             port: 5432
         });
-        pgClient.connect();
+        await pgClient.connect();
         debug("PostgreSQL connection established");
 
-        pgClient.query(`CREATE TABLE IF NOT EXISTS notes (
+        await pgClient.query(`CREATE TABLE IF NOT EXISTS notes (
             key VARCHAR(255) PRIMARY KEY,
             title VARCHAR(255),
             body TEXT,
