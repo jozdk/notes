@@ -1,18 +1,11 @@
-import { Command } from "commander";
-import bcrypt from "bcrypt";
 import pg from "pg";
+import bcrypt from "bcrypt";
 const { Client } = pg;
 
 import DBG from "debug";
 const debug = DBG("notes:users-postgres");
 
 let pgClient;
-
-async function genHash(password) {
-    const salt = await bcrypt.genSalt(10);
-    const hashed = await bcrypt.hash(password, salt);
-    return hashed;
-}
 
 async function connectDB() {
     if (pgClient) {
@@ -32,7 +25,7 @@ async function connectDB() {
         debug("PostgreSQL connection for users established");
 
         await pgClient.query(`CREATE TABLE IF NOT EXISTS users (
-            username VARCHAR(20)
+            username VARCHAR(20),
             password VARCHAR(80)
         )`);
         debug("Table users was created (if not already existed)");
@@ -43,33 +36,115 @@ async function connectDB() {
     }
 }
 
-const program = new Command();
+export default class PostgresUsersStore {
+    async close() {
+        await pgClient.end();
+        pgClient = undefined;
+    }
 
-async function main() {
-    program
-        .command("add <username>")
-        .description("Add a user to the user server")
-        .option("--password <password>", "Password for new user")
-        .action(async (username, options) => {
-            const { password } = options;
-            const saltedHash = await genHash(password);
-            await connectDB();
-            try {
-                const res = await pgClient.query(
-                    `INSERT INTO users (username, password) VALUES ($1, $2)`,
-                    [username, saltedHash]
-                );
-                if (res) {
-                    console.log(`Created new user ${username}`);
-                } else {
-                    console.log(`New user ${username} could not be created`);
-                }
-            } catch (err) {
-                console.log(err);
+    async create(username, password) {
+        await connectDB();
+        const res = await pgClient.query(
+            `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING username`,
+            [username, password]
+        );
+        if (!res) {
+            throw new Error(`New user ${username} could not be created`);
+        } else {
+            debug("Create ", username);
+            return {
+                username: res.rows[0].username
+            };
+        }
+    }
+
+    async read(username) {
+        await connectDB();
+        const res = await pgClient.query("SELECT * FROM users WHERE username = $1", [username]);
+        if (res) {
+            const user = res.rows[0];
+            if (user) {
+                return {
+                    username: user.username
+                };
+            } else {
+                return undefined;
             }
-        });
+        } else {
+            throw new Error("Error reading ", username);
+        }
+    }
 
-        
-    
-        await program.parseAsync(process.argv);
+    async update(username, password) {
+        await connectDB();
+        const res = await pgClient.query(
+            `UPDATE users
+                SET password = $1
+                WHERE username = $2`,
+            [password, username]
+        );
+        if (!res) {
+            throw new Error(`User ${username} could not be updated`);
+        } else {
+            debug("Updated ", username);
+            return { username };
+        }
+    }
+
+    async destroy(username) {
+        await connectDB();
+        const res = await pgClient.query("DELETE FROM users WHERE username = $1", [username]);
+        if (!res) {
+            throw new Error(`User ${username} could not be deleted`);
+        }
+    }
+
+    async list() {
+        await connectDB();
+        const res = await pgClient.query("SELECT username FROM users");
+        if (res) {
+            let usersList = res.rows.map((row) => row.username);
+            if (!usersList) {
+                usersList = [];
+            }
+            return usersList;
+        } else {
+            throw new Error("Could not list users");
+        }
+    }
+
+    async passwordCheck(username, password) {
+        await connectDB();
+        const res = await pgClient.query("SELECT * FROM users WHERE username = $1", [username]);
+        const user = res.rows[0];
+        let checked;
+        if (!user) {
+            checked = {
+                check: false,
+                username,
+                message: "User not found"
+            };
+        } else {
+            let pwcheck = false;
+
+            if (user.username === username) {
+                pwcheck = await bcrypt.compare(password, user.password);
+            }
+
+            if (pwcheck) {
+                checked = {
+                    check: true,
+                    username: user.username
+                };
+            } else {
+                checked = {
+                    check: false,
+                    username,
+                    message: "Incorrect username or password"
+                };
+            }
+        }
+        return checked;
+    }
 }
+
