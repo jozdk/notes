@@ -113,7 +113,7 @@ export default class PostgresUsersStore {
         }
     }
 
-    async passwordCheck(username, password) {
+    async checkPassword(username, password) {
         await connectDB();
         const res = await pgClient.query("SELECT * FROM users WHERE username = $1", [username]);
         const user = res.rows[0];

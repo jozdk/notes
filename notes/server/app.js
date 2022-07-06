@@ -21,7 +21,7 @@ import { router as notesRouter, init as notesInit } from "./routes/notes.js";
 import { router as usersRouter, initPassport, initPassportForSocketIo } from "./routes/users.js";
 
 import { useModel as useNotesModel } from "./models/notes-store.js";
-import { useModel as useUsersModel } from "./models/users-store.js";
+// import { useModel as useUsersModel } from "./models/users-store.js";
 
 dotenv.config();
 
@@ -30,8 +30,8 @@ const debug = DBG("notes:debug");
 
 // Set NotesModel
 useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
-.then((store) => {
-    debug(`Using NotesStore ${util.inspect(store)}`);
+.then(({ notesStore, usersStore }) => {
+    debug(`Using NotesStore ${util.inspect(notesStore)}`);
     indexInit();
     notesInit();
 })
@@ -42,11 +42,11 @@ useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
     });
 })
 
-useUsersModel(process.env.NOTES_MODEL)
-    .then((store) => {})
-    .catch((err) => {
-        debug(err);
-    });
+// useUsersModel(process.env.NOTES_MODEL)
+//     .then((store) => {})
+//     .catch((err) => {
+//         debug(err);
+//     });
 
 // Set up express session and session store
 const FileStore = sessionFileStore(session);

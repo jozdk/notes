@@ -1,11 +1,11 @@
 import { server, port } from "./app.js";
 import * as util from "util";
 import { NotesStore } from "./models/notes-store.js";
-import { UsersStore } from "./models/users-store.js";
+// import { UsersStore } from "./models/users-store.js";
 import { default as DBG } from "debug";
 
 const debug = DBG("notes:debug");
-const dbgerror = DBG("notes:error");
+const dbgError = DBG("notes:error");
 
 export function normalizePort(val) {
     const port = parseInt(val, 10);
@@ -22,7 +22,7 @@ export function normalizePort(val) {
 }
 
 export function onError(error) {
-    dbgerror(error);
+    dbgError(error);
 
     if (error.syscall !== "listen") {
         throw error;
@@ -77,6 +77,8 @@ export function basicErrorHandler(err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
 
+    dbgError(err);
+
     res.status(err.status || 500);
     // res.render("error");
     res.json({
@@ -96,7 +98,6 @@ export function basicErrorHandler(err, req, res, next) {
 async function catchProcessExit() {
     try {
         await NotesStore.close();
-        await UsersStore.close();
         server.close();
         process.exit(0);
     } catch (err) {

@@ -10,9 +10,9 @@ dotenv.config({ path: "../.env" });
 
 let users;
 
-import(`./models/users-${process.argv[2] === "--store" || process.argv[2] === "-s" ? process.argv[3] : "postgres"}.js`)
+import(`./models/notes-${process.argv[2] === "--store" || process.argv[2] === "-s" ? process.argv[3] : "postgres"}.js`)
     .then((store) => {
-        const { default: UsersStoreClass } = store;
+        const { UsersStoreClass } = store;
         users = new UsersStoreClass();
         console.log(users);
         return main();
@@ -115,7 +115,7 @@ async function main() {
         .description("Check user password")
         .action(async (username, password) => {
             try {
-                const result = await users.passwordCheck(username, password);
+                const result = await users.checkPassword(username, password);
                 console.log(`Password check: ${util.inspect(result)}`);
             } catch (err) {
                 console.error(err.message);
