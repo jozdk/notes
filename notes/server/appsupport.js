@@ -1,6 +1,7 @@
 import { server, port } from "./app.js";
 import * as util from "util";
 import { NotesStore } from "./models/notes-store.js";
+import { UsersStore } from "./models/users-store.js";
 import { default as DBG } from "debug";
 
 const debug = DBG("notes:debug");
@@ -95,6 +96,7 @@ export function basicErrorHandler(err, req, res, next) {
 async function catchProcessExit() {
     try {
         await NotesStore.close();
+        await UsersStore.close();
         server.close();
         process.exit(0);
     } catch (err) {
