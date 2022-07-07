@@ -223,7 +223,7 @@ class PostgresUsersStore {
 
     async list() {
         await connectDB();
-        const res = await pgClient.query("SELECT username FROM users");
+        const res = await pgClient.query("SELECT * FROM users");
         if (res) {
             let usersList = res.rows.map((row) => {
                 return {

@@ -41,9 +41,6 @@ export async function connectDB() {
         if (process.env.SEQUELIZE_LOGGING === "false") {
             params.params.logging = false;
         }
-        if (process.env.SEQUELIZE_DBFILE) {
-            params.params.storage = process.env.SEQUELIZE_DBFILE;
-        }
 
         sequelize = new Sequelize(params.dbname, params.username, params.password, params.params);
 
@@ -62,9 +59,7 @@ export async function close() {
     if (sequelize) {
         try {
             await sequelize.close();
-            if (process.env.SEQUELIZE_LOGGING !== "false") {
-                console.log("Sequelize connection has been closed");
-            }
+            debug("Sequelize connection has been closed");
         } catch (err) {
             console.error(err);
         }

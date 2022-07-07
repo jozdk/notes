@@ -7,17 +7,17 @@ import path from "path";
 // import { onError } from "./appsupport.js";
 // import { UsersStore as users } from "./models/users-store.js";
 
-dotenv.config({ path: "../.env" });
+dotenv.config();
 
 let users;
 
 if ((process.argv[2] === "--store" || process.argv[2] === "-s") && process.argv[3] === "sequelize") {
-    process.env.SEQUELIZE_CONNECT = path.resolve("models/sequelize-sqlite.yaml");
     process.env.SEQUELIZE_LOGGING = false;
-    process.env.SEQUELIZE_DBFILE = path.resolve("../notes-sequelize.sqlite3");
+    // process.env.SEQUELIZE_CONNECT = path.resolve("models/sequelize-sqlite.yaml");
+    // process.env.SEQUELIZE_DBFILE = path.resolve("../notes-sequelize.sqlite3");
 }
 
-import(`./models/notes-${process.argv[2] === "--store" || process.argv[2] === "-s" ? process.argv[3] : "postgres"}.js`)
+import(`./server/models/notes-${process.argv[2] === "--store" || process.argv[2] === "-s" ? process.argv[3] : "postgres"}.js`)
     .then((store) => {
         const { UsersStoreClass } = store;
         users = new UsersStoreClass();
