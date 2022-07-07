@@ -21,7 +21,7 @@ import(`./server/models/notes-${process.argv[2] === "--store" || process.argv[2]
     .then((store) => {
         const { UsersStoreClass } = store;
         users = new UsersStoreClass();
-        console.log(users);
+        console.log("Using", users.constructor.name);
         return main();
     })
     .then(() => {
