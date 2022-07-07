@@ -7,7 +7,6 @@
     "memory-start": "cross-env REQUEST_LOG_FILE=log.txt REQUEST_LOG_FORMAT=common DEBUG=notes:* node server/app & npm run dev:build-client",
     "fs-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=fs node server/app.js & npm run dev:build-client",
     "level-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=level node server/app.js & npm run dev:build-client",
-    "sqlite3-setup": "sqlite3 notes.sqlite3 --init server/models/schema-sqlite3.sql",
     "sqlite3-start": "cross-env DEBUG=notes:* NOTES_MODEL=sqlite3 node server/app.js & npm run dev:build-client & npm run dev:build-client",
     "sequelize-start": "cross-env DEBUG=notes:* NOTES_MODEL=sequelize node server/app.js & npm run dev:build-client",
     "postgres-start": "cross-env DEBUG=notes:* NOTES_MODEL=postgres node server/app.js & npm run dev:build-client",
