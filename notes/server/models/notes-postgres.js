@@ -29,7 +29,7 @@ async function connectDB() {
         debug("PostgreSQL connection established");
 
         await pgClient.query(`CREATE TABLE IF NOT EXISTS notes (
-            key CHAR(36) PRIMARY KEY,
+            key UUID PRIMARY KEY,
             title VARCHAR(255),
             body TEXT,
             created_at CHAR(24),
@@ -38,7 +38,7 @@ async function connectDB() {
         debug("Table notes was created if not already existed");
 
         await pgClient.query(`CREATE TABLE IF NOT EXISTS users (
-            id CHAR(36) PRIMARY KEY,
+            id UUID PRIMARY KEY,
             username VARCHAR(20) UNIQUE NOT NULL,
             password CHAR(60) NOT NULL,
             created_at CHAR(24),

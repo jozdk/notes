@@ -2,6 +2,7 @@ import { Command } from "commander";
 import bcrypt from "bcrypt";
 import util from "util";
 import dotenv from "dotenv";
+import path from "path";
 // import { useModel as useUsersModel } from "./models/users-store.js";
 // import { onError } from "./appsupport.js";
 // import { UsersStore as users } from "./models/users-store.js";
@@ -9,6 +10,12 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 let users;
+
+if ((process.argv[2] === "--store" || process.argv[2] === "-s") && process.argv[3] === "sequelize") {
+    process.env.SEQUELIZE_CONNECT = path.resolve("models/sequelize-sqlite.yaml");
+    process.env.SEQUELIZE_LOGGING = false;
+    process.env.SEQUELIZE_DBFILE = path.resolve("../notes-sequelize.sqlite3");
+}
 
 import(`./models/notes-${process.argv[2] === "--store" || process.argv[2] === "-s" ? process.argv[3] : "postgres"}.js`)
     .then((store) => {
@@ -44,7 +51,6 @@ async function main() {
         .description("Add a user to the database")
         .option("--password <password>", "Password for new user")
         .action(async (username, options) => {
-            console.log(users);
             const { password } = options;
             const saltedHash = await genHash(password);
             try {

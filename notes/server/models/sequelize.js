@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 import { default as yaml } from "js-yaml";
 import { Sequelize } from "sequelize";
 import { default as DBG } from "debug";
@@ -13,7 +14,7 @@ export async function connectDB() {
         let params;
 
         try {
-            const yamlText = fs.readFileSync(process.env.SEQUELIZE_CONNECT, "utf8");
+            const yamlText = fs.readFileSync(path.resolve(process.env.SEQUELIZE_CONNECT), "utf8");
             params = yaml.load(yamlText);
         } catch (err) {
             console.log(err);
@@ -37,6 +38,12 @@ export async function connectDB() {
         if (process.env.SEQUELIZE_DBDIALECT) {
             params.params.dialect = process.env.SEQUELIZE_DBDIALECT;
         }
+        if (process.env.SEQUELIZE_LOGGING === "false") {
+            params.params.logging = false;
+        }
+        if (process.env.SEQUELIZE_DBFILE) {
+            params.params.storage = process.env.SEQUELIZE_DBFILE;
+        }
 
         sequelize = new Sequelize(params.dbname, params.username, params.password, params.params);
 
@@ -55,7 +62,9 @@ export async function close() {
     if (sequelize) {
         try {
             await sequelize.close();
-            console.log("Sequelize connection has been closed");
+            if (process.env.SEQUELIZE_LOGGING !== "false") {
+                console.log("Sequelize connection has been closed");
+            }
         } catch (err) {
             console.error(err);
         }
