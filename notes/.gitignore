@@ -3,6 +3,7 @@ node_modules
 log.txt
 models/test.js
 notes-fs-data
+users-fs-data
 notes.level
 notes.sqlite3
 notes-sequelize.sqlite3
