@@ -17,16 +17,26 @@ Notes is a fullstack web application, built with Node.js/Express and React, for 
     - LevelDB
     - SQLite
     - PostgreSQL
+    - Sequelize --> for easy hook-up of DBs supported by Sequelize
 - Keep your notes private on your own server
 - Deploy easily and for free to Heroku
 
+## Walk through Notes
+
 ## Architecture
 
-### Back-End
-
-The back-end of Notes is built with Node.js and Express. It can be set up with multiple data storage options that are selectable via environment variable upon runtime. The supported databases are LevelDB, SQLite, PostgreSQL and Sequelize/MySQL. Aside from that, data can also be persisted to the file system. Cookie-based authentication is realized with Passport.js.
+The back-end of Notes is built with Node.js and Express. It can be set up with multiple data storage options that are selectable via environment variable upon runtime (see below). The supported databases are LevelDB, SQLite, PostgreSQL, plus the multi SQL dialects ORM Sequelize. Aside from that, data can also be persisted to the file system. Cookie-based authentication is realized with express-session and Passport.js.
 
 The front-end is a React application, styled with TailwindCSS. Client-side routing is handled with React Router.
 
 For a dynamic communication between server and client, WebSockets are implemented with Socket.IO.
+
+## Start Notes
+
+
+
+## Deployment
+
+The application is deployable with Heroku (free tier and up). See https://devcenter.heroku.com/ for instructions.
+
 
