@@ -29,29 +29,17 @@ export const NoteEdit = ({ doCreate }) => {
 
     const onNoteTitleChange = (event) => {
         setNote((prevNote) => {
-            if (prevNote) {
-                prevNote.title = event.target.value;
-                return prevNote;
-            } else {
-                const note = {};
-                note.title = event.target.value;
-                note.body = "";
-                return note;
-            }
+            return prevNote
+                ? { ...prevNote, title: event.target.value }
+                : { title: event.target.value, body: "" };
         });
     };
 
     const onNoteBodyChange = (event) => {
         setNote((prevNote) => {
-            if (prevNote) {
-                prevNote.body = event.target.value;
-                return prevNote;
-            } else {
-                const note = {};
-                note.body = event.target.value;
-                note.title = "";
-                return note;
-            }
+            return prevNote
+                ? { ...prevNote, body: event.target.value }
+                : { title: "", body: event.target.value };
         });
     };
 
@@ -100,7 +88,8 @@ export const NoteEdit = ({ doCreate }) => {
                     className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-2"
                     type="text" name="title"
                     placeholder="Title"
-                    defaultValue={note?.title ? note.title : ""}
+                    spellCheck={false}
+                    value={note?.title ? note.title : ""}
                     onChange={onNoteTitleChange}
                 />
 
@@ -113,7 +102,8 @@ export const NoteEdit = ({ doCreate }) => {
                     className="border border-gray-300 p-2 rounded-md focus:outline focus:outline-main mb-3"
                     cols="40"
                     rows="10"
-                    defaultValue={note?.body ? note.body : ""}
+                    spellCheck={false}
+                    value={note?.body ? note.body : ""}
                     onChange={onNoteBodyChange}
                     placeholder="Note"
                 ></textarea>
