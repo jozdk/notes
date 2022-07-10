@@ -23,6 +23,36 @@ Notes is a fullstack web application, built with Node.js/Express and React, for 
 
 ## Walk through Notes
 
+**Log-In Screen**
+
+Notes requires you to log in with a username and password. Users can be added, updated, deleted, and more with a CLI (see below).
+
+![Notes Login](documentation/notes_login.png)
+
+**Home Screen**
+
+The layout of Notes displays all of your notes in a toggeable side menu to the left and the main content to the right. On mobile screens the side menu can be displayed and hidden as an overlay.
+
+ The navigation bar contains the following elements:
+
+- Menu button: Performs said toggling of the side menu
+- Home button: Go to Home Screen
+- Add-a-Note button: Go to Edit Screen with an empty note template
+- Search field: Type in a search term and find notes by their title
+- User/Logout button: Open dropdown with user information and Logout
+
+![Notes Home Screen](documentation/notes_home.png)
+
+**Edit Screen**
+
+The edit screen has a field for a note title and body. You can leave out either one of them, but you can't save an empty note. Finally, save your note by clicking `Submit` or cancel the action.
+
+![Notes Edit Screen]()
+
+**View Screen**
+
+
+
 ## Architecture
 
 The back-end of Notes is built with Node.js and Express. It can be set up with multiple data storage options that are selectable via environment variable upon runtime (see below). The supported databases are LevelDB, SQLite, PostgreSQL, plus the multi SQL dialects ORM Sequelize. Aside from that, data can also be persisted to the file system. Cookie-based authentication is realized with express-session and Passport.js.
@@ -31,7 +61,7 @@ The front-end is a React application, styled with TailwindCSS. Client-side routi
 
 For a dynamic communication between server and client, WebSockets are implemented with Socket.IO.
 
-## Start Notes
+## Development
 
 
 
