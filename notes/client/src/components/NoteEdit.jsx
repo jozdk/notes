@@ -90,6 +90,7 @@ export const NoteEdit = ({ doCreate }) => {
                     placeholder="Title"
                     spellCheck={false}
                     value={note?.title ? note.title : ""}
+                    autoFocus
                     onChange={onNoteTitleChange}
                 />
 
