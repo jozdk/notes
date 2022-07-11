@@ -21,7 +21,7 @@ async function connectDB() {
         pgClient = new Client({
             user: process.env.PG_USER,
             host: 'localhost',
-            database: 'notes_project',
+            database: process.env.PG_DATABASE,
             password: process.env.PG_PASSWD,
             port: 5432
         });
