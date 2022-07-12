@@ -1,7 +1,6 @@
 import express from "express";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-// import * as usersModel from "../models/users-superagent.js";
 import { UsersStore as users } from "../models/notes-store.js";
 import { sessionCookieName } from "../app.js";
 import DBG from "debug";
@@ -108,7 +107,6 @@ router.post("/auth", (req, res, next) => {
 passport.use(new LocalStrategy(
     async (username, password, done) => {
         try {
-            // const check = await usersModel.checkUserPassword(username, password);
             const check = await users.checkPassword(username, password)
             if (check.check) {
                 done(null, { id: check.username, username: check.username });
@@ -133,7 +131,6 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (username, done) => {
     try {
-        // const user = await usersModel.find(username);
         const user = await users.read(username);
         done(null, user);
     } catch (err) {
