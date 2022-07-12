@@ -2,22 +2,29 @@ import { Command } from "commander";
 import bcrypt from "bcrypt";
 import util from "util";
 import dotenv from "dotenv";
-import path from "path";
-// import { useModel as useUsersModel } from "./models/users-store.js";
-// import { onError } from "./appsupport.js";
-// import { UsersStore as users } from "./models/users-store.js";
 
 dotenv.config();
 
 let users;
 
-if ((process.argv[2] === "--store" || process.argv[2] === "-s") && process.argv[3] === "sequelize") {
-    process.env.SEQUELIZE_LOGGING = false;
-    // process.env.SEQUELIZE_CONNECT = path.resolve("models/sequelize-sqlite.yaml");
-    // process.env.SEQUELIZE_DBFILE = path.resolve("../notes-sequelize.sqlite3");
+const storeOpt = process.argv.findIndex((arg) => arg === "-s" || arg === "--store");
+
+if (storeOpt !== -1 
+    && process.argv[storeOpt + 1] !== "fs"
+    && process.argv[storeOpt + 1] !== "level"
+    && process.argv[storeOpt + 1] !== "sqlite3"
+    && process.argv[storeOpt + 1] !== "sequelize"
+    && process.argv[storeOpt + 1] !== "postgres"
+) {
+    console.log("No argument provided for store");
+    process.exit(1);
 }
 
-import(`./server/models/notes-${process.argv[2] === "--store" || process.argv[2] === "-s" ? process.argv[3] : "postgres"}.js`)
+if (storeOpt !== -1 && process.argv[storeOpt + 1] === "sequelize") {
+    process.env.SEQUELIZE_LOGGING = false;
+}
+
+import(`./server/models/notes-${storeOpt !== -1 ? process.argv[storeOpt + 1] : "sqlite3"}.js`)
     .then((store) => {
         const { UsersStoreClass } = store;
         users = new UsersStoreClass();
@@ -47,11 +54,9 @@ async function main() {
         .option("-s, --store <store>", "User store to be used", "postgres")
 
     program
-        .command("add <username>")
+        .command("add <username> <password>")
         .description("Add a user to the database")
-        .option("--password <password>", "Password for new user")
-        .action(async (username, options) => {
-            const { password } = options;
+        .action(async (username, password) => {
             const saltedHash = await genHash(password);
             try {
                 const user = await users.create(username, saltedHash);
@@ -78,11 +83,9 @@ async function main() {
         });
 
     program
-        .command("update <username>")
+        .command("update <username> <password>")
         .description("Update user information on the database")
-        .option("--password <password>", "Password for new user")
-        .action(async (username, options) => {
-            const { password } = options;
+        .action(async (username, password) => {
             const saltedHash = await genHash(password);
             try {
                 const user = await users.update(username, saltedHash);

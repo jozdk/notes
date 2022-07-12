@@ -165,7 +165,6 @@ class PostgresUsersStore {
             throw new Error(`New user ${username} could not be created`);
         } else {
             const user = res.rows[0];
-            debug("Create ", user);
             return {
                 id: user.id,
                 username: user.username,
@@ -202,14 +201,20 @@ class PostgresUsersStore {
         const res = await pgClient.query(
             `UPDATE users
                 SET password = $1, updated_at = $2
-                WHERE username = $3`,
+                WHERE username = $3
+                RETURNING *`,
             [password, date, username]
         );
         if (!res) {
             throw new Error(`User ${username} could not be updated`);
         } else {
-            debug("Updated ", username);
-            return { username };
+            const user = res.rows[0];
+            return {
+                id: user.id,
+                username: user.username,
+                createdAt: user.created_at,
+                updatedAt: user.updated_at
+            };
         }
     }
 
