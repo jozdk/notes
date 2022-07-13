@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         authState: { user, isLoading },
-        login: async (username, password) => {
+        login: async (username, password, setAlert) => {
             try {
                 const response = await fetch("/users/login", {
                     method: "POST",
@@ -60,21 +60,22 @@ export const AuthProvider = ({ children }) => {
                         password: password
                     })
                 });
+                if (!response.ok) {
+                    throw new Error();
+                }
                 const data = await response.json();
 
                 if (data.success === true) {
                     setUser(data.user);
-                    // localStorage.setItem("user", JSON.stringify(data.user));
                     navigate("/notes");
                 } else {
                     setUser(null);
-                    // localStorage.setItem("user", null);
+                    setAlert("Wrong username or password");
                 }
 
             } catch (err) {
-                console.log(err);
                 setUser(null);
-                // localStorage.setItem("user", null);
+                setAlert("Wrong username or password");
             }
         },
         logout: async () => {

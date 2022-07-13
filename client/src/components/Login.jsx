@@ -7,6 +7,7 @@ export const Login = () => {
     const auth = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [alert, setAlert] = useState("");
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -18,7 +19,7 @@ export const Login = () => {
 
     const handleLogin = (event) => {
         event.preventDefault();
-        auth.login(username, password);
+        auth.login(username, password, setAlert);
     }
 
     if (auth.authState?.user) {
@@ -35,36 +36,38 @@ export const Login = () => {
                 <div className="flex h-full">
                     <div className="flex flex-col m-auto">
                         <h1 className="text-6xl text-main text-center mb-10">NOTES</h1>
-                        <div>
-                            <form>
-                                <div className="mb-3">
-                                    <input
-                                        onChange={handleUsernameChange}
-                                        type="text"
-                                        defaultValue=""
-                                        placeholder="Username"
-                                        className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
-                                    />
+                        <form>
+                            {alert && (
+                                <div className="mb-2 text-red-500 text-center">
+                                    {alert}
                                 </div>
-                                <div className="mb-5">
-                                    <input
-                                        onChange={handlePasswordChange}
-                                        type="password"
-                                        defaultValue=""
-                                        placeholder="Password"
-                                        className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
-                                    />
-                                </div>
-                                <div className="text-right">
-                                    <button
-                                        type="submit"
-                                        className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-white w-full"
-                                        onClick={handleLogin}
-                                    >Submit</button>
-                                </div>
-    
-                            </form>
-                        </div>
+                            )}
+                            <div className="mb-3">
+                                <input
+                                    onChange={handleUsernameChange}
+                                    type="text"
+                                    defaultValue=""
+                                    placeholder="Username"
+                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                />
+                            </div>
+                            <div className="mb-5">
+                                <input
+                                    onChange={handlePasswordChange}
+                                    type="password"
+                                    defaultValue=""
+                                    placeholder="Password"
+                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                />
+                            </div>
+                            <div className="text-right">
+                                <button
+                                    type="submit"
+                                    className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-white w-full"
+                                    onClick={handleLogin}
+                                >Submit</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
