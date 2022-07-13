@@ -98,7 +98,7 @@ router.post("/auth", (req, res, next) => {
             }
         });
     } else {
-        res.json({
+        res.status(401).json({
             success: false
         });
     }

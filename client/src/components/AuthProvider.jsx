@@ -14,37 +14,37 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            setIsLoading(true);
-            const response = await fetch("/auth", {
-                method: "POST",
-                mode: "same-origin",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({})
-            });
-            const data = await response.json();
-
-            if (data.success === true) {
-                setUser(data.user);
-                setIsLoading(false);
-            } else {
-                // setIsRejected(true);
+            try {
+                setIsLoading(true);
+                const response = await fetch("/auth", {
+                    method: "POST",
+                    mode: "same-origin",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({})
+                });
+                if (!response.ok) {
+                    throw new Error();
+                }
+                const data = await response.json();
+    
+                if (data.success === true) {
+                    setUser(data.user);
+                    setIsLoading(false);
+                } else {
+                    setIsLoading(false);
+                    setUser(null);
+                }
+            } catch (err) {
                 setIsLoading(false);
                 setUser(null);
             }
         };
         fetchUser();
     }, []);
-
-    // useEffect(() => {
-    //     const loggedInUser = localStorage.getItem("user");
-    //     if (loggedInUser) {
-    //         setUser(JSON.parse(loggedInUser));
-    //     }
-    // }, []);
-
+    
     const value = {
         authState: { user, isLoading },
         login: async (username, password, setAlert) => {
