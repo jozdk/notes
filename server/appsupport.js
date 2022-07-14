@@ -74,16 +74,11 @@ export function basicErrorHandler(err, req, res, next) {
         return (next(err));
     }
 
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
-
     dbgError(err);
 
-    res.status(err.status || 500);
-    // res.render("error");
-    res.json({
-        error: err
-    });
+    err.status === 404
+        ? res.status(404).send("404: Not Found")
+        : res.status(500).send("500: Internal Server Error");
 }
 
 // ???
