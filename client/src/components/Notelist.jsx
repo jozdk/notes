@@ -30,7 +30,7 @@ export const Notelist = ({ notelist, searchTerm }) => {
                 }
 
                 return (
-                    <Link key={note.key} to={`/notes/view/${note.key}`} className={`block border-b rounded-md border-gray-200 hover:bg-main ${notekey === note.key ? "bg-main" : ""}`}>
+                    <Link key={note.key} to={`/notes/view/${note.key}`} className={`block border-b rounded-md border-gray-200 mr-2 hover:bg-main ${notekey === note.key ? "bg-main" : ""}`}>
                         <div className="pb-1">
                             <div className="p-3 truncate">{note.title ? note.title : note.body}</div>
                             <div className="text-slate-400 text-xs text-right px-3">{date}</div>

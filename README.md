@@ -31,7 +31,7 @@ The application has a RESTful API, multiple persistent storage options, cookie-b
 
 ![Notes Login](documentation/notes_login_md.png)
 
-Notes requires you to log in with a username and password. Users can be added, updated, deleted, and more with a CLI (see below).
+Notes requires you to log in with a username and password. Users can be added, updated, deleted, and more with a [CLI](#Users-CLI).
 
 ### Home Screen
 
@@ -79,8 +79,8 @@ For a dynamic communication between server and client, WebSockets are implemente
 ### Starting the App
 
 - Copy the content of `.env.example` into a new `.env`
-- Insert a random, solid session secret at `SESSION_SECRET`
-- Note: all of the other empty environment variables are *optional* and/or *dependent on the data storage option* you are choosing (see [Configuring Data Storages](#Configuring-Data-Storages))
+- Insert a session secret at `SESSION_SECRET`
+- Note: All of the other empty environment variables are *optional* and/or *dependent on the data storage option* you choose (see [Configuring Data Storages](#Configuring-Data-Storages))
 - Add a new user to log in with (see [Users CLI](#Users-CLI))
 - Run one of the following commands depending on data storage option (for PostgreSQL, make sure you have PostgreSQL installed and configured: see [PostgreSQL](#PostgreSQL))
     - | Data Storage | Command |
@@ -96,7 +96,7 @@ For a dynamic communication between server and client, WebSockets are implemente
 
 ### Optional: File System
 
-Using the file system as data storage, the application saves notes to `notes-fs-data` and users to `users-fs-data` by default. If you want to use a different location, you can do so by assigning the directory to your `.env` at `NOTES_FS_DIR` and `USERS_FS_DIR`, respectively.
+Using the file system as data storage, the application saves notes to `notes-fs-data` and users to `users-fs-data` by default. If you want to use a different location, you can do so by assigning the directory to `NOTES_FS_DIR` and `USERS_FS_DIR`, respectively, in your `.env` file.
 
 ### Optional: LevelDB
 
