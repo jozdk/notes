@@ -15,6 +15,7 @@ export const Header = () => {
     const searchRef = useRef(null);
 
     useEffect(() => {
+        document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
         window.addEventListener("resize", () => {
             if (window.innerWidth <= 768) {
                 if (document.activeElement !== searchRef.current) {
@@ -23,6 +24,7 @@ export const Header = () => {
             } else {
                 setDisplaySidebar(true);
             }
+            document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
         })
     }, [])
 

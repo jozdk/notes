@@ -60,7 +60,7 @@ export const NoteView = () => {
     return (
         <>
             {note != null && note !== "Not found" ? (
-                <div className="p-5 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg:w-10/12">
+                <div className="p-5 pb-3 mx-auto w-full 2xl:w-3/5 xl:w-4/5 lg:w-10/12">
 
                     <div className="min-h-[calc(100%_-_57px)]">
                         <div className="pb-1 mb-3 border-b border-grey-100 flex justify-between">
@@ -85,7 +85,7 @@ export const NoteView = () => {
 
                     {user && notekey && (
 
-                        <div className="inline-block border-t border-grey-100 pt-2 pb-5 pr-3">
+                        <div className="inline-block border-t border-grey-100 pt-2 pr-3">
                             <Link className="inline-block py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark mr-2" to={`/notes/edit/${notekey}`}><i className="bi bi-pencil-fill mr-1"></i> Edit</Link>
                             <button
                                 className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-dark"
