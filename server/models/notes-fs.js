@@ -169,13 +169,13 @@ class FSUsersStore {
 // Helper functions
 
 async function getNotesDir() {
-    const dir = process.env.NOTES_FS_DIR || path.join(approotdir, "notes-fs-data");
+    const dir = process.env.NOTES_FS_DIR || path.join(approotdir, "notes-fs-data/notes");
     await fs.ensureDir(dir);
     return dir;
 }
 
 async function getUsersDir() {
-    const dir = process.env.USERS_FS_DIR || path.join(approotdir, "users-fs-data");
+    const dir = process.env.USERS_FS_DIR || path.join(approotdir, "notes-fs-data/users");
     await fs.ensureDir(dir);
     return dir;
 }
