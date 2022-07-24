@@ -75,14 +75,23 @@ router.post("/users/login",
 
 router.post("/users/logout", ensureAuthenticated, (req, res, next) => {
     try {
-        req.session.destroy();
-        req.logout();
-        res.clearCookie(sessionCookieName);
-        debug("Logged out user");
-        res.status(200).json({
-            success: true,
-            msg: "Logout successfull"
+        req.logout((err) => {
+            if (err) {
+                console.log(err);
+                throw new Error(err);
+            } else {
+                req.session.destroy();
+                res.clearCookie(sessionCookieName);
+                res.status(200).json({
+                    success: true,
+                    msg: "Logout successful"
+                });
+                debug("Logged out user");
+            }
         });
+        
+        
+        
     } catch (err) {
         next(err);
     }
