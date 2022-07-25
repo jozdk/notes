@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 import DBG from "debug";
 const debug = DBG("notes:notes-postgres");
 
-// Heroku ???
-// const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.DATABASE_URL;
+debug(connectionString);
 
 let pgClient;
 
@@ -18,12 +18,14 @@ async function connectDB() {
     }
 
     try {
-        pgClient = new Client({
-            user: process.env.PG_USER,
-            host: 'localhost',
-            database: process.env.PG_DATABASE,
-            password: process.env.PG_PASSWD,
-            port: 5432
+        pgClient = new Client(connectionString
+            ? { connectionString }
+            : {
+            user: process.env.PGUSER ? process.env.PGUSER : process.env.USER,
+            host: process.env.PGHOST ? process.env.PGHOST : 'localhost',
+            database: process.env.PGDATABASE ? process.env.PGDATABASE : process.env.USER,
+            password: process.env.PGPASSWORD ? process.env.PGPASSWORD : null,
+            port: process.env.PGPORT ? process.env.PGPORT : 5432
         });
         await pgClient.connect();
         debug("PostgreSQL connection established");

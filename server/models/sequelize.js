@@ -26,8 +26,8 @@ export async function connectDB() {
         if (process.env.SEQUELIZE_DBUSER) {
             params.username = process.env.SEQUELIZE_DBUSER;
         }
-        if (process.env.SEQUELIZE_DBPASSWD) {
-            params.password = process.env.SEQUELIZE_DBPASSWD;
+        if (process.env.SEQUELIZE_DBPASSWORD) {
+            params.password = process.env.SEQUELIZE_DBPASSWORD;
         }
         if (process.env.SEQUELIZE_DBHOST) {
             params.params.host = process.env.SEQUELIZE_DBHOST;

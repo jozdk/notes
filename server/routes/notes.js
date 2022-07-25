@@ -96,7 +96,7 @@ export function init() {
         notes.on("notedestroyed", handleNoteDestroyed);
 
         socket.on("disconnect", () => {
-            debug(`${socket.id} disconnected`);
+            debug(`Socket ${socket.id} disconnected`);
             notes.off("noteupdated", handleNoteUpdated);
             notes.off("notedestroyed", handleNoteDestroyed);
         })

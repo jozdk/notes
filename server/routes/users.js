@@ -88,10 +88,7 @@ router.post("/users/logout", ensureAuthenticated, (req, res, next) => {
                 });
                 debug("Logged out user");
             }
-        });
-        
-        
-        
+        });        
     } catch (err) {
         next(err);
     }

@@ -82,7 +82,7 @@ For a dynamic communication between server and client, WebSockets are implemente
 - Insert a session secret at `SESSION_SECRET`
 - Note: All of the other empty environment variables are *optional* and/or *dependent on the data storage option* you choose (see [Configuring Data Storages](#Configuring-Data-Storages))
 - Add a new user to log in with (see [Users CLI](#Users-CLI))
-- Run one of the following commands depending on data storage option (for PostgreSQL, make sure you have PostgreSQL installed and configured: see [PostgreSQL](#PostgreSQL))
+- Run one of the following commands depending on your database preference (for PostgreSQL, make sure you have PostgreSQL installed and configured: see [PostgreSQL](#PostgreSQL))
     - | Data Storage | Command |
       | --- | --- |
       | File system | `npm run fs-start` |
@@ -96,7 +96,7 @@ For a dynamic communication between server and client, WebSockets are implemente
 
 ### Optional: File System
 
-Using the file system as data storage, the application saves notes to `notes-fs-data` and users to `users-fs-data` by default. If you want to use a different location, you can do so by assigning the directory to `NOTES_FS_DIR` and `USERS_FS_DIR`, respectively, in your `.env` file.
+Using the file system as data storage, the application saves notes to `notes-fs-data/notes` and users to `notes-fs-data/users` by default. If you want to use a different location, you can do so by assigning the directory to `NOTES_FS_DIR` and `USERS_FS_DIR`, respectively, in your `.env` file.
 
 ### Optional: LevelDB
 
@@ -120,7 +120,9 @@ By default, Sequelize will connect with SQLite3, in which case you don't have to
         port: 3306
         dialect: mysql
 ```
-- In `.env`, assign your MySQL username and password to `SEQUELIZE_DBUSER` and `SEQUELIZE_DBPASSWD`
+- In your `.env` file, assign your MySQL username and password to
+    - `SEQUELIZE_DBUSER`
+    - `SEQUELIZE_DBPASSWORD`
 
 ### Required: PostgreSQL
 
@@ -128,10 +130,11 @@ In order for Notes to connect with PostgreSQL, you need to:
 
 - Install and configure PostgreSQL on your system
 - Create a dabase for the Notes app, e.g. called `notes_app`
-- Configure the `.env` with your PostgreSQL username, password and database name at
-    - `PG_USER`
-    - `PG_PASSWD`
-    - `PG_DATABASE`
+- Configure your `.env` file with your PostgreSQL username, password and database name using the environment variables:
+    - `PGUSER`
+    - `PGPASSWORD`
+    - `PGDATABASE`
+- Optionally, assign a host and/or a port to `PGHOST` and `PGPORT`. If left empty, Notes will connect to PostgreSQL at `localhost:5432`, by default.
 
 ## Users CLI
 
