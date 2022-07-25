@@ -77,7 +77,7 @@ export function init() {
             socket.join(socket.handshake.query.key);
         }
 
-        notes.on("noteupdated", (note) => {
+        const handleNoteUpdated = (note) => {
             const toemit = {
                 key: note.key,
                 title: note.title,
@@ -85,10 +85,20 @@ export function init() {
             };
             io.of("/notes").to(note.key).emit("noteupdated", toemit);
             emitNoteTitles();
-        });
-        notes.on("notedestroyed", (key) => {
+        }
+
+        const handleNoteDestroyed = (key) => {
             io.of("/notes").to(key).emit("notedestroyed", key);
             emitNoteTitles();
-        });
+        }
+
+        notes.on("noteupdated", handleNoteUpdated);
+        notes.on("notedestroyed", handleNoteDestroyed);
+
+        socket.on("disconnect", () => {
+            debug(`${socket.id} disconnected`);
+            notes.off("noteupdated", handleNoteUpdated);
+            notes.off("notedestroyed", handleNoteDestroyed);
+        })
     });
 }

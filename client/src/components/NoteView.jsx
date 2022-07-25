@@ -49,7 +49,7 @@ export const NoteView = () => {
             newSocket.on("notedestroyed", (key) => {
                 navigate("/notes");
             });
-            return () => newSocket.close();
+            return () => newSocket.disconnect();
         }
     }, [notekey]);
 
