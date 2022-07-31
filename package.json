@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/app.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "fs-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=fs node server/app.js & npm run dev:build-client",
     "level-start": "cross-env DEBUG=notes:* PORT=3000 NOTES_MODEL=level node server/app.js & npm run dev:build-client",
@@ -10,7 +13,8 @@
     "sequelize-start": "cross-env DEBUG=notes:* NOTES_MODEL=sequelize node server/app.js & npm run dev:build-client",
     "postgres-start": "cross-env DEBUG=notes:* NOTES_MODEL=postgres node server/app.js & npm run dev:build-client",
     "dev:build-client": "webpack watch --config ./webpack.config.js --env MODE=development",
-    "prod:build-client": "webpack --config ./webpack.config.js --env MODE=production"
+    "prod:build-client": "webpack --config ./webpack.config.js --env MODE=production",
+    "heroku-postbuild": "npm run prod:build-client"
   },
   "type": "module",
   "keywords": [],
