@@ -19,7 +19,12 @@ async function connectDB() {
 
     try {
         pgClient = new Client(connectionString
-            ? { connectionString }
+            ? {
+                connectionString,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            }
             : {
             user: process.env.PGUSER ? process.env.PGUSER : process.env.USER,
             host: process.env.PGHOST ? process.env.PGHOST : 'localhost',
@@ -151,8 +156,10 @@ class PostgresNotesStore extends AbstractNotesStore {
 
 class PostgresUsersStore {
     async close() {
-        await pgClient.end();
-        pgClient = undefined;
+        if (pgClient) {
+            await pgClient.end();
+            pgClient = undefined;
+        }
     }
 
     async create(username, password) {
