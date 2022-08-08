@@ -63,12 +63,12 @@ export function login(req, res, next) {
 
 router.post("/users/login",
     (req, res, next) => {
-        debug(req.body);
+        console.log(`Login requested for username ${req.body.username}`);
         next();
     },
     passport.authenticate("local"),
     (req, res, next) => {
-        debug("/users/login requested");
+        console.log(`Login for ${req.user.username} successful`);
         login(req, res, next);
     }
 );
@@ -86,7 +86,7 @@ router.post("/users/logout", ensureAuthenticated, (req, res, next) => {
                     success: true,
                     msg: "Logout successful"
                 });
-                debug("Logged out user");
+                console.log("Logged out user");
             }
         });        
     } catch (err) {

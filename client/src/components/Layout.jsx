@@ -18,9 +18,9 @@ export const Layout = () => {
 
     useEffect(() => {
         const newSocket = io("/home");
-        newSocket.on("connect", () => {
-            console.log("socketio connection on /home");
-        });
+        // newSocket.on("connect", () => {
+        //     console.log("socketio connection on /home");
+        // });
         newSocket.on("notetitles", (arg) => {
             const notelist = arg.notelist;
             setNotelist(notelist);

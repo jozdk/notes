@@ -7,7 +7,7 @@ import { Login } from "./Login.jsx";
 export const ProtectedRoutes = () => {
     const { authState: { user, isLoading } } = useAuth();
 
-    console.log(isLoading);
+    // console.log(isLoading);
 
     // return user ? <Outlet /> : <Login />
     if (user) {

@@ -87,9 +87,6 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || "dev", {
         })
         : process.stdout
 }));
-if (process.env.REQUEST_LOG_FILE) {
-    app.use(logger(process.env.REQUEST_LOG_FORMAT || "dev"));
-}
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

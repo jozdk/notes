@@ -40,9 +40,9 @@ export const NoteView = () => {
     useEffect(() => {
         if (notekey) {
             const newSocket = io(`/notes?key=${notekey}`, { forceNew: true });
-            newSocket.on("connect", () => {
-                console.log(`socketio connection on /notes?key=${notekey}`);
-            });
+            // newSocket.on("connect", () => {
+            //     console.log(`socketio connection on /notes?key=${notekey}`);
+            // });
             newSocket.on("noteupdated", (note) => {
                 setNote(note);
             });

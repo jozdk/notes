@@ -60,7 +60,7 @@ export function onListening() {
     const bind = typeof addr === "string"
         ? "pipe " + addr
         : "port " + addr.port;
-    debug(`Listening on ${bind}`);
+    console.log(`Server started listening on ${bind}`);
 }
 
 export function handle404(req, res, next) {

@@ -57,8 +57,10 @@ async function connectDB() {
 
 class PostgresNotesStore extends AbstractNotesStore {
     async close() {
-        await pgClient.end();
-        pgClient = undefined;
+        if (pgClient) {
+            await pgClient.end();
+            pgClient = undefined;
+        }
     }
 
     async create(key, title, body, createdAt, updatedAt) {
