@@ -72,6 +72,10 @@ server.on("request", (req, res) => {
     debug(`${new Date().toISOString()} request ${req.method} ${req.url}`);
 });
 
+if (process.env.NODE_ENV === "production" && process.env.TRUST_PROXY === "true") {
+    app.set("trust proxy", 1);
+}
+
 // Set up socket.io
 export const io = new SocketioServer(server);
 

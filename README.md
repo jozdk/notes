@@ -80,6 +80,7 @@ For a dynamic communication between server and client, WebSockets are implemente
 
 - Copy the content of `.env.example` into a new `.env`
 - Insert a session secret at `SESSION_SECRET`
+- Confirm `NODE_ENV='development'` (default setting in `.env.example` file)
 - Note: All of the other empty environment variables are *optional* and/or *dependent on the data storage option* you choose (see [Configuring Data Storages](#Configuring-Data-Storages))
 - Add a new user to log in with (see [Users CLI](#Users-CLI))
 - Run one of the following commands depending on your database preference (for PostgreSQL, make sure you have PostgreSQL installed and configured: see [PostgreSQL](#PostgreSQL))
