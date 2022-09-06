@@ -48,7 +48,7 @@ export const Login = () => {
                                     type="text"
                                     defaultValue=""
                                     placeholder="Username"
-                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500 w-full"
                                 />
                             </div>
                             <div className="mb-5">
@@ -57,10 +57,10 @@ export const Login = () => {
                                     type="password"
                                     defaultValue=""
                                     placeholder="Password"
-                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500"
+                                    className="p-2 rounded-md focus:outline focus:outline-main placeholder:text-gray-500 w-full"
                                 />
                             </div>
-                            <div className="text-right">
+                            <div>
                                 <button
                                     type="submit"
                                     className="py-2 px-4 bg-main text-black shadow-md rounded-md hover:outline hover:outline-white w-full"
